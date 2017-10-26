@@ -1,6 +1,6 @@
 # PKI Express for PHP
 
-Source code for the lacuna/pki-express composer package
+Package for using PKI Express on PHP
 
 The recommended way to install **PKI Express for PHP** is through [Composer](http://getcomposer.org):
 
@@ -10,4 +10,4 @@ The recommended way to install **PKI Express for PHP** is through [Composer](htt
 
 ## Documentation
 
-https://docs.lacunasoftware.com/articles/pki-express/php
+https://docs.lacunasoftware.com/articles/pki-express/php/
