@@ -189,7 +189,11 @@ abstract class PkiExpressOperator
 
     protected function getTransferFileName()
     {
-        $transferFile = bin2hex(openssl_random_pseudo_bytes(16));
+        $nBytes = 16;
+        $transferFile = '';
+        for ($i = 0; $i < $nBytes; $i++) {
+            $transferFile .= dechex(rand(0, 255));
+        }
         return $transferFile;
     }
 
