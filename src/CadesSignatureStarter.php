@@ -51,7 +51,7 @@ class CadesSignatureStarter extends SignatureStarter
         $args = array(
             $this->fileToSignPath,
             $this->certificatePath,
-            $this->config->getTempFolder() . $transferFile
+            $this->config->getTransferDataFolder() . $transferFile
         );
 
         if (!empty($this->dataFilePath)) {
