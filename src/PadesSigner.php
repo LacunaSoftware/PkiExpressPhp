@@ -41,7 +41,7 @@ class PadesSigner extends Signer
             throw new \Exception("The provided visual representation was not valid");
         };
 
-        $tempFilePath = $this->createTempFile() . '.js';
+        $tempFilePath = $this->createTempFile();
         file_put_contents($tempFilePath, $json);
         $this->vrJsonPath = $tempFilePath;
     }
