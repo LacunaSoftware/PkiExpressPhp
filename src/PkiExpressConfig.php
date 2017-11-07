@@ -18,13 +18,13 @@ class PkiExpressConfig
         }
 
         if (isset($tempFolder) && file_exists($tempFolder)) {
-            $this->tempFolder = $tempFolder;
+            $this->tempFolder = $tempFolder . DIRECTORY_SEPARATOR;
         } else {
             $this->tempFolder = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         }
 
         if (isset($transferDataFolder) && file_exists($transferDataFolder)) {
-            $this->transferDataFolder = $transferDataFolder;
+            $this->transferDataFolder = $transferDataFolder . DIRECTORY_SEPARATOR;
         } else {
             $this->transferDataFolder = $this->tempFolder;
         }
