@@ -28,7 +28,7 @@ class SignatureFinisher extends PkiExpressOperator
 
     public function setTransferFile($path)
     {
-        if (!file_exists($this->config->getTempFolder() . $path)) {
+        if (!file_exists($this->config->getTransferDataFolder() . $path)) {
             throw new \Exception("The provided transfer file was not found");
         }
 
@@ -78,7 +78,7 @@ class SignatureFinisher extends PkiExpressOperator
 
         $args = array(
             $this->fileToSignPath,
-            $this->config->getTempFolder() . $this->transferFilePath,
+            $this->config->getTransferDataFolder() . $this->transferFilePath,
             $this->signature,
             $this->outputFilePath
         );

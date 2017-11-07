@@ -38,7 +38,7 @@ class PadesSignatureStarter extends SignatureStarter
             throw new \Exception("The provided visual representation was not valid");
         };
 
-        $tempFilePath = $this->createTempFile() . '.js';
+        $tempFilePath = $this->createTempFile();
         file_put_contents($tempFilePath, $json);
         $this->vrJsonPath = $tempFilePath;
     }
@@ -59,7 +59,7 @@ class PadesSignatureStarter extends SignatureStarter
         $args = array(
             $this->pdfToSignPath,
             $this->certificatePath,
-            $this->config->getTempFolder() . $transferFile
+            $this->config->getTransferDataFolder() . $transferFile
         );
 
         if (!empty($this->vrJsonPath)) {

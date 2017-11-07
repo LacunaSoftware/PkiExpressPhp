@@ -153,16 +153,14 @@ abstract class PkiExpressOperator
 
             } else {
 
-                if (file_exists(getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
-
+                if (file_exists(getenv('ProgramW6432') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
+                    $home = getenv('ProgramW6432') . '\\Lacuna Software\\PKI Express';
+                } else if (file_exists(getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
                     $home = getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express';
-
-                } else {
-                    if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
-
-                        $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express';
-
-                    }
+                } else if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
+                    $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express';
+                } else if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)\\pkie.exe')) {
+                    $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)';
                 }
 
             }
@@ -189,7 +187,11 @@ abstract class PkiExpressOperator
 
     protected function getTransferFileName()
     {
-        $transferFile = bin2hex(openssl_random_pseudo_bytes(16));
+        $nBytes = 16;
+        $transferFile = '';
+        for ($i = 0; $i < $nBytes; $i++) {
+            $transferFile .= dechex(rand(0, 255));
+        }
         return $transferFile;
     }
 
