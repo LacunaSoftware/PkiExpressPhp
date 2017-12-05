@@ -37,8 +37,11 @@ abstract class PkiExpressOperator
     const COMMAND_COMPLETE_SIG = "complete-sig";
 
 
-    protected function __construct($config)
+    protected function __construct($config = null)
     {
+        if (!isset($config)) {
+            $config = new PkiExpressConfig();
+        }
         $this->config = $config;
         $this->trustedRoots = array();
         $this->tempFiles = array();
@@ -48,10 +51,6 @@ abstract class PkiExpressOperator
 
     protected function invoke($command, array $args = array())
     {
-        if (empty($this->config->getLicensePath())) {
-            throw new \Exception("The license's path was not set");
-        }
-
         // Add PKI Express invocation arguments
         $cmdArgs = array();
         foreach ($this->getPkiExpressInvocation() as $invocationArg) {
@@ -63,10 +62,6 @@ abstract class PkiExpressOperator
 
         // Add PKI Express arguments
         $cmdArgs = array_merge($cmdArgs, $args);
-
-        // Add the license path
-        $cmdArgs[] = "-lf";
-        $cmdArgs[] = $this->config->getLicensePath();
 
         // Add file references if added
         if (!empty($this->fileReferences)) {

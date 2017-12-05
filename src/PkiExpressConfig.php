@@ -6,15 +6,14 @@ namespace Lacuna\PkiExpress;
 class PkiExpressConfig
 {
     private $pkiExpressHome;
-    private $licensePath;
     private $tempFolder;
     private $transferDataFolder;
 
 
-    public function __construct($licensePath, $pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
+    public function __construct($pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
     {
-        if (!file_exists($licensePath)) {
-            throw new \Exception("The provided license was not found");
+        if (isset($pkiExpressHome) && strpos($pkiExpressHome, '.config') !== false) {
+            throw new \Exception('Starting on version 1.1.0 of PKI Express, passing a licensing on the PkiExpressConfig constructor is not longer supported!');
         }
 
         if (isset($tempFolder) && file_exists($tempFolder)) {
@@ -30,17 +29,11 @@ class PkiExpressConfig
         }
 
         $this->pkiExpressHome = $pkiExpressHome;
-        $this->licensePath = $licensePath;
     }
 
     public function getPkiExpressHome()
     {
         return $this->pkiExpressHome;
-    }
-
-    public function getLicensePath()
-    {
-        return $this->licensePath;
     }
 
     public function getTempFolder()

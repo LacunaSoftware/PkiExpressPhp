@@ -10,8 +10,11 @@ class XmlSignatureStarter extends SignatureStarter
     private $signaturePolicy;
 
 
-    public function __construct($config)
+    public function __construct($config = null)
     {
+        if (!isset($config)) {
+            $config = new PkiExpressConfig();
+        }
         parent::__construct($config);
     }
 
