@@ -37,8 +37,11 @@ abstract class PkiExpressOperator
     const COMMAND_COMPLETE_SIG = "complete-sig";
 
 
-    protected function __construct($config)
+    protected function __construct($config = null)
     {
+        if (!isset($config)) {
+            $config = new PkiExpressConfig();
+        }
         $this->config = $config;
         $this->trustedRoots = array();
         $this->tempFiles = array();

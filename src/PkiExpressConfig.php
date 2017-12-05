@@ -6,17 +6,12 @@ namespace Lacuna\PkiExpress;
 class PkiExpressConfig
 {
     private $pkiExpressHome;
-    private $licensePath;
     private $tempFolder;
     private $transferDataFolder;
 
 
-    public function __construct($licensePath, $pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
+    public function __construct($pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
     {
-        if (!file_exists($licensePath)) {
-            throw new \Exception("The provided license was not found");
-        }
-
         if (isset($tempFolder) && file_exists($tempFolder)) {
             $this->tempFolder = $tempFolder . DIRECTORY_SEPARATOR;
         } else {
@@ -30,17 +25,11 @@ class PkiExpressConfig
         }
 
         $this->pkiExpressHome = $pkiExpressHome;
-        $this->licensePath = $licensePath;
     }
 
     public function getPkiExpressHome()
     {
         return $this->pkiExpressHome;
-    }
-
-    public function getLicensePath()
-    {
-        return $this->licensePath;
     }
 
     public function getTempFolder()

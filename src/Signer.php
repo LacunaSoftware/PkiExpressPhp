@@ -9,8 +9,11 @@ abstract class Signer extends PkiExpressOperator
     protected $certThumb;
 
 
-    public function __construct($config)
+    public function __construct($config = null)
     {
+        if (!isset($config)) {
+            $config = new PkiExpressConfig();
+        }
         parent::__construct($config);
     }
 
