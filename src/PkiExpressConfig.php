@@ -12,6 +12,10 @@ class PkiExpressConfig
 
     public function __construct($pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
     {
+        if (isset($pkiExpressHome) && strpos($pkiExpressHome, '.config') !== false) {
+            throw new \Exception('Starting on version 1.1.0 of PKI Express, passing a licensing on the PkiExpressConfig constructor is not longer supported!');
+        }
+
         if (isset($tempFolder) && file_exists($tempFolder)) {
             $this->tempFolder = $tempFolder . DIRECTORY_SEPARATOR;
         } else {
