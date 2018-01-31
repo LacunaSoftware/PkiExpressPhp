@@ -71,9 +71,7 @@ class XmlSigner extends Signer
             }
         }
 
-        $response = parent::invoke(parent::COMMAND_SIGN_XML, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+        // Invoke command
+        parent::invoke(parent::COMMAND_SIGN_XML, $args);
     }
 }

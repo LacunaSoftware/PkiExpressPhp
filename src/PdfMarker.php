@@ -3,10 +3,15 @@
 namespace Lacuna\PkiExpress;
 
 
-class PadesSigner extends Signer
+class PdfMarker extends PkiExpressOperator
 {
-    private $pdfToSignPath;
-    private $vrJsonPath;
+
+    public $measurementUnits;
+    public $pageOptimization;
+    public $marks;
+
+    private $filePath;
+    private $outputFilePath;
 
     private $_overwriteOriginalFile = false;
 
@@ -17,55 +22,42 @@ class PadesSigner extends Signer
             $config = new PkiExpressConfig();
         }
         parent::__construct($config);
+        $this->marks = [];
+        $this->measurementUnits = PadesMeasurementUnits::CENTIMETERS;
     }
 
-    public function setPdfToSign($path)
+    public function setFile($path)
     {
         if (!file_exists($path)) {
-            throw new \Exception("The provided PDF to be signed was not found");
+            throw new \Exception("The provided file was not found");
         }
-
-        $this->pdfToSignPath = $path;
+        $this->filePath = $path;
     }
 
-    public function setVisualRepresentationFromFile($path)
+    public function setOutputFile($path)
     {
-        if (!file_exists($path)) {
-            throw new \Exception("The provided visual representation file was not found");
-        }
-
-        $this->vrJsonPath = $path;
+        $this->outputFilePath = $path;
     }
 
-    public function setVisualRepresentation($vr)
+    public function apply()
     {
-        if (!($json = json_encode($vr))) {
-            throw new \Exception("The provided visual representation was not valid");
-        };
-
-        $tempFilePath = $this->createTempFile();
-        file_put_contents($tempFilePath, $json);
-        $this->vrJsonPath = $tempFilePath;
-    }
-
-    public function sign()
-    {
-        if (empty($this->pdfToSignPath)) {
-            throw new \Exception("The PDF to be signed was not set");
-        }
-
-        if (empty($this->certThumb)) {
-            throw new \Exception("The certificate thumbprint was not set");
-        }
-
-        if (!$this->overwriteOriginalFile && empty($this->outputFilePath)) {
-            throw new \Exception("The output destination was not set");
+        if (empty($this->filePath)) {
+            throw new \Exception("The file to be marked was not set");
         }
 
         $args = array(
-            $this->pdfToSignPath,
-            $this->certThumb
+            $this->filePath
         );
+
+        // Generate changes file
+        $tempFilePath = $this->createTempFile();
+        $request = array(
+            'marks' => $this->marks,
+            'measurementUnits' => $this->measurementUnits,
+            'pageOptimization' => $this->pageOptimization
+        );
+        file_put_contents($tempFilePath, json_encode($request));
+        $args[] = $tempFilePath;
 
         // Logic to overwrite original file or use the output file
         if ($this->_overwriteOriginalFile) {
@@ -74,13 +66,8 @@ class PadesSigner extends Signer
             array_push($args, $this->outputFilePath);
         }
 
-        if (!empty($this->vrJsonPath)) {
-            array_push($args, "-vr");
-            array_push($args, $this->vrJsonPath);
-        }
-
         // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_PADES, $args);
+        parent::invoke(parent::COMMAND_EDIT_PDF, $args);
     }
 
     public function getOverwriteOriginalFile()

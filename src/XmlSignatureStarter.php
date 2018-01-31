@@ -72,15 +72,16 @@ class XmlSignatureStarter extends SignatureStarter
             }
         }
 
+        // Invoke command
         $response = parent::invoke(parent::COMMAND_START_XML, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+
+        // Parse output
+        $parsedOutput = $this->parseOutput($response->output[0]);
 
         return (object)array(
-            "toSignHash" => $response->output[0],
-            "digestAlgorithm" => $response->output[1],
-            "digestAlgorithmOid" => $response->output[2],
+            "toSignHash" => $parsedOutput->toSignHash,
+            "digestAlgorithm" => $parsedOutput->toSignHash,
+            "digestAlgorithmOid" => $parsedOutput->toSignHash,
             "transferFile" => $transferFile
         );
     }
