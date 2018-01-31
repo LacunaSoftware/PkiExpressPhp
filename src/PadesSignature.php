@@ -10,7 +10,7 @@ class PadesSignature
     public function __construct($model)
     {
         foreach ($model->signers as $signer) {
-            $this->_signers = new PadesSignerInfo($signer);
+            $this->_signers[] = new PadesSignerInfo($signer);
         }
     }
 
