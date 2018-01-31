@@ -53,9 +53,13 @@ class CadesSigner extends Signer
 
         $args = array(
             $this->fileToSignPath,
-            $this->certThumb,
             $this->outputFilePath
         );
+
+        if (!empty($this->certThumb)) {
+            array_push($args, "-t");
+            array_push($args, $this->certThumb);
+        }
 
         if (!empty($this->dataFilePath)) {
             array_push($args, "-df");

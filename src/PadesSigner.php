@@ -63,9 +63,13 @@ class PadesSigner extends Signer
         }
 
         $args = array(
-            $this->pdfToSignPath,
-            $this->certThumb
+            $this->pdfToSignPath
         );
+
+        if (!empty($this->certThumb)) {
+            array_push($args, "-t");
+            array_push($args, $this->certThumb);
+        }
 
         // Logic to overwrite original file or use the output file
         if ($this->_overwriteOriginalFile) {

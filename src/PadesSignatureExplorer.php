@@ -9,6 +9,7 @@ class PadesSignatureExplorer extends PkiExpressOperator
 
     private $_validate;
 
+
     public function __construct($config = null)
     {
         if (!isset($config)) {
@@ -35,8 +36,8 @@ class PadesSignatureExplorer extends PkiExpressOperator
             $this->signatureFilePath
         );
 
-        if (!$this->_validate) {
-            array_push($args, "-v");
+        if ($this->_validate) {
+            array_push($args, "--validate");
         }
 
         // Invoke command
@@ -45,7 +46,10 @@ class PadesSignatureExplorer extends PkiExpressOperator
         // Parse output
         $parsedOutput = $this->parseOutput($response->output[0]);
 
-        return $parsedOutput;
+        // Convert response
+        $signature = new PadesSignature($parsedOutput);
+
+        return $signature;
     }
 
     public function getValidate()

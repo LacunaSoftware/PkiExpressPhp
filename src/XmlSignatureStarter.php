@@ -6,6 +6,7 @@ namespace Lacuna\PkiExpress;
 class XmlSignatureStarter extends SignatureStarter
 {
     private $xmlToSignPath;
+
     private $toSignElementId;
     private $signaturePolicy;
 
@@ -25,16 +26,6 @@ class XmlSignatureStarter extends SignatureStarter
         }
 
         $this->xmlToSignPath = $path;
-    }
-
-    public function setToSignElementId($elementId)
-    {
-        $this->toSignElementId = $elementId;
-    }
-
-    public function setSignaturePolicy($policy)
-    {
-        $this->signaturePolicy = $policy;
     }
 
     public function start()
@@ -84,5 +75,28 @@ class XmlSignatureStarter extends SignatureStarter
             "digestAlgorithmOid" => $parsedOutput->toSignHash,
             "transferFile" => $transferFile
         );
+    }
+
+    public function setToSignElementId($elementId)
+    {
+        $this->_toSignElementId = $elementId;
+    }
+
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    public function __set($attr, $value)
+    {
+        switch ($attr) {
+            case "toSignElementId":
+                return $this->setToSignElementId($value);
+            case "signaturePolicy":
+                return $this->setSignaturePolicy($value);
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
     }
 }
