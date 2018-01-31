@@ -88,12 +88,12 @@ abstract class PkiExpressOperator
         }
 
         // Add trust Lacuna test root if set
-        if ($this->trustLacunaTestRoot) {
+        if ($this->_trustLacunaTestRoot) {
             $cmdArgs[] = '-tt';
         }
 
         // Add offline option if provided
-        if ($this->offline) {
+        if ($this->_offline) {
             $cmdArgs[] = '--offline';
         }
 

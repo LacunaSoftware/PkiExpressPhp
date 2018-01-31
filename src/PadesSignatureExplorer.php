@@ -72,7 +72,7 @@ class PadesSignatureExplorer extends PkiExpressOperator
     public function __set($attr, $value)
     {
         switch ($attr) {
-            case "encapsulateContent":
+            case "validate":
                 $this->setValidate($value);
                 break;
             default:
