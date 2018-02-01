@@ -7,8 +7,8 @@ class XmlSignatureStarter extends SignatureStarter
 {
     private $xmlToSignPath;
 
-    private $toSignElementId;
-    private $signaturePolicy;
+    private $_toSignElementId;
+    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -38,7 +38,7 @@ class XmlSignatureStarter extends SignatureStarter
             throw new \Exception("The certificate was not set");
         }
 
-        if ($this->signaturePolicy == XmlSignaturePolicies::NFE && empty($this->toSignElementId)) {
+        if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && empty($this->_toSignElementId)) {
             throw new \Exception("The signature element was not set");
         }
 
@@ -51,15 +51,15 @@ class XmlSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
-        if (isset($this->signaturePolicy)) {
+        if (isset($this->_signaturePolicy)) {
 
             array_push($args, "-p");
-            array_push($args, $this->signaturePolicy);
+            array_push($args, $this->_signaturePolicy);
 
-            if ($this->signaturePolicy == XmlSignaturePolicies::NFE && isset($this->toSignElementId)) {
+            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
 
                 array_push($args, "-eid");
-                array_push($args, $this->toSignElementId);
+                array_push($args, $this->_toSignElementId);
             }
         }
 
@@ -90,10 +90,18 @@ class XmlSignatureStarter extends SignatureStarter
     public function __set($attr, $value)
     {
         switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
             case "toSignElementId":
-                return $this->setToSignElementId($value);
+                $this->setToSignElementId($value);
+                break;
             case "signaturePolicy":
-                return $this->setSignaturePolicy($value);
+                $this->setSignaturePolicy($value);
+                break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;

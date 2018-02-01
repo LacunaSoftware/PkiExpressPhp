@@ -84,10 +84,21 @@ class XmlSigner extends Signer
     public function __set($attr, $value)
     {
         switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
+            case "certThumb":
+                $this->setCertificateThumbprint($value);
+                break;
             case "toSignElementId":
-                return $this->setToSignElementId($value);
+                $this->setToSignElementId($value);
+                break;
             case "signaturePolicy":
-                return $this->setSignaturePolicy($value);
+                $this->setSignaturePolicy($value);
+                break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;

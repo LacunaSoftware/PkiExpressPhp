@@ -35,6 +35,12 @@ class CadesTimestamp extends CadesSignature
     public function __get($attr)
     {
         switch ($attr) {
+            case "encapsulatedContentType":
+                return $this->getEncapsulatedContentType();
+            case "hasEncapsulatedContent":
+                return $this->getHasEncapsulatedContent();
+            case "signers":
+                return $this->getSigners();
             case "genTime":
                 return $this->getGenTime();
             case "serialNumber":

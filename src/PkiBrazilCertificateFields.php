@@ -34,7 +34,7 @@ class PkiBrazilCertificateFields
 
         if (empty($model->cpf)) {
             $this->_cpfFormatted =  "";
-        } else if (!preg_match("^\\d{11}$", $model->cpf)) {
+        } else if (!preg_match("/^\d{11}$/", $model->cpf)) {
             $this->_cpfFormatted = $model->cpf;
         } else {
             $this->_cpfFormatted = sprintf("%s.%s.%s-%s", substr($model->cpf, 0, 3), substr($model->cpf,3, 3), substr($model->cpf,6, 3), substr($model->cpf, 9));
@@ -42,7 +42,7 @@ class PkiBrazilCertificateFields
 
         if (empty($model->cnpj)) {
             $this->_cnpjFormatted = "";
-        } else if (!preg_match("^\\d{14}$", $model->cnpj)) {
+        } else if (!preg_match("/^\d{14}$/", $model->cnpj)) {
             $this->_cnpjFormatted = $model->cnpj;
         } else {
             $this->_cnpjFormatted = sprintf("%s.%s.%s/%s-%s", substr($model->cpf, 0, 2), substr($model->cpf,2, 3), substr($model->cpf,5, 3), substr($model->cpf, 8, 4), substr($model->cpf, 12));

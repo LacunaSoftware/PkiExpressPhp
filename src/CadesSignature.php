@@ -32,9 +32,9 @@ class CadesSignature
         return $this->_signers;
     }
 
-    public function __get($name)
+    public function __get($attr)
     {
-        switch ($name) {
+        switch ($attr) {
             case "encapsulatedContentType":
                 return $this->getEncapsulatedContentType();
             case "hasEncapsulatedContent":

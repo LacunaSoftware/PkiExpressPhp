@@ -92,6 +92,10 @@ class CadesSignatureStarter extends SignatureStarter
     public function __get($attr)
     {
         switch ($attr) {
+            case "trustLacunaTestRoot":
+                return $this->getTrustLacunaTestRoot();
+            case "offline":
+                return $this->getOffline();
             case "encapsulateContent":
                 return $this->getEncapsulateContent();
             default:
@@ -103,6 +107,12 @@ class CadesSignatureStarter extends SignatureStarter
     public function __set($attr, $value)
     {
         switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
             case "encapsulateContent":
                 $this->setEncapsulateContent($value);
                 break;

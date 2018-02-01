@@ -101,6 +101,9 @@ class CadesSigner extends Signer
             case "encapsulateContent":
                 $this->setEncapsulateContent($value);
                 break;
+            case "certThumb":
+                $this->setCertificateThumbprint($value);
+                break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
