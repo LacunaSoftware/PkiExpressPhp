@@ -73,8 +73,8 @@ class CadesSignatureStarter extends SignatureStarter
 
         return (object)array(
             "toSignHash" => $parsedOutput->toSignHash,
-            "digestAlgorithm" => $parsedOutput->digestAlgorithm,
-            "digestAlgorithmOid" => $parsedOutput->digestAlgorithm,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
+            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
     }

@@ -71,8 +71,8 @@ class XmlSignatureStarter extends SignatureStarter
 
         return (object)array(
             "toSignHash" => $parsedOutput->toSignHash,
-            "digestAlgorithm" => $parsedOutput->toSignHash,
-            "digestAlgorithmOid" => $parsedOutput->toSignHash,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
+            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
     }

@@ -78,7 +78,7 @@ class PadesSignatureStarter extends SignatureStarter
 
         return (object)array(
             "toSignHash" => $parsedOutput->toSignHash,
-            "digestAlgorithm" => $parsedOutput->digestAlgorithm,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
             "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
