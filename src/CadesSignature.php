@@ -18,7 +18,8 @@ class CadesSignature
         }
     }
 
-    public function getEncapsulatedContentType() {
+    public function getEncapsulatedContentType()
+    {
         return $this->_encapsulatedContentType;
     }
 
