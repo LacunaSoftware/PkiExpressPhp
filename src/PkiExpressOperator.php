@@ -206,10 +206,9 @@ abstract class PkiExpressOperator
 
     protected function parseOutput($dataBase64)
     {
-        $contentRaw = base64_decode($dataBase64);
-        $contentUtf8 = utf8_encode($contentRaw);
-        $object = json_decode($contentUtf8);
-        return (object)$object;
+        $content = base64_decode($dataBase64);
+        $objArray = json_decode($content);
+        return (object)$objArray;
     }
 
     public function __destruct()
