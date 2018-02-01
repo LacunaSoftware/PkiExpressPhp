@@ -5,7 +5,7 @@ namespace Lacuna\PkiExpress;
 
 class PadesSignature
 {
-    public $_signers = [];
+    private $_signers = [];
 
     public function __construct($model)
     {

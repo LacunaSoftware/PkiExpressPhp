@@ -5,9 +5,9 @@ namespace Lacuna\PkiExpress;
 
 class SignaturePolicyIdentifier
 {
-    public $_digest;
-    public $_oid;
-    public $_uri;
+    private $_digest;
+    private $_oid;
+    private $_uri;
 
     public function __construct($model)
     {

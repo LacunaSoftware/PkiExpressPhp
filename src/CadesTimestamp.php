@@ -5,9 +5,9 @@ namespace Lacuna\PkiExpress;
 
 class CadesTimestamp extends CadesSignature
 {
-    public $_genTime;
-    public $_serialNumber;
-    public $_messageImprint;
+    private $_genTime;
+    private $_serialNumber;
+    private $_messageImprint;
 
     public function __construct($model)
     {

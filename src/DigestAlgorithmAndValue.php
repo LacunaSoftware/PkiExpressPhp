@@ -5,9 +5,9 @@ namespace Lacuna\PkiExpress;
 
 class DigestAlgorithmAndValue
 {
-    public $_algorithm;
-    public $_value;
-    public $_hexValue;
+    private $_algorithm;
+    private $_value;
+    private $_hexValue;
 
     public function __construct($model)
     {

@@ -6,9 +6,9 @@ namespace Lacuna\PkiExpress;
 
 class PkiItalyCertificateFields
 {
-    public $_certificateType;
-    public $_codiceFiscale;
-    public $_idCarta;
+    private $_certificateType;
+    private $_codiceFiscale;
+    private $_idCarta;
 
     public function __construct($model)
     {

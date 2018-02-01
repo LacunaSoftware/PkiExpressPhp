@@ -5,13 +5,13 @@ namespace Lacuna\PkiExpress;
 
 class CadesSignerInfo
 {
-    public $_messageDigest;
-    public $_signaturePolicy;
-    public $_certificate;
-    public $_signingTime;
-    public $_certifiedDateReference;
-    public $_timestamps = [];
-    public $_validationResults;
+    private $_messageDigest;
+    private $_signaturePolicy;
+    private $_certificate;
+    private $_signingTime;
+    private $_certifiedDateReference;
+    private $_timestamps = [];
+    private $_validationResults;
 
     public function __construct($model)
     {
