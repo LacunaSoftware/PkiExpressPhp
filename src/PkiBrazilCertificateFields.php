@@ -28,6 +28,7 @@ class PkiBrazilCertificateFields
         $this->_dateOfBirth = $model->dateOfBirth;
         $this->_companyName = $model->companyName;
         $this->_rgNumero = $model->rgNumero;
+        $this->_rgEmissor = $model->rgEmissor;
         $this->_rgEmissorUF = $model->rgEmissorUF;
         $this->_oabNumero = $model->oabNumero;
         $this->_oabUF = $model->oabUF;
