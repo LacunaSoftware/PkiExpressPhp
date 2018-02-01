@@ -51,9 +51,9 @@ class XmlSigner extends Signer
             $this->outputFilePath
         );
 
-        if (!empty($this->certThumb)) {
+        if (!empty($this->_certThumb)) {
             array_push($args, "-t");
-            array_push($args, $this->certThumb);
+            array_push($args, $this->_certThumb);
         }
 
         if (!empty($this->_signaturePolicy)) {

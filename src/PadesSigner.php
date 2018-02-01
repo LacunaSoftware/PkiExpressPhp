@@ -54,7 +54,7 @@ class PadesSigner extends Signer
             throw new \Exception("The PDF to be signed was not set");
         }
 
-        if (empty($this->certThumb)) {
+        if (empty($this->_certThumb)) {
             throw new \Exception("The certificate thumbprint was not set");
         }
 
@@ -66,9 +66,9 @@ class PadesSigner extends Signer
             $this->pdfToSignPath
         );
 
-        if (!empty($this->certThumb)) {
+        if (!empty($this->_certThumb)) {
             array_push($args, "-t");
-            array_push($args, $this->certThumb);
+            array_push($args, $this->_certThumb);
         }
 
         // Logic to overwrite original file or use the output file

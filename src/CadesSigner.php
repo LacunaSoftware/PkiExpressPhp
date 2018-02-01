@@ -43,7 +43,7 @@ class CadesSigner extends Signer
             throw new \Exception("The file to be signed was not set");
         }
 
-        if (empty($this->certThumb)) {
+        if (empty($this->_certThumb)) {
             throw new \Exception("The certificate thumbprint was not set");
         }
 
@@ -56,9 +56,9 @@ class CadesSigner extends Signer
             $this->outputFilePath
         );
 
-        if (!empty($this->certThumb)) {
+        if (!empty($this->_certThumb)) {
             array_push($args, "-t");
-            array_push($args, $this->certThumb);
+            array_push($args, $this->_certThumb);
         }
 
         if (!empty($this->dataFilePath)) {
