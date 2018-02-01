@@ -131,4 +131,9 @@ class DigestAlgorithm
                 return null;
         }
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

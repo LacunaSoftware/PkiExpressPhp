@@ -35,7 +35,7 @@ abstract class Signer extends PkiExpressOperator
                 $this->setCertificateThumbprint($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $name);
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
         }
     }

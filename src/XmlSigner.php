@@ -34,7 +34,7 @@ class XmlSigner extends Signer
             throw new \Exception("The XML to be signed was not set");
         }
 
-        if (empty($this->certThumb)) {
+        if (empty($this->_certThumb)) {
             throw new \Exception("The certificate thumbprint was not set");
         }
 
