@@ -8,7 +8,7 @@ class PadesSigner extends Signer
     private $pdfToSignPath;
     private $vrJsonPath;
 
-    public $overwriteOriginalFile;
+    private $_overwriteOriginalFile = false;
 
 
     public function __construct($config = null)
@@ -17,7 +17,6 @@ class PadesSigner extends Signer
             $config = new PkiExpressConfig();
         }
         parent::__construct($config);
-        $this->overwriteOriginalFile = false;
     }
 
     public function setPdfToSign($path)
@@ -55,7 +54,7 @@ class PadesSigner extends Signer
             throw new \Exception("The PDF to be signed was not set");
         }
 
-        if (empty($this->certThumb)) {
+        if (empty($this->_certThumb)) {
             throw new \Exception("The certificate thumbprint was not set");
         }
 
@@ -64,12 +63,16 @@ class PadesSigner extends Signer
         }
 
         $args = array(
-            $this->pdfToSignPath,
-            $this->certThumb
+            $this->pdfToSignPath
         );
 
+        if (!empty($this->_certThumb)) {
+            array_push($args, "-t");
+            array_push($args, $this->_certThumb);
+        }
+
         // Logic to overwrite original file or use the output file
-        if ($this->overwriteOriginalFile) {
+        if ($this->_overwriteOriginalFile) {
             array_push($args, "-ow");
         } else {
             array_push($args, $this->outputFilePath);
@@ -80,9 +83,53 @@ class PadesSigner extends Signer
             array_push($args, $this->vrJsonPath);
         }
 
-        $response = parent::invoke(parent::COMMAND_SIGN_PADES, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
+        // Invoke command
+        parent::invoke(parent::COMMAND_SIGN_PADES, $args);
+    }
+
+    public function getOverwriteOriginalFile()
+    {
+        return $this->_overwriteOriginalFile;
+    }
+
+    public function setOverwriteOriginalFile($value)
+    {
+        $this->_overwriteOriginalFile = $value;
+    }
+
+    public function __get($attr)
+    {
+        switch ($attr) {
+            case "trustLacunaTestRoot":
+                return $this->getTrustLacunaTestRoot();
+            case "offline":
+                return $this->getOffline();
+            case "overwriteOriginalFile":
+                return $this->getOverwriteOriginalFile();
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
+    }
+
+    public function __set($attr, $value)
+    {
+        switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
+            case "certThumb":
+                $this->setCertificateThumbprint($value);
+                break;
+            case "overwriteOriginalFile":
+                $this->setOverwriteOriginalFile($value);
+                break;
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
         }
     }
 }

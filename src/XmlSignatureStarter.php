@@ -6,8 +6,9 @@ namespace Lacuna\PkiExpress;
 class XmlSignatureStarter extends SignatureStarter
 {
     private $xmlToSignPath;
-    private $toSignElementId;
-    private $signaturePolicy;
+
+    private $_toSignElementId;
+    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -27,16 +28,6 @@ class XmlSignatureStarter extends SignatureStarter
         $this->xmlToSignPath = $path;
     }
 
-    public function setToSignElementId($elementId)
-    {
-        $this->toSignElementId = $elementId;
-    }
-
-    public function setSignaturePolicy($policy)
-    {
-        $this->signaturePolicy = $policy;
-    }
-
     public function start()
     {
         if (empty($this->xmlToSignPath)) {
@@ -47,7 +38,7 @@ class XmlSignatureStarter extends SignatureStarter
             throw new \Exception("The certificate was not set");
         }
 
-        if ($this->signaturePolicy == XmlSignaturePolicies::NFE && empty($this->toSignElementId)) {
+        if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && empty($this->_toSignElementId)) {
             throw new \Exception("The signature element was not set");
         }
 
@@ -60,28 +51,60 @@ class XmlSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
-        if (isset($this->signaturePolicy)) {
+        if (isset($this->_signaturePolicy)) {
 
             array_push($args, "-p");
-            array_push($args, $this->signaturePolicy);
+            array_push($args, $this->_signaturePolicy);
 
-            if ($this->signaturePolicy == XmlSignaturePolicies::NFE && isset($this->toSignElementId)) {
+            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
 
                 array_push($args, "-eid");
-                array_push($args, $this->toSignElementId);
+                array_push($args, $this->_toSignElementId);
             }
         }
 
+        // Invoke command
         $response = parent::invoke(parent::COMMAND_START_XML, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+
+        // Parse output
+        $parsedOutput = $this->parseOutput($response->output[0]);
 
         return (object)array(
-            "toSignHash" => $response->output[0],
-            "digestAlgorithm" => $response->output[1],
-            "digestAlgorithmOid" => $response->output[2],
+            "toSignHash" => $parsedOutput->toSignHash,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
+            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
+    }
+
+    public function setToSignElementId($elementId)
+    {
+        $this->_toSignElementId = $elementId;
+    }
+
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    public function __set($attr, $value)
+    {
+        switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
+            case "toSignElementId":
+                $this->setToSignElementId($value);
+                break;
+            case "signaturePolicy":
+                $this->setSignaturePolicy($value);
+                break;
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
     }
 }

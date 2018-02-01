@@ -12,7 +12,8 @@ abstract class PkiExpressOperator
     protected $config;
     protected $trustedRoots;
 
-    public $trustLacunaTestRoot;
+    protected $_offline = false;
+    protected $_trustLacunaTestRoot = false;
 
 
     /** @protected */
@@ -36,6 +37,12 @@ abstract class PkiExpressOperator
     /** @protected */
     const COMMAND_COMPLETE_SIG = "complete-sig";
 
+    /** @protected */
+    const COMMAND_OPEN_PADES = "open-pades";
+
+    /** @protected */
+    const COMMAND_EDIT_PDF = "edit-pdf";
+
 
     protected function __construct($config = null)
     {
@@ -46,7 +53,6 @@ abstract class PkiExpressOperator
         $this->trustedRoots = array();
         $this->tempFiles = array();
         $this->fileReferences = array();
-        $this->trustLacunaTestRoot = true;
     }
 
     protected function invoke($command, array $args = array())
@@ -82,9 +88,17 @@ abstract class PkiExpressOperator
         }
 
         // Add trust Lacuna test root if set
-        if ($this->trustLacunaTestRoot) {
+        if ($this->_trustLacunaTestRoot) {
             $cmdArgs[] = '-tt';
         }
+
+        // Add offline option if provided
+        if ($this->_offline) {
+            $cmdArgs[] = '--offline';
+        }
+
+        // Add base64 output option
+        $cmdArgs[] = '--base64';
 
         // Escape arguments
         $escapedArgs = array();
@@ -95,6 +109,10 @@ abstract class PkiExpressOperator
         // Perform the "dotnet" command
         $cmd = implode(' ', $escapedArgs);
         exec($cmd, $output, $return);
+        if ($return != 0) {
+            throw new \Exception(implode(PHP_EOL, $output));
+        }
+
         return (object)array(
             'return' => $return,
             'output' => $output
@@ -132,42 +150,38 @@ abstract class PkiExpressOperator
 
         } else {
 
-            if ($os == "linux") {
-
-                if (file_exists('/usr/local/share/pkie/pkie.dll')) {
-
-                    $home = '/usr/local/share/pkie';
-
-                } else {
-                    if (file_exists('/usr/share/pkie/pkie.dll')) {
-
-                        $home = '/usr/share/pkie';
-
-                    }
-                }
-
-            } else {
+            if ($os == "win") {
 
                 if (file_exists(getenv('ProgramW6432') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
                     $home = getenv('ProgramW6432') . '\\Lacuna Software\\PKI Express';
-                } else if (file_exists(getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
-                    $home = getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express';
-                } else if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
-                    $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express';
-                } else if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)\\pkie.exe')) {
-                    $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)';
+                } else {
+                    if (file_exists(getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
+                        $home = getenv('ProgramFiles(x86)') . '\\Lacuna Software\\PKI Express';
+                    } else {
+                        if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express\\pkie.exe')) {
+                            $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express';
+                        } else {
+                            if (file_exists(getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)\\pkie.exe')) {
+                                $home = getenv('LOCALAPPDATA') . '\\Lacuna Software\\PKI Express (x86)';
+                            }
+                        }
+                    }
                 }
 
+                if (empty($home)) {
+                    throw new \Exception("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
+                }
             }
-
-            if (empty($home)) {
-                throw new \Exception("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
-            }
-
         }
 
         if ($os == 'linux') {
-            return array('dotnet', $home . '/pkie.dll');
+
+            if ($home != null) {
+                return array('dotnet', $home . '/pkie.dll');
+            } else {
+                return array('pkie');
+            }
+
         } else {
             return array($home . '\\pkie.exe');
         }
@@ -188,6 +202,13 @@ abstract class PkiExpressOperator
             $transferFile .= dechex(rand(0, 255));
         }
         return $transferFile;
+    }
+
+    protected function parseOutput($dataBase64)
+    {
+        $content = base64_decode($dataBase64);
+        $objArray = json_decode($content);
+        return (object)$objArray;
     }
 
     public function __destruct()
@@ -217,5 +238,53 @@ abstract class PkiExpressOperator
         }
 
         array_push($this->trustedRoots, $path);
+    }
+
+    public function getOffline()
+    {
+        return $this->_offline;
+    }
+
+    public function setOffline($offline)
+    {
+        $this->_offline = $offline;
+    }
+
+    public function getTrustLacunaTestRoot()
+    {
+        return $this->_trustLacunaTestRoot;
+    }
+
+    public function setTrustLacunaTestRoot($value)
+    {
+        $this->_trustLacunaTestRoot = $value;
+    }
+
+    public function __get($attr)
+    {
+        switch ($attr) {
+            case "trustLacunaTestRoot":
+                return $this->getTrustLacunaTestRoot();
+            case "offline":
+                return $this->getOffline();
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
+    }
+
+    public function __set($attr, $value)
+    {
+        switch ($attr) {
+            case "trustLacunaTestRoot":
+                $this->setTrustLacunaTestRoot($value);
+                break;
+            case "offline":
+                $this->setOffline($value);
+                break;
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
     }
 }
