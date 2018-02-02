@@ -2,13 +2,18 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesSignatureStarter
+ * @package Lacuna\PkiExpress
+ *
+ * @property $_encapsulateContent bool
+ */
 class CadesSignatureStarter extends SignatureStarter
 {
     private $fileToSignPath;
     private $dataFilePath;
 
-    public $encapsulateContent;
+    private $_encapsulateContent = true;
 
 
     public function __construct($config = null)
@@ -17,7 +22,6 @@ class CadesSignatureStarter extends SignatureStarter
             $config = new PkiExpressConfig();
         }
         parent::__construct($config);
-        $this->encapsulateContent = true;
     }
 
     public function setFileToSign($path)
@@ -62,20 +66,52 @@ class CadesSignatureStarter extends SignatureStarter
             array_push($args, $this->dataFilePath);
         }
 
-        if (!$this->encapsulateContent) {
+        if (!$this->_encapsulateContent) {
             array_push($args, "-det");
         }
 
+        // Invoke command
         $response = parent::invoke(parent::COMMAND_START_CADES, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+
+        // Parse output
+        $parsedOutput = $this->parseOutput($response->output[0]);
 
         return (object)array(
-            "toSignHash" => $response->output[0],
-            "digestAlgorithm" => $response->output[1],
-            "digestAlgorithmOid" => $response->output[2],
+            "toSignHash" => $parsedOutput->toSignHash,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
+            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
+    }
+
+    public function getEncapsulateContent()
+    {
+        return $this->_encapsulateContent;
+    }
+
+    public function setEncapsulateContent($value)
+    {
+        $this->_encapsulateContent = $value;
+    }
+
+    public function __get($prop)
+    {
+        switch ($prop) {
+            case "encapsulateContent":
+                return $this->getEncapsulateContent();
+            default:
+                return parent::__get($prop);
+        }
+    }
+
+    public function __set($prop, $value)
+    {
+        switch ($prop) {
+            case "encapsulateContent":
+                $this->setEncapsulateContent($value);
+                break;
+            default:
+                parent::__set($prop, $value);
+        }
     }
 }

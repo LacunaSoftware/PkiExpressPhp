@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignatureStarter
+ * @package Lacuna\PkiExpress
+ */
 class PadesSignatureStarter extends SignatureStarter
 {
     private $pdfToSignPath;
@@ -70,15 +73,16 @@ class PadesSignatureStarter extends SignatureStarter
             array_push($args, $this->vrJsonPath);
         }
 
+        // Invoke command
         $response = parent::invoke(parent::COMMAND_START_PADES, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+
+        // Parse output
+        $parsedOutput = $this->parseOutput($response->output[0]);
 
         return (object)array(
-            "toSignHash" => $response->output[0],
-            "digestAlgorithm" => $response->output[1],
-            "digestAlgorithmOid" => $response->output[2],
+            "toSignHash" => $parsedOutput->toSignHash,
+            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
+            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
             "transferFile" => $transferFile
         );
     }

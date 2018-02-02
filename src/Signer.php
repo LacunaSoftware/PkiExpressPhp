@@ -2,11 +2,17 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class Signer
+ * @package Lacuna\PkiExpress
+ *
+ * @property-write $certThumb string
+ */
 abstract class Signer extends PkiExpressOperator
 {
     protected $outputFilePath;
-    protected $certThumb;
+
+    protected $_certThumb;
 
 
     public function __construct($config = null)
@@ -24,6 +30,17 @@ abstract class Signer extends PkiExpressOperator
 
     public function setCertificateThumbprint($certThumb)
     {
-        $this->certThumb = $certThumb;
+        $this->_certThumb = $certThumb;
+    }
+
+    public function __set($prop, $value)
+    {
+        switch ($prop) {
+            case "certThumb":
+                $this->setCertificateThumbprint($value);
+                break;
+            default:
+                parent::__set($prop, $value);
+        }
     }
 }

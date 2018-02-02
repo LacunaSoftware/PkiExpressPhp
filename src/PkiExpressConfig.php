@@ -2,12 +2,19 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiExpressConfig
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $pkiExpressHome string
+ * @property-read $tempFolder string
+ * @property-read $transferDataFolder string
+ */
 class PkiExpressConfig
 {
-    private $pkiExpressHome;
-    private $tempFolder;
-    private $transferDataFolder;
+    private $_pkiExpressHome;
+    private $_tempFolder;
+    private $_transferDataFolder;
 
 
     public function __construct($pkiExpressHome = null, $tempFolder = null, $transferDataFolder = null)
@@ -17,32 +24,47 @@ class PkiExpressConfig
         }
 
         if (isset($tempFolder) && file_exists($tempFolder)) {
-            $this->tempFolder = $tempFolder . DIRECTORY_SEPARATOR;
+            $this->_tempFolder = $tempFolder . DIRECTORY_SEPARATOR;
         } else {
-            $this->tempFolder = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+            $this->_tempFolder = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         }
 
         if (isset($transferDataFolder) && file_exists($transferDataFolder)) {
-            $this->transferDataFolder = $transferDataFolder . DIRECTORY_SEPARATOR;
+            $this->_transferDataFolder = $transferDataFolder . DIRECTORY_SEPARATOR;
         } else {
-            $this->transferDataFolder = $this->tempFolder;
+            $this->_transferDataFolder = $this->_tempFolder;
         }
 
-        $this->pkiExpressHome = $pkiExpressHome;
+        $this->_pkiExpressHome = $pkiExpressHome;
     }
 
     public function getPkiExpressHome()
     {
-        return $this->pkiExpressHome;
+        return $this->_pkiExpressHome;
     }
 
     public function getTempFolder()
     {
-        return $this->tempFolder;
+        return $this->_tempFolder;
     }
 
     public function getTransferDataFolder()
     {
-        return $this->transferDataFolder;
+        return $this->_transferDataFolder;
+    }
+
+    public function __get($attr)
+    {
+        switch ($attr) {
+            case "pkiExpressHome":
+                return $this->getPkiExpressHome();
+            case "tempFolder":
+                return $this->getTempFolder();
+            case "transferDataFolder":
+                return $this->getTransferDataFolder();
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
     }
 }

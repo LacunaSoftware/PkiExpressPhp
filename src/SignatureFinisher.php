@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class SignatureFinisher
+ * @package Lacuna\PkiExpress
+ */
 class SignatureFinisher extends PkiExpressOperator
 {
     private $fileToSignPath;
@@ -91,9 +94,7 @@ class SignatureFinisher extends PkiExpressOperator
             array_push($args, $this->dataFilePath);
         }
 
-        $response = parent::invoke(parent::COMMAND_COMPLETE_SIG, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
-        }
+        // Invoke command
+        parent::invoke(parent::COMMAND_COMPLETE_SIG, $args);
     }
 }

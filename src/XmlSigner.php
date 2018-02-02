@@ -2,12 +2,19 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class XmlSigner
+ * @package Lacuna\PkiExpress
+ *
+ * @property-write $toSignElementId string
+ * @property-write $signaturePolicy string
+ */
 class XmlSigner extends Signer
 {
     private $xmlToSignPath;
-    private $toSignElementId;
-    private $signaturePolicy;
+
+    private $_toSignElementId;
+    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -27,23 +34,13 @@ class XmlSigner extends Signer
         $this->xmlToSignPath = $path;
     }
 
-    public function setToSignElementId($elementId)
-    {
-        $this->toSignElementId = $elementId;
-    }
-
-    public function setSignaturePolicy($policy)
-    {
-        $this->signaturePolicy = $policy;
-    }
-
     public function sign()
     {
         if (empty($this->xmlToSignPath)) {
             throw new \Exception("The XML to be signed was not set");
         }
 
-        if (empty($this->certThumb)) {
+        if (empty($this->_certThumb)) {
             throw new \Exception("The certificate thumbprint was not set");
         }
 
@@ -51,29 +48,56 @@ class XmlSigner extends Signer
             throw new \Exception("The output destination was not set");
         }
 
-        if ($this->signaturePolicy == XmlSignaturePolicies::NFE && empty($this->toSignElementId)) {
+        if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && empty($this->_toSignElementId)) {
             throw new \Exception("The signature element id to be signed was not set");
         }
 
         $args = array(
             $this->xmlToSignPath,
-            $this->certThumb,
             $this->outputFilePath
         );
-        if (!empty($this->signaturePolicy)) {
+
+        if (!empty($this->_certThumb)) {
+            array_push($args, "-t");
+            array_push($args, $this->_certThumb);
+        }
+
+        if (!empty($this->_signaturePolicy)) {
 
             array_push($args, "-p");
-            array_push($args, $this->signaturePolicy);
+            array_push($args, $this->_signaturePolicy);
 
-            if ($this->signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->toSignElementId)) {
+            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
                 array_push($args, "-eid");
-                array_push($args, $this->toSignElementId);
+                array_push($args, $this->_toSignElementId);
             }
         }
 
-        $response = parent::invoke(parent::COMMAND_SIGN_XML, $args);
-        if ($response->return != 0) {
-            throw new \Exception(implode(PHP_EOL, $response->output));
+        // Invoke command
+        parent::invoke(parent::COMMAND_SIGN_XML, $args);
+    }
+
+    public function setToSignElementId($elementId)
+    {
+        $this->_toSignElementId = $elementId;
+    }
+
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    public function __set($prop, $value)
+    {
+        switch ($prop) {
+            case "toSignElementId":
+                $this->setToSignElementId($value);
+                break;
+            case "signaturePolicy":
+                $this->setSignaturePolicy($value);
+                break;
+            default:
+                parent::__set($prop, $value);
         }
     }
 }
