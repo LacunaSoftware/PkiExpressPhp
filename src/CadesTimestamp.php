@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesTimestamp
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $genTime date
+ * @property-read $serialNumber string
+ * @property-read $messageImprint mixed
+ */
 class CadesTimestamp extends CadesSignature
 {
     private $_genTime;

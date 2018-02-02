@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class XmlSignatureStarter
+ * @package Lacuna\PkiExpress
+ *
+ * @property-write $toSignElementId string
+ * @property-write $signaturePolicy string
+ */
 class XmlSignatureStarter extends SignatureStarter
 {
     private $xmlToSignPath;

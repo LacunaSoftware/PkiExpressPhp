@@ -2,11 +2,18 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class ValidationItem
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $innerValidationResults ValidationResults
+ * @property-read $type string
+ * @property-read $message string
+ * @property-read $detail string
+ */
 class ValidationItem
 {
-    private $innerValidationResults;
-
+    private $_innerValidationResults;
     private $_type;
     private $_message;
     private $_detail;
@@ -17,7 +24,7 @@ class ValidationItem
         $this->_message = $model->message;
         $this->_detail = $model->detail;
         if ($model->innerValidationResults !== null) {
-            $this->innerValidationResults = new ValidationResults($model->innerValidationResults);
+            $this->_innerValidationResults = new ValidationResults($model->innerValidationResults);
         }
     }
 
@@ -48,9 +55,9 @@ class ValidationItem
         if (!empty($this->_detail)) {
             $text .= " ({$this->_detail})";
         }
-        if ($this->innerValidationResults !== null) {
+        if ($this->_innerValidationResults !== null) {
             $text .= "\n";
-            $text .= $this->innerValidationResults->toString($indentationLevel + 1);
+            $text .= $this->_innerValidationResults->toString($indentationLevel + 1);
         }
         return $text;
     }
@@ -58,6 +65,8 @@ class ValidationItem
     public function __get($name)
     {
         switch ($name) {
+            case "innerValidationResults":
+                return $this->_innerValidationResults;
             case "type":
                 return $this->_type;
             case "message":

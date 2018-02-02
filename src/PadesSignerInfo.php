@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignerInfo
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $isDocumentTimestamp bool
+ * @property-read $signatureFieldName mixed
+ */
 class PadesSignerInfo extends CadesSignerInfo
 {
     public $_isDocumentTimestamp;

@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesSignatureStarter
+ * @package Lacuna\PkiExpress
+ *
+ * @property $_encapsulateContent bool
+ */
 class CadesSignatureStarter extends SignatureStarter
 {
     private $fileToSignPath;

@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSigner
+ * @package Lacuna\PkiExpress
+ *
+ * @property $overwriteOriginalFile bool
+ */
 class PadesSigner extends Signer
 {
     private $pdfToSignPath;

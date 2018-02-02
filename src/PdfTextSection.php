@@ -2,7 +2,15 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfTextSection
+ * @package Lacuna\PkiExpress
+ *
+ * @property $style string
+ * @property $text string
+ * @property $color Color
+ * @property $fontSize float|null
+ */
 class PdfTextSection
 {
     public $style;

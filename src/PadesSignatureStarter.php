@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignatureStarter
+ * @package Lacuna\PkiExpress
+ */
 class PadesSignatureStarter extends SignatureStarter
 {
     private $pdfToSignPath;

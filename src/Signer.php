@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class Signer
+ * @package Lacuna\PkiExpress
+ *
+ * @property-write $certThumb string
+ */
 abstract class Signer extends PkiExpressOperator
 {
     protected $outputFilePath;

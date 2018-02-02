@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class DigestAlgorithmAndValue
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $algorithm DigestAlgorithm
+ * @property-read $value binary
+ * @property-read $hexValue string
+ */
 class DigestAlgorithmAndValue
 {
     private $_algorithm;

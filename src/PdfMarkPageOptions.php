@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkPageOptions
+ * @package Lacuna\PkiExpress
+ */
 class PdfMarkPageOptions
 {
     const ALL_PAGES = 'AllPages';

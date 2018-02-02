@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarker
+ * @package Lacuna\PkiExpress
+ *
+ * @property $overwriteOriginalFile bool
+ */
 class PdfMarker extends PkiExpressOperator
 {
 

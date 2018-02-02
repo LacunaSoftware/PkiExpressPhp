@@ -2,7 +2,22 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PKCertificate
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $subjectName string
+ * @property-read $emailAddress string
+ * @property-read $issuerName string
+ * @property-read $serialNumber string
+ * @property-read $validityStart date
+ * @property-read $validityEnd date
+ * @property-read $pkiBrazil PkiBrazilCertificateFields
+ * @property-read $pkiItaly PkiItalyCertificateFields
+ * @property-read $issuer PKCertificate
+ * @property-read $binaryThumbprintSHA256 binary
+ * @property-read $thumbprint string
+ */
 class PKCertificate
 {
     public $_subjectName;

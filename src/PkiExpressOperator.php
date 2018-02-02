@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiExpressOperator
+ * @package Lacuna\PkiExpress
+ *
+ * @property $offline bool
+ * @property $trustLacunaTestRoot bool
+ */
 abstract class PkiExpressOperator
 {
     private $tempFiles;
@@ -273,9 +279,9 @@ abstract class PkiExpressOperator
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "trustLacunaTestRoot":
                 $this->setTrustLacunaTestRoot($value);
                 break;
@@ -283,8 +289,7 @@ abstract class PkiExpressOperator
                 $this->setOffline($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);
         }
     }
 }

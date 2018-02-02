@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignatureExplorer
+ * @package Lacuna\PkiExpress
+ *
+ * @property $validate bool
+ */
 class PadesSignatureExplorer extends PkiExpressOperator
 {
     private $signatureFilePath;

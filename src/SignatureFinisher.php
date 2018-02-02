@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class SignatureFinisher
+ * @package Lacuna\PkiExpress
+ */
 class SignatureFinisher extends PkiExpressOperator
 {
     private $fileToSignPath;

@@ -3,7 +3,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiItalyCertificateFields
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $certificateType string
+ * @property-read $codiceFiscale string
+ * @property-read $idCarta string
+ */
 class PkiItalyCertificateFields
 {
     private $_certificateType;

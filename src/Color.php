@@ -2,7 +2,15 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class Color
+ * @package Lacuna\PkiExpress
+ *
+ * @property $alpha
+ * @property $blue
+ * @property $green
+ * @property $red
+ */
 class Color
 {
     public $alpha;

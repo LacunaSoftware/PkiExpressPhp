@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class ValidationResults
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $errors ValidationItem[]
+ * @property-read $warnings ValidationItem[]
+ * @property-read $passedChecks ValidationItem[]
+ */
 class ValidationResults
 {
     private $_errors;

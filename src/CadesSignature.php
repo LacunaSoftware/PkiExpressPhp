@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesSignature
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $encapsulatedContentType mixed
+ * @property-read $hasEncapsulatedContent bool
+ * @property-read $signers CadesSignerInfo[]
+ */
 class CadesSignature
 {
     private $_encapsulatedContentType;

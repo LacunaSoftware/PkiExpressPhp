@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class ResourceContentOrReference
+ * @package Lacuna\PkiExpress
+ *
+ * @property $url string
+ * @property $mimeType string
+ * @property $content binary
+ */
 class ResourceContentOrReference
 {
     public $url;

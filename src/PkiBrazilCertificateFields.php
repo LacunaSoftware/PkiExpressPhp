@@ -2,7 +2,24 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiBrazilCertificateFields
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $certificateType string
+ * @property-read $cpf string
+ * @property-read $cpfFormatted string
+ * @property-read $cnpj string
+ * @property-read $cnpjFormatted string
+ * @property-read $responsavel string
+ * @property-read $dateOfBirth date
+ * @property-read $companyName string
+ * @property-read $rgNumero string
+ * @property-read $rgEmissor string
+ * @property-read $rgEmissorUF string
+ * @property-read $oabNumero string
+ * @property-read $oabUF string
+ */
 class PkiBrazilCertificateFields
 {
     public $_certificateType;

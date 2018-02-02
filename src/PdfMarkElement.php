@@ -2,7 +2,15 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkElement
+ * @package Lacuna\PkiExpress
+ *
+ * @property $elementType string
+ * @property $relativeContainer mixed|null
+ * @property $rotation int
+ * @property $opacity int
+ */
 class PdfMarkElement
 {
     public $elementType;

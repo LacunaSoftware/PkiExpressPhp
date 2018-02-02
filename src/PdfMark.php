@@ -2,7 +2,18 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMark
+ * @package Lacuna\PkiExpress
+ *
+ * @property $container mixed
+ * @property $borderWidth float
+ * @property $borderColor Color|null
+ * @property $backgroundColor Color|null
+ * @property $elements array
+ * @property $pageOption string
+ * @property $pageOptionNumber int
+ */
 class PdfMark
 {
     public $container;

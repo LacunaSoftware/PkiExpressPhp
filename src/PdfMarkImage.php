@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkImage
+ * @package Lacuna\PkiExpress
+ *
+ * @property $resource ResourceContentOrReference
+ * @property $opacity float|null
+ */
 class PdfMarkImage
 {
     public $resource;
