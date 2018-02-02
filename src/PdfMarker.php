@@ -71,6 +71,9 @@ class PdfMarker extends PkiExpressOperator
             array_push($args, $this->outputFilePath);
         }
 
+        // This operation can only be used on versions greater than 1.3 of the PKI Express.
+        $this->versionManager->requireVersion("1.3");
+
         // Invoke command
         parent::invoke(parent::COMMAND_EDIT_PDF, $args);
     }

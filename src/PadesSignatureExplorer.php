@@ -45,6 +45,9 @@ class PadesSignatureExplorer extends PkiExpressOperator
             array_push($args, "--validate");
         }
 
+        // This operation can only be used on versions greater than 1.3 of the PKI Express.
+        $this->versionManager->requireVersion("1.3");
+
         // Invoke command
         $response = parent::invoke(parent::COMMAND_OPEN_PADES, $args);
 
