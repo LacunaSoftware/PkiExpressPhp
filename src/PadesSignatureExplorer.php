@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignatureExplorer
+ * @package Lacuna\PkiExpress
+ *
+ * @property $validate bool
+ */
 class PadesSignatureExplorer extends PkiExpressOperator
 {
     private $signatureFilePath;
@@ -40,6 +45,9 @@ class PadesSignatureExplorer extends PkiExpressOperator
             array_push($args, "--validate");
         }
 
+        // This operation can only be used on versions greater than 1.3 of the PKI Express.
+        $this->versionManager->requireVersion("1.3");
+
         // Invoke command
         $response = parent::invoke(parent::COMMAND_OPEN_PADES, $args);
 
@@ -62,36 +70,24 @@ class PadesSignatureExplorer extends PkiExpressOperator
         $this->_validate = $validate;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                return $this->getTrustLacunaTestRoot();
-            case "offline":
-                return $this->getOffline();
+        switch ($prop) {
             case "validate":
                 return $this->getValidate();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                $this->setTrustLacunaTestRoot($value);
-                break;
-            case "offline":
-                $this->setOffline($value);
-                break;
+        switch ($prop) {
             case "validate":
                 $this->setValidate($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

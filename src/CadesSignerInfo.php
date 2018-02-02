@@ -2,7 +2,18 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesSignerInfo
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $messageDigest DigestAlgorithmAndValue
+ * @property-read $signaturePolicy SignaturePolicyIdentifier
+ * @property-read $certificate PKCertificate
+ * @property-read $signingTime date
+ * @property-read $certifiedDateReference mixed
+ * @property-read $timestamps CadesTimestamp[]
+ * @property-read $validationResults ValidationResults
+ */
 class CadesSignerInfo
 {
     private $_messageDigest;

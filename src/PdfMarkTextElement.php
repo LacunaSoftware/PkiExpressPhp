@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkTextElement
+ * @package Lacuna\PkiExpress
+ *
+ * @property $textSections string[]
+ * @property $align string
+ */
 class PdfMarkTextElement extends PdfMarkElement
 {
     public $textSections;

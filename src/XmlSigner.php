@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class XmlSigner
+ * @package Lacuna\PkiExpress
+ *
+ * @property-write $toSignElementId string
+ * @property-write $signaturePolicy string
+ */
 class XmlSigner extends Signer
 {
     private $xmlToSignPath;
@@ -81,18 +87,9 @@ class XmlSigner extends Signer
         $this->_signaturePolicy = $policy;
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                $this->setTrustLacunaTestRoot($value);
-                break;
-            case "offline":
-                $this->setOffline($value);
-                break;
-            case "certThumb":
-                $this->setCertificateThumbprint($value);
-                break;
+        switch ($prop) {
             case "toSignElementId":
                 $this->setToSignElementId($value);
                 break;
@@ -100,8 +97,7 @@ class XmlSigner extends Signer
                 $this->setSignaturePolicy($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

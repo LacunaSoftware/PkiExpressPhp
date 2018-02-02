@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkQRCodeElement
+ * @package Lacuna\PkiExpress
+ *
+ * @property $qrCodeData mixed
+ * @property $drawQuietZones bool
+ */
 class PdfMarkQRCodeElement extends PdfMarkElement
 {
     public $qrCodeData;

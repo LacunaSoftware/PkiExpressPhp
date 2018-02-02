@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSignature
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $signers PadesSignerInfo[]
+ */
 class PadesSignature
 {
     private $_signers = [];

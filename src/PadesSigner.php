@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PadesSigner
+ * @package Lacuna\PkiExpress
+ *
+ * @property $overwriteOriginalFile bool
+ */
 class PadesSigner extends Signer
 {
     private $pdfToSignPath;
@@ -97,39 +102,24 @@ class PadesSigner extends Signer
         $this->_overwriteOriginalFile = $value;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                return $this->getTrustLacunaTestRoot();
-            case "offline":
-                return $this->getOffline();
+        switch ($prop) {
             case "overwriteOriginalFile":
                 return $this->getOverwriteOriginalFile();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                $this->setTrustLacunaTestRoot($value);
-                break;
-            case "offline":
-                $this->setOffline($value);
-                break;
-            case "certThumb":
-                $this->setCertificateThumbprint($value);
-                break;
+        switch ($prop) {
             case "overwriteOriginalFile":
                 $this->setOverwriteOriginalFile($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

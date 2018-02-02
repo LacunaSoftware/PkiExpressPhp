@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class CadesSigner
+ * @package Lacuna\PkiExpress
+ *
+ * @property $encapsulateContent bool
+ */
 class CadesSigner extends Signer
 {
     private $fileToSignPath;
@@ -84,29 +89,24 @@ class CadesSigner extends Signer
         $this->_encapsulateContent = $value;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "encapsulateContent":
                 return $this->getEncapsulateContent();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "encapsulateContent":
                 $this->setEncapsulateContent($value);
                 break;
-            case "certThumb":
-                $this->setCertificateThumbprint($value);
-                break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarker
+ * @package Lacuna\PkiExpress
+ *
+ * @property $overwriteOriginalFile bool
+ */
 class PdfMarker extends PkiExpressOperator
 {
 
@@ -66,6 +71,9 @@ class PdfMarker extends PkiExpressOperator
             array_push($args, $this->outputFilePath);
         }
 
+        // This operation can only be used on versions greater than 1.3 of the PKI Express.
+        $this->versionManager->requireVersion("1.3");
+
         // Invoke command
         parent::invoke(parent::COMMAND_EDIT_PDF, $args);
     }
@@ -80,26 +88,24 @@ class PdfMarker extends PkiExpressOperator
         $this->_overwriteOriginalFile = $value;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "overwriteOriginalFile":
                 return $this->getOverwriteOriginalFile();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "overwriteOriginalFile":
                 $this->setOverwriteOriginalFile($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

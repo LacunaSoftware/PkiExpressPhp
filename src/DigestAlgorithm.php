@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class DigestAlgorithm
+ * @package Lacuna\PkiExpress
+ *
+ * @property $id string
+ * @property $name string
+ * @property $phpId string
+ */
 class DigestAlgorithm
 {
     const MD5 = 'MD5';

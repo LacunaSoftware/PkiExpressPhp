@@ -2,7 +2,13 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiExpressOperator
+ * @package Lacuna\PkiExpress
+ *
+ * @property $offline bool
+ * @property $trustLacunaTestRoot bool
+ */
 abstract class PkiExpressOperator
 {
     private $tempFiles;
@@ -10,6 +16,8 @@ abstract class PkiExpressOperator
 
     /** @var PkiExpressConfig */
     protected $config;
+    /** @var VersionManager */
+    protected $versionManager;
     protected $trustedRoots;
 
     protected $_offline = false;
@@ -50,6 +58,7 @@ abstract class PkiExpressOperator
             $config = new PkiExpressConfig();
         }
         $this->config = $config;
+        $this->versionManager = new VersionManager();
         $this->trustedRoots = array();
         $this->tempFiles = array();
         $this->fileReferences = array();
@@ -92,13 +101,21 @@ abstract class PkiExpressOperator
             $cmdArgs[] = '-tt';
         }
 
-        // Add offline option if provided
+        // Add offline option if provided.
         if ($this->_offline) {
             $cmdArgs[] = '--offline';
+            // This option can only be used on versions greater than 1.2 of the PKI Express.
+            $this->versionManager->requireVersion("1.2");
         }
 
-        // Add base64 output option
+        // Add base64 output option.
         $cmdArgs[] = '--base64';
+
+        // Verify the necessity of using the --min-version flag.
+        if ($this->versionManager->requireMinVersionFlag()) {
+            $cmdArgs[] = '--min-version';
+            $cmdArgs[] = $this->versionManager->minVersion;
+        }
 
         // Escape arguments
         $escapedArgs = array();
@@ -110,7 +127,11 @@ abstract class PkiExpressOperator
         $cmd = implode(' ', $escapedArgs);
         exec($cmd, $output, $return);
         if ($return != 0) {
-            throw new \Exception(implode(PHP_EOL, $output));
+            $implodedOutput = implode(PHP_EOL, $output);
+            if ($return == 1 && version_compare($this->versionManager->minVersion, '1.0') > 0) {
+                throw new \Exception($implodedOutput . PHP_EOL . "TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
+            }
+            throw new \Exception($implodedOutput);
         }
 
         return (object)array(
@@ -273,9 +294,9 @@ abstract class PkiExpressOperator
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "trustLacunaTestRoot":
                 $this->setTrustLacunaTestRoot($value);
                 break;
@@ -283,8 +304,7 @@ abstract class PkiExpressOperator
                 $this->setOffline($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);
         }
     }
 }

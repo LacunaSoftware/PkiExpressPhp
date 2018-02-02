@@ -2,7 +2,12 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfMarkImageElement
+ * @package Lacuna\PkiExpress
+ *
+ * @property $image
+ */
 class PdfMarkImageElement extends PdfMarkElement
 {
     public $image;

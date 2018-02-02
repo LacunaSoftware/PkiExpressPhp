@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class SignatureStarter
+ * @package Lacuna\PkiExpress
+ */
 class SignatureStarter extends PkiExpressOperator
 {
     protected $certificatePath;

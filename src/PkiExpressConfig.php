@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PkiExpressConfig
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $pkiExpressHome string
+ * @property-read $tempFolder string
+ * @property-read $transferDataFolder string
+ */
 class PkiExpressConfig
 {
     private $_pkiExpressHome;

@@ -2,7 +2,14 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class SignaturePolicyIdentifier
+ * @package Lacuna\PkiExpress
+ *
+ * @property-read $digest DigestAlgorithmAndValue
+ * @property-read $oid string
+ * @property-read $uri string
+ */
 class SignaturePolicyIdentifier
 {
     private $_digest;

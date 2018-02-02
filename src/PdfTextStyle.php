@@ -2,7 +2,10 @@
 
 namespace Lacuna\PkiExpress;
 
-
+/**
+ * Class PdfTextStyle
+ * @package Lacuna\PkiExpress
+ */
 class PdfTextStyle
 {
     const NORMAL = "Normal";
