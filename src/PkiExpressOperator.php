@@ -127,10 +127,11 @@ abstract class PkiExpressOperator
         $cmd = implode(' ', $escapedArgs);
         exec($cmd, $output, $return);
         if ($return != 0) {
+            $implodedOutput = implode(PHP_EOL, $output);
             if ($return == 1 && version_compare($this->versionManager->minVersion, '1.0') > 0) {
-                throw new \Exception(implode(PHP_EOL, $output) . "TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
+                throw new \Exception($implodedOutput . PHP_EOL . "TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
             }
-            throw new \Exception(implode(PHP_EOL, $output));
+            throw new \Exception($implodedOutput);
         }
 
         return (object)array(
