@@ -26,30 +26,15 @@ class PadesSignerInfo extends CadesSignerInfo
         return $this->_signatureFieldName;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
-            case "messageDigest":
-                return $this->getMessageDigest();
-            case "signaturePolicy":
-                return $this->getSignaturePolicy();
-            case "certificate":
-                return $this->getCertificate();
-            case "signingTime":
-                return $this->getSigningTime();
-            case "certifiedDateReference":
-                return $this->getCertifiedDateReference();
-            case "timestamps":
-                return $this->getTimestamps();
-            case "validationResults":
-                return $this->getValidationResults();
+        switch ($prop) {
             case "isDocumentTimestamp":
                 return $this->getIsDocumentTimestamp();
             case "signatureFieldName":
                 return $this->getSignatureFieldName();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 }

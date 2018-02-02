@@ -87,15 +87,9 @@ class XmlSignatureStarter extends SignatureStarter
         $this->_signaturePolicy = $policy;
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
-            case "trustLacunaTestRoot":
-                $this->setTrustLacunaTestRoot($value);
-                break;
-            case "offline":
-                $this->setOffline($value);
-                break;
+        switch ($prop) {
             case "toSignElementId":
                 $this->setToSignElementId($value);
                 break;
@@ -103,8 +97,7 @@ class XmlSignatureStarter extends SignatureStarter
                 $this->setSignaturePolicy($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

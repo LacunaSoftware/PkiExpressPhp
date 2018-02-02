@@ -32,15 +32,9 @@ class CadesTimestamp extends CadesSignature
         return $this->_messageImprint;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
-            case "encapsulatedContentType":
-                return $this->getEncapsulatedContentType();
-            case "hasEncapsulatedContent":
-                return $this->getHasEncapsulatedContent();
-            case "signers":
-                return $this->getSigners();
+        switch ($prop) {
             case "genTime":
                 return $this->getGenTime();
             case "serialNumber":
@@ -48,8 +42,7 @@ class CadesTimestamp extends CadesSignature
             case "messageImprint":
                 return $this->getMessageImprint();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 }

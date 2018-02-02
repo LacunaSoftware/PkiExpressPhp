@@ -33,9 +33,9 @@ class CadesSignature
         return $this->_signers;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "encapsulatedContentType":
                 return $this->getEncapsulatedContentType();
             case "hasEncapsulatedContent":
@@ -43,7 +43,7 @@ class CadesSignature
             case "signers":
                 return $this->getSigners();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $name);
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);
                 return null;
         }
     }

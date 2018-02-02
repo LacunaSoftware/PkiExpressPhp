@@ -28,15 +28,14 @@ abstract class Signer extends PkiExpressOperator
         $this->_certThumb = $certThumb;
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "certThumb":
                 $this->setCertificateThumbprint($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }

@@ -80,26 +80,24 @@ class PdfMarker extends PkiExpressOperator
         $this->_overwriteOriginalFile = $value;
     }
 
-    public function __get($attr)
+    public function __get($prop)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "overwriteOriginalFile":
                 return $this->getOverwriteOriginalFile();
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                return parent::__get($prop);
         }
     }
 
-    public function __set($attr, $value)
+    public function __set($prop, $value)
     {
-        switch ($attr) {
+        switch ($prop) {
             case "overwriteOriginalFile":
                 $this->setOverwriteOriginalFile($value);
                 break;
             default:
-                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
-                return null;
+                parent::__set($prop, $value);
         }
     }
 }
