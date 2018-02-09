@@ -75,8 +75,8 @@ class CadesSigner extends Signer
             array_push($args, "-det");
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_CADES, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_SIGN_CADES, $args);
     }
 
     public function getEncapsulateContent()

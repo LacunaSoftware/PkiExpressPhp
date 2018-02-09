@@ -94,7 +94,7 @@ class SignatureFinisher extends PkiExpressOperator
             array_push($args, $this->dataFilePath);
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_COMPLETE_SIG, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_COMPLETE_SIG, $args);
     }
 }

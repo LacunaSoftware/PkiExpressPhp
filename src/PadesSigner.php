@@ -88,8 +88,8 @@ class PadesSigner extends Signer
             array_push($args, $this->vrJsonPath);
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_PADES, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_SIGN_PADES, $args);
     }
 
     public function getOverwriteOriginalFile()

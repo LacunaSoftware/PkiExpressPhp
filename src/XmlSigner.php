@@ -73,8 +73,8 @@ class XmlSigner extends Signer
             }
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_XML, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_SIGN_XML, $args);
     }
 
     public function setToSignElementId($elementId)
