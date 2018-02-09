@@ -35,4 +35,13 @@ class SignatureStarter extends PkiExpressOperator
         file_put_contents($certTempFilePath, $certContent);
         $this->certificatePath = $certTempFilePath;
     }
+
+    protected function getResult($response, $transferFile) {
+        return (object)array(
+            "toSignHash" => $response[0],
+            "digestAlgorithm" => $response[1],
+            "digestAlgorithmOid" => $response[2],
+            "transferFile" => $transferFile
+        );
+    }
 }
