@@ -64,7 +64,13 @@ abstract class PkiExpressOperator
         $this->fileReferences = array();
     }
 
-    protected function invoke($command, array $args = array())
+    protected function invokePlain($command, array $args = array())
+    {
+        $response = $this->invoke($command, $args, true);
+        return $response->output;
+    }
+
+    protected function invoke($command, array $args = array(), $plainOutput = false)
     {
         // Add PKI Express invocation arguments
         $cmdArgs = array();
@@ -109,7 +115,10 @@ abstract class PkiExpressOperator
         }
 
         // Add base64 output option.
-        $cmdArgs[] = '--base64';
+        if (!$plainOutput) {
+            $cmdArgs[] = '--base64';
+            $this->versionManager->requireVersion("1.3");
+        }
 
         // Verify the necessity of using the --min-version flag.
         if ($this->versionManager->requireMinVersionFlag()) {
@@ -129,7 +138,7 @@ abstract class PkiExpressOperator
         if ($return != 0) {
             $implodedOutput = implode(PHP_EOL, $output);
             if ($return == 1 && version_compare($this->versionManager->minVersion, '1.0') > 0) {
-                throw new \Exception($implodedOutput . PHP_EOL . "TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
+                throw new \Exception($implodedOutput . PHP_EOL . ">>>>> TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
             }
             throw new \Exception($implodedOutput);
         }

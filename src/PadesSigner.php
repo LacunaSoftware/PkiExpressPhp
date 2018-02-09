@@ -74,6 +74,7 @@ class PadesSigner extends Signer
         if (!empty($this->_certThumb)) {
             array_push($args, "-t");
             array_push($args, $this->_certThumb);
+            $this->versionManager->requireVersion("1.3");
         }
 
         // Logic to overwrite original file or use the output file
@@ -88,8 +89,8 @@ class PadesSigner extends Signer
             array_push($args, $this->vrJsonPath);
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_PADES, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_SIGN_PADES, $args);
     }
 
     public function getOverwriteOriginalFile()

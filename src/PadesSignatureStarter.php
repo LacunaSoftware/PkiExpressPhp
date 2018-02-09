@@ -73,17 +73,10 @@ class PadesSignatureStarter extends SignatureStarter
             array_push($args, $this->vrJsonPath);
         }
 
-        // Invoke command
-        $response = parent::invoke(parent::COMMAND_START_PADES, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        $response = parent::invokePlain(parent::COMMAND_START_PADES, $args);
 
         // Parse output
-        $parsedOutput = $this->parseOutput($response->output[0]);
-
-        return (object)array(
-            "toSignHash" => $parsedOutput->toSignHash,
-            "digestAlgorithm" => $parsedOutput->digestAlgorithmName,
-            "digestAlgorithmOid" => $parsedOutput->digestAlgorithmOid,
-            "transferFile" => $transferFile
-        );
+        return $this->getResult($response, $transferFile);
     }
 }

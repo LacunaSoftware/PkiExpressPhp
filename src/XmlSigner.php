@@ -60,6 +60,7 @@ class XmlSigner extends Signer
         if (!empty($this->_certThumb)) {
             array_push($args, "-t");
             array_push($args, $this->_certThumb);
+            $this->versionManager->requireVersion("1.3");
         }
 
         if (!empty($this->_signaturePolicy)) {
@@ -73,8 +74,8 @@ class XmlSigner extends Signer
             }
         }
 
-        // Invoke command
-        parent::invoke(parent::COMMAND_SIGN_XML, $args);
+        // Invoke command with plain text output (to support PKI Express < 1.3)
+        parent::invokePlain(parent::COMMAND_SIGN_XML, $args);
     }
 
     public function setToSignElementId($elementId)
