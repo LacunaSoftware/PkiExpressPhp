@@ -74,6 +74,7 @@ class PadesSigner extends Signer
         if (!empty($this->_certThumb)) {
             array_push($args, "-t");
             array_push($args, $this->_certThumb);
+            $this->versionManager->requireVersion("1.3");
         }
 
         // Logic to overwrite original file or use the output file

@@ -60,6 +60,7 @@ class XmlSigner extends Signer
         if (!empty($this->_certThumb)) {
             array_push($args, "-t");
             array_push($args, $this->_certThumb);
+            $this->versionManager->requireVersion("1.3");
         }
 
         if (!empty($this->_signaturePolicy)) {
