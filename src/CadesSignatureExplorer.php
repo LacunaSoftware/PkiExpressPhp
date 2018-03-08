@@ -34,7 +34,7 @@ class CadesSignatureExplorer extends SignatureExplorer
 
     public function setExtractContentPath($path)
     {
-        $this->dataFilePath = $path;
+        $this->extractContentPath = $path;
     }
 
     public function open()
