@@ -18,7 +18,7 @@ class SignaturePolicyIdentifier
 
     public function __construct($model)
     {
-        $this->_digest = new DigestAlgorithmAndValue($model);
+        $this->_digest = new DigestAlgorithmAndValue($model->digest);
         $this->_oid = $model->oid;
         $this->_uri = $model->uri;
     }

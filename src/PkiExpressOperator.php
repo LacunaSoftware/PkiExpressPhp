@@ -49,6 +49,9 @@ abstract class PkiExpressOperator
     const COMMAND_OPEN_PADES = "open-pades";
 
     /** @protected */
+    const COMMAND_OPEN_CADES = "open-cades";
+
+    /** @protected */
     const COMMAND_EDIT_PDF = "edit-pdf";
 
 
