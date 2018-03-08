@@ -18,7 +18,7 @@ class CadesTimestamp extends CadesSignature
 
     public function __construct($model)
     {
-        parent::__construct($model->encapsulatedContentType, $model->hasEncapsulatedContent, $model->signers);
+        parent::__construct($model);
         $this->_genTime = $model->genTime;
         $this->_serialNumber = $model->serialNumber;
         $this->_messageImprint = $model->messageImprint;
