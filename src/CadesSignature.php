@@ -16,11 +16,11 @@ class CadesSignature
     private $_hasEncapsulatedContent;
     private $_signers = [];
 
-    public function __construct($encapsulatedContentType, $hasEncapsulatedContent, $signers)
+    public function __construct($model)
     {
-        $this->_encapsulatedContentType = $encapsulatedContentType;
-        $this->_hasEncapsulatedContent = $hasEncapsulatedContent;
-        foreach ($signers as $signerModel) {
+        $this->_encapsulatedContentType = $model->encapsulatedContentType;
+        $this->_hasEncapsulatedContent = $model->hasEncapsulatedContent;
+        foreach ($model->signers as $signerModel) {
             $this->_signers[] = new CadesSignerInfo($signerModel);
         }
     }

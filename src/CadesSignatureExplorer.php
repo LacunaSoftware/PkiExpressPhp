@@ -70,7 +70,7 @@ class CadesSignatureExplorer extends SignatureExplorer
         $parsedOutput = $this->parseOutput($response->output[0]);
 
         // Convert response
-        $signature = new PadesSignature($parsedOutput);
+        $signature = new CadesSignature($parsedOutput);
 
         return $signature;
     }
