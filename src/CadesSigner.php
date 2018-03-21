@@ -48,10 +48,6 @@ class CadesSigner extends Signer
             throw new \Exception("The file to be signed was not set");
         }
 
-        if (empty($this->_certThumb)) {
-            throw new \Exception("The certificate thumbprint was not set");
-        }
-
         if (empty($this->outputFilePath)) {
             throw new \Exception("The output destination was not set");
         }
@@ -61,11 +57,8 @@ class CadesSigner extends Signer
             $this->outputFilePath
         );
 
-        if (!empty($this->_certThumb)) {
-            array_push($args, "-t");
-            array_push($args, $this->_certThumb);
-            $this->versionManager->requireVersion("1.3");
-        }
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
 
         if (!empty($this->dataFilePath)) {
             array_push($args, "-df");

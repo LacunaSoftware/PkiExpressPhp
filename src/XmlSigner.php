@@ -40,10 +40,6 @@ class XmlSigner extends Signer
             throw new \Exception("The XML to be signed was not set");
         }
 
-        if (empty($this->_certThumb)) {
-            throw new \Exception("The certificate thumbprint was not set");
-        }
-
         if (empty($this->outputFilePath)) {
             throw new \Exception("The output destination was not set");
         }
@@ -57,11 +53,8 @@ class XmlSigner extends Signer
             $this->outputFilePath
         );
 
-        if (!empty($this->_certThumb)) {
-            array_push($args, "-t");
-            array_push($args, $this->_certThumb);
-            $this->versionManager->requireVersion("1.3");
-        }
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
 
         if (!empty($this->_signaturePolicy)) {
 
