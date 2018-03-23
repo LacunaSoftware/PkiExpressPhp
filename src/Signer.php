@@ -32,7 +32,7 @@ abstract class Signer extends PkiExpressOperator
         }
 
         if (!empty($this->_certThumb)) {
-            array_push($args, "-t");
+            array_push($args, "--thumbprint");
             array_push($args, $this->_certThumb);
             $this->versionManager->requireVersion("1.3");
         }

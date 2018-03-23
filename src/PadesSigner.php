@@ -100,13 +100,13 @@ class PadesSigner extends Signer
 
         // Logic to overwrite original file or use the output file
         if ($this->_overwriteOriginalFile) {
-            array_push($args, "-ow");
+            array_push($args, "--overwrite");
         } else {
             array_push($args, $this->outputFilePath);
         }
 
         if (!empty($this->vrJsonPath)) {
-            array_push($args, "-vr");
+            array_push($args, "--visual-rep");
             array_push($args, $this->vrJsonPath);
         }
 

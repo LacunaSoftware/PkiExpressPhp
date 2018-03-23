@@ -97,7 +97,7 @@ class PadesSignatureStarter extends SignatureStarter
         );
 
         if (!empty($this->vrJsonPath)) {
-            array_push($args, "-vr");
+            array_push($args, "--visual-rep");
             array_push($args, $this->vrJsonPath);
         }
 

@@ -86,11 +86,11 @@ class XmlSigner extends Signer
 
         if (!empty($this->_signaturePolicy)) {
 
-            array_push($args, "-p");
+            array_push($args, "--policy");
             array_push($args, $this->_signaturePolicy);
 
             if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
-                array_push($args, "-eid");
+                array_push($args, "--element-id");
                 array_push($args, $this->_toSignElementId);
             }
         }

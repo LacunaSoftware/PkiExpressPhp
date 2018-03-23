@@ -174,7 +174,7 @@ class SignatureFinisher extends PkiExpressOperator
         );
 
         if ($this->dataFilePath) {
-            array_push($args, "-df");
+            array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);
         }
 

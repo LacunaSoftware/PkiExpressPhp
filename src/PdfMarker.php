@@ -94,7 +94,7 @@ class PdfMarker extends PkiExpressOperator
 
         // Logic to overwrite original file or use the output file
         if ($this->_overwriteOriginalFile) {
-            array_push($args, "-ow");
+            array_push($args, "--overwrite");
         } else {
             array_push($args, $this->outputFilePath);
         }

@@ -87,12 +87,12 @@ class XmlSignatureStarter extends SignatureStarter
 
         if (isset($this->_signaturePolicy)) {
 
-            array_push($args, "-p");
+            array_push($args, "--policy");
             array_push($args, $this->_signaturePolicy);
 
             if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
 
-                array_push($args, "-eid");
+                array_push($args, "--element-id");
                 array_push($args, $this->_toSignElementId);
             }
         }

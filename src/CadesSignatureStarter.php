@@ -118,12 +118,12 @@ class CadesSignatureStarter extends SignatureStarter
         );
 
         if (!empty($this->dataFilePath)) {
-            array_push($args, "-df");
+            array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);
         }
 
         if (!$this->_encapsulateContent) {
-            array_push($args, "-det");
+            array_push($args, "--detached");
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)

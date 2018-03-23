@@ -91,7 +91,7 @@ abstract class PkiExpressOperator
         if (!empty($this->fileReferences)) {
 
             foreach ($this->fileReferences as $key => $value) {
-                $cmdArgs[] = "-fr";
+                $cmdArgs[] = "--file-reference";
                 $cmdArgs[] = "{$key}={$value}";
             }
         }
@@ -100,14 +100,14 @@ abstract class PkiExpressOperator
         if (empty($this->trustedRoots)) {
 
             foreach ($this->trustedRoots as $root) {
-                $cmdArgs[] = '-tr';
+                $cmdArgs[] = '--trust-root';
                 $cmdArgs[] = $root;
             }
         }
 
         // Add trust Lacuna test root if set
         if ($this->_trustLacunaTestRoot) {
-            $cmdArgs[] = '-tt';
+            $cmdArgs[] = '--trust-test';
         }
 
         // Add offline option if provided.
