@@ -24,7 +24,8 @@ class PadesSigner extends Signer
         parent::__construct($config);
     }
 
-    public function setPdfToSign($path)
+    //region setPdfToSign
+    public function setPdfToSignFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided PDF to be signed was not found");
@@ -32,6 +33,33 @@ class PadesSigner extends Signer
 
         $this->pdfToSignPath = $path;
     }
+
+    public function setPdfToSignFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->pdfToSignPath = $tempFilePath;
+    }
+
+    public function setPdfToSignFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided PDF to be signed is not Base64-encoded");
+        }
+
+        $this->setPdfToSignFromContentRaw($raw);
+    }
+
+    public function setPdfToSign($path)
+    {
+        $this->setPdfToSignFromPath($path);
+    }
+
+    public function setPdfToSignContent($contentRaw)
+    {
+        $this->setPdfToSignFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function setVisualRepresentationFromFile($path)
     {
@@ -48,7 +76,7 @@ class PadesSigner extends Signer
             throw new \Exception("The provided visual representation was not valid");
         };
 
-        $tempFilePath = $this->createTempFile();
+        $tempFilePath = parent::createTempFile();
         file_put_contents($tempFilePath, $json);
         $this->vrJsonPath = $tempFilePath;
     }

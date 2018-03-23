@@ -25,7 +25,8 @@ class XmlSignatureStarter extends SignatureStarter
         parent::__construct($config);
     }
 
-    public function setXmlToSign($path)
+    //region setXmlToSign
+    public function setXmlToSignFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided XML to be signed was not found");
@@ -33,6 +34,33 @@ class XmlSignatureStarter extends SignatureStarter
 
         $this->xmlToSignPath = $path;
     }
+
+    public function setXmlToSignFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->xmlToSignPath = $tempFilePath;
+    }
+
+    public function setXmlToSignFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided XML to be signed is not Base64-encoded");
+        }
+
+        $this->setCertificateFromContentRaw($raw);
+    }
+
+    public function setXmlToSign($path)
+    {
+        $this->setCertificateFromPath($path);
+    }
+
+    public function setXmlToSignContent($contentRaw)
+    {
+        $this->setCertificateFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function start()
     {
@@ -73,7 +101,7 @@ class XmlSignatureStarter extends SignatureStarter
         $response = parent::invokePlain(parent::COMMAND_START_XML, $args);
 
         // Parse output
-        return $this->getResult($response, $transferFile);
+        return parent::getResult($response, $transferFile);
     }
 
     public function setToSignElementId($elementId)

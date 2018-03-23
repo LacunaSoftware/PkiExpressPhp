@@ -23,7 +23,8 @@ class SignatureFinisher extends PkiExpressOperator
         parent::__construct($config);
     }
 
-    public function setFileToSign($path)
+    //region setFileToSign
+    public function setFileToSignFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided file to be signed was not found");
@@ -32,7 +33,35 @@ class SignatureFinisher extends PkiExpressOperator
         $this->fileToSignPath = $path;
     }
 
-    public function setTransferFile($path)
+    public function setFileToSignFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->fileToSignPath = $tempFilePath;
+    }
+
+    public function setFileToSignFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided file to be signed is not Base64-encoded");
+        }
+
+        $this->setFileToSignFromContentRaw($raw);
+    }
+
+    public function setFileToSign($path)
+    {
+        $this->setFileToSignFromPath($path);
+    }
+
+    public function setFileToSignContent($contentRaw)
+    {
+        $this->setFileToSignFromContentRaw($contentRaw);
+    }
+    //endregion
+
+    //region setTransferFile
+    public function setTransferFileFromPath($path)
     {
         if (!file_exists($this->config->getTransferDataFolder() . $path)) {
             throw new \Exception("The provided transfer file was not found");
@@ -40,6 +69,33 @@ class SignatureFinisher extends PkiExpressOperator
 
         $this->transferFilePath = $path;
     }
+
+    public function setTransferFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->transferFilePath = $tempFilePath;
+    }
+
+    public function setTransferFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided transfer file is not Base64-encoded");
+        }
+
+        $this->setDataFileFromContentRaw($raw);
+    }
+
+    public function setTransferFile($path)
+    {
+        $this->setFileToSignFromPath($path);
+    }
+
+    public function setTransferFileContent($contentRaw)
+    {
+        $this->setFileToSignFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function setSignature($signature)
     {
@@ -55,7 +111,8 @@ class SignatureFinisher extends PkiExpressOperator
         $this->outputFilePath = $path;
     }
 
-    public function setDataFile($path)
+    //region setDataFile
+    public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided data file was not found");
@@ -63,6 +120,33 @@ class SignatureFinisher extends PkiExpressOperator
 
         $this->dataFilePath = $path;
     }
+
+    public function setDataFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->dataFilePath = $tempFilePath;
+    }
+
+    public function setDataFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided data file is not Base64-encoded");
+        }
+
+        $this->setDataFileFromContentRaw($raw);
+    }
+
+    public function setDataFile($path)
+    {
+        $this->setDataFileFromPath($path);
+    }
+
+    public function setDataFileContent($contentPath)
+    {
+        $this->setFileToSignFromContentRaw($contentPath);
+    }
+    //endregion
 
     public function complete()
     {

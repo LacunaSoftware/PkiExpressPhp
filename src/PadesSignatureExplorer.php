@@ -9,7 +9,6 @@ namespace Lacuna\PkiExpress;
 class PadesSignatureExplorer extends SignatureExplorer
 {
 
-
     public function __construct($config = null)
     {
         if (!isset($config)) {

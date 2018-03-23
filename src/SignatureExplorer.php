@@ -14,14 +14,41 @@ class SignatureExplorer extends PkiExpressOperator
 
     protected $_validate;
 
-
-    public function setSignatureFile($path)
+    //region setSignatureFile
+    public function setSignatureFileFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided signature file was not found");
         }
         $this->signatureFilePath = $path;
     }
+
+    public function setSignatureFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->signatureFilePath = $tempFilePath;
+    }
+
+    public function setSignatureFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided signature file is not Base64-encoded");
+        }
+
+        $this->setSignatureFileFromContentRaw($raw);
+    }
+
+    public function setSignatureFile($path)
+    {
+        $this->setSignatureFileFromPath($path);
+    }
+
+    public function setSignatureFileContent($contentRaw)
+    {
+        $this->setSignatureFileFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function getValidate()
     {

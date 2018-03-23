@@ -6,7 +6,7 @@ namespace Lacuna\PkiExpress;
  * Class CadesSignatureStarter
  * @package Lacuna\PkiExpress
  *
- * @property $_encapsulateContent bool
+ * @property $encapsulateContent bool
  */
 class CadesSignatureStarter extends SignatureStarter
 {
@@ -24,7 +24,8 @@ class CadesSignatureStarter extends SignatureStarter
         parent::__construct($config);
     }
 
-    public function setFileToSign($path)
+    //region setFileToSign
+    public function setFileToSignFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided file to be signed was not found");
@@ -33,7 +34,35 @@ class CadesSignatureStarter extends SignatureStarter
         $this->fileToSignPath = $path;
     }
 
-    public function setDataFile($path)
+    public function setFileToSignFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->dataFilePath = $tempFilePath;
+    }
+
+    public function setFileToSignFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided file to be signed is not Base64-encoded");
+        }
+
+        $this->setDataFileFromContentRaw($raw);
+    }
+
+    public function setFileToSign($path)
+    {
+        $this->setFileToSignFromPath($path);
+    }
+
+    public function setFileToSignContent($contentRaw)
+    {
+        $this->setFileToSignFromContentRaw($contentRaw);
+    }
+    //endregion
+
+    //region setDataFile
+    public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided data file was not found");
@@ -41,6 +70,33 @@ class CadesSignatureStarter extends SignatureStarter
 
         $this->dataFilePath = $path;
     }
+
+    public function setDataFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->dataFilePath = $tempFilePath;
+    }
+
+    public function setDataFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided data file is not Base64-encoded");
+        }
+
+        $this->setDataFileFromContentRaw($raw);
+    }
+
+    public function setDataFile($path)
+    {
+        $this->setDataFileFromPath($path);
+    }
+
+    public function setDataFileContent($contentRaw)
+    {
+        $this->setDataFileFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function start()
     {
@@ -74,7 +130,7 @@ class CadesSignatureStarter extends SignatureStarter
         $response = parent::invokePlain(parent::COMMAND_START_CADES, $args);
 
         // Parse output
-        return $this->getResult($response, $transferFile);
+        return parent::getResult($response, $transferFile);
     }
 
     public function getEncapsulateContent()

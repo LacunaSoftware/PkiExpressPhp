@@ -19,7 +19,8 @@ class SignatureStarter extends PkiExpressOperator
         parent::__construct($config);
     }
 
-    public function setCertificate($path)
+    //region setCertificate
+    public function setCertificateFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided certificate was not found");
@@ -28,13 +29,37 @@ class SignatureStarter extends PkiExpressOperator
         $this->certificatePath = $path;
     }
 
-    public function setCertificateBase64($certBase64)
+    public function setCertificateFromContentRaw($contentRaw)
     {
-        $certTempFilePath = $this->createTempFile();
-        $certContent = base64_decode($certBase64);
-        file_put_contents($certTempFilePath, $certContent);
-        $this->certificatePath = $certTempFilePath;
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->certificatePath = $tempFilePath;
     }
+
+    public function setCertificateFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided certificate is not Base64-encoded");
+        }
+
+        $this->setCertificateFromContentRaw($raw);
+    }
+
+    public function setCertificate($path)
+    {
+        $this->setCertificateFromPath($path);
+    }
+
+    public function setCertificateContent($contentRaw)
+    {
+        $this->setCertificateFromContentRaw($contentRaw);
+    }
+
+    public function setCertificateBase64($contentBase64)
+    {
+        $this->setCertificateFromContentBase64($contentBase64);
+    }
+    //endregion
 
     protected function getResult($response, $transferFile) {
         return (object)array(

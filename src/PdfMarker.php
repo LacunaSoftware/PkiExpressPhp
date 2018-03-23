@@ -31,13 +31,41 @@ class PdfMarker extends PkiExpressOperator
         $this->measurementUnits = PadesMeasurementUnits::CENTIMETERS;
     }
 
-    public function setFile($path)
+    //region setFile
+    public function setFileFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided file was not found");
         }
         $this->filePath = $path;
     }
+
+    public function setFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->filePath = $tempFilePath;
+    }
+
+    public function setFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided file is not Base64-encoded");
+        }
+
+        $this->setFileFromContentRaw($raw);
+    }
+
+    public function setFile($path)
+    {
+        $this->setFileFromPath($path);
+    }
+
+    public function setFileContent($contentRaw)
+    {
+        $this->setFileFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function setOutputFile($path)
     {
@@ -55,7 +83,7 @@ class PdfMarker extends PkiExpressOperator
         );
 
         // Generate changes file
-        $tempFilePath = $this->createTempFile();
+        $tempFilePath = parent::createTempFile();
         $request = array(
             'marks' => $this->marks,
             'measurementUnits' => $this->measurementUnits,

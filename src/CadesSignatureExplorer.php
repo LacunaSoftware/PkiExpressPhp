@@ -23,7 +23,8 @@ class CadesSignatureExplorer extends SignatureExplorer
         parent::__construct($config);
     }
 
-    public function setDataFile($path)
+    //region setDataFile
+    public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
             throw new \Exception("The provided data file was not found");
@@ -31,6 +32,33 @@ class CadesSignatureExplorer extends SignatureExplorer
 
         $this->dataFilePath = $path;
     }
+
+    public function setDataFileFromContentRaw($contentRaw)
+    {
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $contentRaw);
+        $this->dataFilePath = $tempFilePath;
+    }
+
+    public function setDataFileFromContentBase64($contentBase64)
+    {
+        if (!($raw = base64_decode($contentBase64))) {
+            throw new \Exception("The provided data file is not Base64-encoded");
+        }
+
+        $this->setDataFileFromContentRaw($raw);
+    }
+
+    public function setDataFile($path)
+    {
+        $this->setDataFileFromPath($path);
+    }
+
+    public function setDataFileContent($contentRaw)
+    {
+        $this->setDataFileFromContentRaw($contentRaw);
+    }
+    //endregion
 
     public function setExtractContentPath($path)
     {
@@ -40,7 +68,7 @@ class CadesSignatureExplorer extends SignatureExplorer
     public function open()
     {
         if (empty($this->signatureFilePath)) {
-            throw new \Exception("The provieded signature file was not found");
+            throw new \Exception("The provided signature file was not found");
         }
 
         $args = [];
