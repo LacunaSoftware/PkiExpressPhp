@@ -22,11 +22,21 @@ class PadesSignerInfo extends CadesSignerInfo
         $this->_signatureFieldName = $model->signatureFieldName;
     }
 
+    /**
+     * Gets the info if the document is a timestamp.
+     *
+     * @return bool The info if the document is a timestamp.
+     */
     public function getIsDocumentTimestamp()
     {
         return $this->_isDocumentTimestamp;
     }
 
+    /**
+     * Get the signature field name.
+     *
+     * @return mixed The signature field name
+     */
     public function getSignatureFieldName()
     {
         return $this->_signatureFieldName;

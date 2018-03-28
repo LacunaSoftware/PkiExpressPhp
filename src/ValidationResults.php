@@ -23,21 +23,41 @@ class ValidationResults
         $this->_passedChecks = self::convertItems($model->passedChecks);
     }
 
+    /**
+     * Returns if the validation results has no errors.
+     *
+     * @return bool The validation results has no errors.
+     */
     public function isValid()
     {
         return empty($this->errors);
     }
 
+    /**
+     * Gets the number of checks performed.
+     *
+     * @return int The numb of checks performed.
+     */
     public function getChecksPerformed()
     {
         return count($this->_errors) + count($this->_warnings) + count($this->_passedChecks);
     }
 
+    /**
+     * Returns if the validation results has some error.
+     *
+     * @return bool The validation results has some error.
+     */
     public function hasErrors()
     {
         return !empty($this->_errors);
     }
 
+    /**
+     * Returns if the validation results has some warning.
+     *
+     * @return bool The validaiton results has some warning.
+     */
     public function hasWarnings()
     {
         return !empty($this->_warnings);

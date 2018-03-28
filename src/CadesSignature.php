@@ -19,6 +19,11 @@ class CadesSignature
         }
     }
 
+    /**
+     * Gets the array of CadesSignerInfo classes.
+     *
+     * @return CadesSignerInfo[] The array of CAdES signer info classes.
+     */
     public function getSigners()
     {
         return $this->_signers;

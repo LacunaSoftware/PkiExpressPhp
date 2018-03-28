@@ -255,6 +255,13 @@ abstract class PkiExpressOperator
         }
     }
 
+    /**
+     * Adds an alias for a path to a file.
+     *
+     * @param $alias string An alias to the $path parameter.
+     * @param $path string The path to a file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function addFileReference($alias, $path)
     {
         if (!file_exists($path)) {
@@ -264,6 +271,12 @@ abstract class PkiExpressOperator
         $this->fileReferences[$alias] = $path;
     }
 
+    /**
+     * Sets the path for a trusted root certificate to PKI Express trust in.
+     *
+     * @param $path string The path for a trusted root certificate.
+     * @throws \Exception If the provided path is not found.
+     */
     public function addTrustedRoot($path)
     {
         if (!file_exists($path)) {
@@ -273,21 +286,41 @@ abstract class PkiExpressOperator
         array_push($this->trustedRoots, $path);
     }
 
+    /**
+     * Gets the option to execute the operation on "OFFLINE" mode.
+     *
+     * @return bool The option to execute on "OFFLINE" mode.
+     */
     public function getOffline()
     {
         return $this->_offline;
     }
 
+    /**
+     * Sets the option to execute the operation on "OFFLINE" mode.
+     *
+     * @param $offline bool The option to execute on "OFFLINE" mode.
+     */
     public function setOffline($offline)
     {
         $this->_offline = $offline;
     }
 
+    /**
+     * Gets the option to make PKI Express to trust on Lacuna's Root Test.
+     *
+     * @return bool The option to trust on Lacuna's Root Test.
+     */
     public function getTrustLacunaTestRoot()
     {
         return $this->_trustLacunaTestRoot;
     }
 
+    /**
+     * Sets the option to make PKI Express to trust on Lacuna's Root Test.
+     *
+     * @param $value bool The option to trust on Lacuna's Root Test.
+     */
     public function setTrustLacunaTestRoot($value)
     {
         $this->_trustLacunaTestRoot = $value;

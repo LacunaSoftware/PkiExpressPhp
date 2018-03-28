@@ -9,6 +9,10 @@
 namespace Lacuna\PkiExpress;
 
 
+/**
+ * Class CadesSignatureExplorer
+ * @package Lacuna\PkiExpress
+ */
 class CadesSignatureExplorer extends SignatureExplorer
 {
     private $dataFilePath;
@@ -24,6 +28,13 @@ class CadesSignatureExplorer extends SignatureExplorer
     }
 
     //region setDataFile
+
+    /**
+     * Sets the detached data file's local path.
+     *
+     * @param $path string The path to the detached data file.
+     * @throws \Exception If the provided data file was not found.
+     */
     public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
@@ -33,6 +44,11 @@ class CadesSignatureExplorer extends SignatureExplorer
         $this->dataFilePath = $path;
     }
 
+    /**
+     * Sets the detached data file's content.
+     *
+     * @param $contentRaw string The content of the detached data file.
+     */
     public function setDataFileFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -40,6 +56,12 @@ class CadesSignatureExplorer extends SignatureExplorer
         $this->dataFilePath = $tempFilePath;
     }
 
+    /**
+     * Sets the detached file's content Base64-encoded.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the detached data file.
+     * @throws \Exception If the parameter is not Base64-encoded.
+     */
     public function setDataFileFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -49,22 +71,45 @@ class CadesSignatureExplorer extends SignatureExplorer
         $this->setDataFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the detached data file's local path. This method is only an alias for the setDataFileFromPath() method.
+     *
+     * @param $path string The path to the detached data file.
+     * @throws \Exception If the provided data file was not found.
+     */
     public function setDataFile($path)
     {
         $this->setDataFileFromPath($path);
     }
 
+    /**
+     * Sets the detached data file's content. This method is only an alias for the setDataFileFromContentRaw() method.
+     *
+     * @param $contentRaw string The content of the detached data file.
+     */
     public function setDataFileContent($contentRaw)
     {
         $this->setDataFileFromContentRaw($contentRaw);
     }
+
     //endregion
 
+    /**
+     * Sets the path where to store the content extracted by PKI Express from the signature.
+     *
+     * @param $path string The path for the extract content.
+     */
     public function setExtractContentPath($path)
     {
         $this->extractContentPath = $path;
     }
 
+    /**
+     * Opens the CAdES signature.
+     *
+     * @return CadesSignature The content of the signature.
+     * @throws \Exception If the signature file is not provided.
+     */
     public function open()
     {
         if (empty($this->signatureFilePath)) {

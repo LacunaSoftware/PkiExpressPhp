@@ -21,6 +21,13 @@ class PadesSignatureStarter extends SignatureStarter
     }
 
     //region setPdfToSign
+
+    /**
+     * Sets the PDF to be signed's local path.
+     *
+     * @param $path string The path to the PDF to be signed.
+     * @throws \Exception If the provided file was not found.
+     */
     public function setPdfToSignFromPath($path)
     {
         if (!file_exists($path)) {
@@ -30,6 +37,11 @@ class PadesSignatureStarter extends SignatureStarter
         $this->pdfToSignPath = $path;
     }
 
+    /**
+     * Sets the PDF to be signed's content.
+     *
+     * @param $contentRaw string The content of the PDF to be signed.
+     */
     public function setPdfToSignFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -37,6 +49,12 @@ class PadesSignatureStarter extends SignatureStarter
         $this->pdfToSignPath = $tempFilePath;
     }
 
+    /**
+     * Sets the PDF to be signed's content Base64-encoded.
+     *
+     * @param $contentBase64 string the Base64-encoded content.
+     * @throws \Exception If the parameter is not Base64-encoded.
+     */
     public function setPdfToSignFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -46,17 +64,37 @@ class PadesSignatureStarter extends SignatureStarter
         $this->setPdfToSignFromContentRaw($raw);
     }
 
+    /**
+     * Sets the PDF to be signed's local path. This method is only an alias for the setPdfToSignFromPath() method.
+     *
+     * @param $path string The path to the PDF to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setPdfToSign($path)
     {
         $this->setPdfToSignFromPath($path);
     }
 
+    /**
+     * Sets the PDF to be signed's content. This method is only an alias for the setPdfToSignFromContentRaw() method.
+     *
+     * @param $contentRaw string The content of the PDF to be signed.
+     */
     public function setPdfToSignContent($contentRaw)
     {
         $this->setPdfToSignFromContentRaw($contentRaw);
     }
+
     //endregion
 
+    /**
+     * Sets the visual representation file's path. This file is a JSON representing a model that has the information
+     * to build a visual representation for the signature. If preferred, the pure PHP object can be provided using
+     * the method setVisualRepresentation().
+     *
+     * @param $path string The path to the visual representation file's path.
+     * @throws \Exception If the provided file is not found.
+     */
     public function setVisualRepresentationFromFile($path)
     {
         if (!file_exists($path)) {
@@ -66,6 +104,13 @@ class PadesSignatureStarter extends SignatureStarter
         $this->vrJsonPath = $path;
     }
 
+    /**
+     * Sets the visual representation by passing a pure PHP model. If preferred, the JSON file can be provided using
+     * the method setVisualRepresentationFromFile().
+     *
+     * @param $vr mixed The visual representation's model.
+     * @throws \Exception If the model is invalid, and can't be parsed to a JSON.
+     */
     public function setVisualRepresentation($vr)
     {
         if (!($json = json_encode($vr))) {
@@ -77,6 +122,12 @@ class PadesSignatureStarter extends SignatureStarter
         $this->vrJsonPath = $tempFilePath;
     }
 
+    /**
+     * Starts a PAdES signature.
+     *
+     * @return mixed The result of the signature init. These values are used by SignatureFinisher.
+     * @throws \Exception If the paths to the file to be signed and the certificate are not set.
+     */
     public function start()
     {
         if (empty($this->pdfToSignPath)) {

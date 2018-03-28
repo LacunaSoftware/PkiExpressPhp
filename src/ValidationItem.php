@@ -28,16 +28,31 @@ class ValidationItem
         }
     }
 
+    /**
+     * Gets the validation type field.
+     *
+     * @return string The validation type field.
+     */
     public function getType()
     {
         return $this->_type;
     }
 
+    /**
+     * Gets the message of the validation.
+     *
+     * @return string The message of the validation.
+     */
     public function getMessage()
     {
         return $this->_message;
     }
 
+    /**
+     * Gets the detail of the validation.
+     *
+     * @return string The detail of the validation.
+     */
     public function getDetail()
     {
         return $this->_detail;

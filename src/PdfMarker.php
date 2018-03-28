@@ -32,6 +32,13 @@ class PdfMarker extends PkiExpressOperator
     }
 
     //region setFile
+
+    /**
+     * Sets the file to be marked's local path.
+     *
+     * @param $path string The file to be marked's local path.
+     * @throws \Exception If the provided file is not found.
+     */
     public function setFileFromPath($path)
     {
         if (!file_exists($path)) {
@@ -40,6 +47,11 @@ class PdfMarker extends PkiExpressOperator
         $this->filePath = $path;
     }
 
+    /**
+     * Sets the file to be marked's binary content.
+     *
+     * @param $contentRaw string The file to be marked's binary content.
+     */
     public function setFileFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -47,6 +59,12 @@ class PdfMarker extends PkiExpressOperator
         $this->filePath = $tempFilePath;
     }
 
+    /**
+     * Sets the file to be marked's content Base64-encoded.
+     *
+     * @param $contentBase64 string The file to be marked's content Base64-encoded.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setFileFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -56,22 +74,44 @@ class PdfMarker extends PkiExpressOperator
         $this->setFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the file to be marked's local path. This method is only an alias for the setFileFromPath() method.
+     *
+     * @param $path string The file to be marked's local path.
+     * @throws \Exception If the provided file is not found.
+     */
     public function setFile($path)
     {
         $this->setFileFromPath($path);
     }
 
+    /**
+     * Sets the file to be marked's binary content. This method is only an alias for the setFileFromContentRaw() method.
+     *
+     * @param $contentRaw string The file to be marked's binary content.
+     */
     public function setFileContent($contentRaw)
     {
         $this->setFileFromContentRaw($contentRaw);
     }
+
     //endregion
 
+    /**
+     * Sets the path to store the output file from the command.
+     *
+     * @param $path string The path to store the output file from the command.
+     */
     public function setOutputFile($path)
     {
         $this->outputFilePath = $path;
     }
 
+    /**
+     * Applies the marks on PDF file.
+     *
+     * @throws \Exception If the file is not provided.
+     */
     public function apply()
     {
         if (empty($this->filePath)) {
@@ -106,11 +146,22 @@ class PdfMarker extends PkiExpressOperator
         parent::invoke(parent::COMMAND_EDIT_PDF, $args);
     }
 
+    /**
+     * Gets the option to overwrite the original file with the signed file's content.
+     *
+     * @return bool The option to overwrite the original file.
+     */
     public function getOverwriteOriginalFile()
     {
         return $this->_overwriteOriginalFile;
     }
 
+    /**
+     * Sets the opiton to overwrite the original file with the signed file's content. The default value for this
+     * option is false.
+     *
+     * @param $value bool The option to overwrite the original file.
+     */
     public function setOverwriteOriginalFile($value)
     {
         $this->_overwriteOriginalFile = $value;

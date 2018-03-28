@@ -24,6 +24,13 @@ class SignatureFinisher extends PkiExpressOperator
     }
 
     //region setFileToSign
+
+    /**
+     * Sets the file to be signed's local path.
+     *
+     * @param $path string The path to the file to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setFileToSignFromPath($path)
     {
         if (!file_exists($path)) {
@@ -33,6 +40,11 @@ class SignatureFinisher extends PkiExpressOperator
         $this->fileToSignPath = $path;
     }
 
+    /**
+     * Sets the file to be signed's binary content.
+     *
+     * @param $contentRaw string The content of the file to be signed.
+     */
     public function setFileToSignFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -40,6 +52,12 @@ class SignatureFinisher extends PkiExpressOperator
         $this->fileToSignPath = $tempFilePath;
     }
 
+    /**
+     * Sets the file to be signed's Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the file to be signed.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setFileToSignFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -49,18 +67,38 @@ class SignatureFinisher extends PkiExpressOperator
         $this->setFileToSignFromContentRaw($raw);
     }
 
+    /**
+     * Sets the file to be signed's local path. This method is only an alias for the setFileToSignFromPath() method.
+     *
+     * @param $path string The path to the file to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setFileToSign($path)
     {
         $this->setFileToSignFromPath($path);
     }
 
+    /**
+     * Sets the file to be signed's binary content. This method is only an alias for the setFileToSignFromContentRaw()
+     * method.
+     *
+     * @param $contentRaw string The content of the file to be signed.
+     */
     public function setFileToSignContent($contentRaw)
     {
         $this->setFileToSignFromContentRaw($contentRaw);
     }
+
     //endregion
 
     //region setTransferFile
+
+    /**
+     * Sets the transfer file's local path.
+     *
+     * @param $path string The transfer file's local path.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setTransferFileFromPath($path)
     {
         if (!file_exists($this->config->getTransferDataFolder() . $path)) {
@@ -70,6 +108,11 @@ class SignatureFinisher extends PkiExpressOperator
         $this->transferFilePath = $path;
     }
 
+    /**
+     * Sets the transfer file's binary content.
+     *
+     * @param $contentRaw string The content of the transfer file.
+     */
     public function setTransferFileFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -77,6 +120,12 @@ class SignatureFinisher extends PkiExpressOperator
         $this->transferFilePath = $tempFilePath;
     }
 
+    /**
+     * Sets the transfer file's Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the transfer file.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setTransferFileFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -86,17 +135,36 @@ class SignatureFinisher extends PkiExpressOperator
         $this->setDataFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the transfer file's local path. This method is only an alias for the setTransferFileFromPath() method.
+     *
+     * @param $path string The path to the transfer file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setTransferFile($path)
     {
         $this->setFileToSignFromPath($path);
     }
 
+    /**
+     * Sets the transfer file's binary content. This method is only an alias for the setTransferFileFromContentRaw()
+     * method.
+     *
+     * @param $contentRaw string The content of the transfer file.
+     */
     public function setTransferFileContent($contentRaw)
     {
         $this->setFileToSignFromContentRaw($contentRaw);
     }
+
     //endregion
 
+    /**
+     * Sets the computed signature value.
+     *
+     * @param $signature string The Base64-encoded signature value.
+     * @throws \Exception If the provided signature is not Base64-encoded.
+     */
     public function setSignature($signature)
     {
         if (!base64_decode($signature)) {
@@ -106,12 +174,24 @@ class SignatureFinisher extends PkiExpressOperator
         $this->signature = $signature;
     }
 
+    /**
+     * Sets the path where this command will store the output file.
+     *
+     * @param $path string The path where this command will store the output file.
+     */
     public function setOutputFile($path)
     {
         $this->outputFilePath = $path;
     }
 
     //region setDataFile
+
+    /**
+     * Sets the data file's local path.
+     *
+     * @param $path string The path to the data file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
@@ -121,6 +201,11 @@ class SignatureFinisher extends PkiExpressOperator
         $this->dataFilePath = $path;
     }
 
+    /**
+     * Sets the data file's binary content.
+     *
+     * @param $contentRaw string The content of the data file.
+     */
     public function setDataFileFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -128,6 +213,12 @@ class SignatureFinisher extends PkiExpressOperator
         $this->dataFilePath = $tempFilePath;
     }
 
+    /**
+     * Sets the data file's Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the data file.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setDataFileFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -137,17 +228,37 @@ class SignatureFinisher extends PkiExpressOperator
         $this->setDataFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the data file's local path. This method is only an alias for the setDataFileFromPath() method.
+     *
+     * @param $path string The path to the data file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setDataFile($path)
     {
         $this->setDataFileFromPath($path);
     }
 
-    public function setDataFileContent($contentPath)
+    /**
+     * Sets the data file's binary content. This method is only an alias for the setDataFileFromContentRaw() method.
+     *
+     * @param $contentRaw string The content of the data file.
+     */
+    public function setDataFileContent($contentRaw)
     {
-        $this->setFileToSignFromContentRaw($contentPath);
+        $this->setFileToSignFromContentRaw($contentRaw);
     }
     //endregion
 
+    /**
+     * Completes a signature. This method acts together with start() methods from the SignatureStarter classes.
+     *
+     * @throws \Exception If the following fields are not provided before this method call:
+     *  - The file to be signed;
+     *  - The transfer file;
+     *  - The signature;
+     *  - The output file destination.
+     */
     public function complete()
     {
         if (empty($this->fileToSignPath)) {

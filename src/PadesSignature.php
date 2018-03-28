@@ -19,6 +19,11 @@ class PadesSignature
         }
     }
 
+    /**
+     * Gets the array of PAdES signer info instances.
+     *
+     * @return PadesSignerInfo[] The array of PAdES signer info instances.
+     */
     public function getSigners()
     {
         return $this->_signers;

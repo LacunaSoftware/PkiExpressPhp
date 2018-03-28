@@ -35,41 +35,82 @@ class DigestAlgorithm
         }
     }
 
+    /**
+     * Gets a MD5 digest algorithm instance.
+     *
+     * @return DigestAlgorithm A MD5 digest algorithm instance.
+     */
     public static function getMD5()
     {
         return new DigestAlgorithm(self::MD5);
     }
 
+    /**
+     * Gets a SHA-1 digest algorithm instance.
+     *
+     * @return DigestAlgorithm A SHA-1 digest algorithm instance.
+     */
     public static function getSHA1()
     {
         return new DigestAlgorithm(self::SHA1);
     }
 
+    /**
+     * Gets a SHA-256 digest algorithm instance.
+     *
+     * @return DigestAlgorithm A SHA-256 digest algorithm instance.
+     */
     public static function getSHA256()
     {
         return new DigestAlgorithm(self::SHA256);
     }
 
+    /**
+     * Gets a SHA-384 digest algorithm instance.
+     *
+     * @return DigestAlgorithm A SHA-384 digest algorithm instance.
+     */
     public static function getSHA384()
     {
         return new DigestAlgorithm(self::SHA384);
     }
 
+    /**
+     * Gets a SHA-512 digest algorithm instance.
+     *
+     * @return DigestAlgorithm A SHA-512 digest algorithm instance.
+     */
     public static function getSHA512()
     {
         return new DigestAlgorithm(self::SHA512);
     }
 
+    /**
+     * Gets a digest algorithm instance referred by the algorithm passed by the command.
+     *
+     * @param $apiDigestAlg string The algorithm passed by the command.
+     * @return DigestAlgorithm A digest algorithm instance referred by $apiDigestAlg.
+     */
     public static function getInstanceByCommandAlgorithm($apiDigestAlg)
     {
         return new DigestAlgorithm($apiDigestAlg);
     }
 
+    /**
+     * Gets the digest algorithm's id.
+     *
+     * @return mixed The algorithm's id.
+     */
     public function getAlgorithm()
     {
         return $this->id;
     }
 
+    /**
+     * Gets the digest algorithm's name.
+     *
+     * @return string The digest algorithm's name.
+     */
     public function getName()
     {
         switch ($this->id) {
@@ -88,6 +129,11 @@ class DigestAlgorithm
         }
     }
 
+    /**
+     * Gets the algorithm name as expected by PHP's standard <b>hash_xxx</b> functions.
+     *
+     * @return string The algorithm name as expected by PHP's standard <b>hash_xxx</b> functions.
+     */
     public function getPhpId()
     {
         switch ($this->id) {
@@ -106,6 +152,13 @@ class DigestAlgorithm
         }
     }
 
+    /**
+     * Gets the <b>MHASH hash ID</b>: one of the <b> MHASH_hashname</b> constants to be used with the
+     * <b>mhash_xxx</b> functions.
+     *
+     * @return int The <b>MHASH hash ID</b>: one of the <b> MHASH_hashname</b> constants to be used with the
+     * <b>mhash_xxx</b> functions.
+     */
     public function getHashId()
     {
         switch ($this->id) {

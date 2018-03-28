@@ -12,7 +12,7 @@ namespace Lacuna\PkiExpress;
  * @property-read $cnpj string
  * @property-read $cnpjFormatted string
  * @property-read $responsavel string
- * @property-read $dateOfBirth date
+ * @property-read $dateOfBirth string
  * @property-read $companyName string
  * @property-read $rgNumero string
  * @property-read $rgEmissor string
@@ -74,66 +74,131 @@ class PkiBrazilCertificateFields
 
     }
 
+    /**
+     * Gets the certificate's type field.
+     *
+     * @return string The certificate's type field.
+     */
     public function getCertificateType()
     {
         return $this->_certificateType;
     }
 
+    /**
+     * Gets the certificate's "CPF" field.
+     *
+     * @return string the certificate's "CPF" field.
+     */
     public function getCpf()
     {
         return $this->_cpf;
     }
 
+    /**
+     * Gets the certificate's formatted "CPF" field.
+     *
+     * @return string The certificate's formatted "CPF" field.
+     */
     public function getCpfFormatted()
     {
         return $this->_cpfFormatted;
     }
 
+    /**
+     * Gets the certificate's "CNPJ" field.
+     *
+     * @return string The certificate's "CNPJ" field.
+     */
     public function getCnpj()
     {
         return $this->_cnpj;
     }
 
+    /**
+     * Gets the certificate's formatted "CNPJ" field.
+     *
+     * @return string The certificate's formatted "CNPJ" field.
+     */
     public function getCnpjFormatted()
     {
         return $this->_cnpjFormatted;
     }
 
+    /**
+     * Gets the certificate's "responsavel".
+     *
+     * @return string The certificate's "responsavel" field.
+     */
     public function getResponsavel()
     {
         return $this->_responsavel;
     }
 
+    /**
+     * Gets the certificate's date of birth field..
+     *
+     * @return string The certificate's date of birth field.
+     */
     public function getDateOfBirth()
     {
         return $this->_dateOfBirth;
     }
 
+    /**
+     * Gets the certificate's company name field.
+     *
+     * @return string The certificate's company name field.
+     */
     public function getCompanyName()
     {
         return $this->_companyName;
     }
 
+    /**
+     * Gets the certificate's "numero do RG" field.
+     *
+     * @return string The certificate's "numero do RG" field.
+     */
     public function getRgNumero()
     {
         return $this->_rgNumero;
     }
 
+    /**
+     * Gets the certificate's "emissor do RG" field.
+     *
+     * @return string The certificate's "emissor do RG" field.
+     */
     public function getRgEmissor()
     {
         return $this->_rgEmissor;
     }
 
+    /**
+     * Gets the certificate's "UF do emissor do RG" field.
+     *
+     * @return string The certificate's "UF do emissor do RG" field.
+     */
     public function getRgEmissorUF()
     {
         return $this->_rgEmissorUF;
     }
 
+    /**
+     * Gets the certificate's "numero da carteira da OAB" field.
+     *
+     * @return string The certificate's "numero da carteira da OAB" field.
+     */
     public function getOabNumero()
     {
         return $this->_oabNumero;
     }
 
+    /**
+     * Gets the certificate's "UF da carteira da OAB" field.
+     *
+     * @return string The certificate's "UF da carteira da OAB" field.
+     */
     public function getOabUF()
     {
         return $this->_oabUF;

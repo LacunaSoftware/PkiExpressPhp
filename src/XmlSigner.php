@@ -26,6 +26,13 @@ class XmlSigner extends Signer
     }
 
     //region setXmlToSign
+
+    /**
+     * Sets the XML to be signed's local path.
+     *
+     * @param $path string The path to the XML to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setXmlToSignFromPath($path)
     {
         if (!file_exists($path)) {
@@ -35,6 +42,11 @@ class XmlSigner extends Signer
         $this->xmlToSignPath = $path;
     }
 
+    /**
+     * Sets the XML to be signed's binary content.
+     *
+     * @param $contentRaw string The content of the XML to be signed.
+     */
     public function setXmlToSignFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -42,26 +54,52 @@ class XmlSigner extends Signer
         $this->xmlToSignPath = $tempFilePath;
     }
 
+    /**
+     * Sets the XML to be signed's Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the XML to be signed.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setXmlToSignFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
             throw new \Exception("The provided XML to be signed is not Base64-encoded");
         }
 
-        $this->setCertificateFromContentRaw($raw);
+        $this->setXmlToSignFromContentRaw($raw);
     }
 
+    /**
+     * Sets the XML to be signed's local path. This method is only an alias for the setXmlToSignFromPath() method.
+     *
+     * @param $path string The path to the XML to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setXmlToSign($path)
     {
-        $this->setCertificateFromPath($path);
+        $this->setXmlToSignFromPath($path);
     }
 
+    /**
+     * Sets the XML to be signed's binary content. This methos is only an alias for the setXmlToSignFromContentRaw()
+     * method.
+     *
+     * @param $contentRaw string The content of the XML to be signed.
+     */
     public function setXmlToSignContent($contentRaw)
     {
-        $this->setCertificateFromContentRaw($contentRaw);
+        $this->setXmlToSignFromContentRaw($contentRaw);
     }
     //endregion
 
+    /**
+     * Performs a XML signature.
+     *
+     * @throws \Exception If at least one of the following parameters are not provided:
+     *  - The XML to be signed;
+     *  - The ceritifcate;
+     *  - The element's id to be signed, if the NFe policy was set.
+     */
     public function sign()
     {
         if (empty($this->xmlToSignPath)) {
@@ -104,11 +142,21 @@ class XmlSigner extends Signer
         $this->_toSignElementId = $elementId;
     }
 
+    /**
+     * Sets the element's id to be signed.
+     *
+     * @param $elementId string The element's id to be signed.
+     */
     public function setSignaturePolicy($policy)
     {
         $this->_signaturePolicy = $policy;
     }
 
+    /**
+     * Sets the signature policy for the signature.
+     *
+     * @param $policy string The signature policy fo the signature.
+     */
     public function __set($prop, $value)
     {
         switch ($prop) {

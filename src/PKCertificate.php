@@ -10,12 +10,12 @@ namespace Lacuna\PkiExpress;
  * @property-read $emailAddress string
  * @property-read $issuerName string
  * @property-read $serialNumber string
- * @property-read $validityStart date
- * @property-read $validityEnd date
+ * @property-read $validityStart string
+ * @property-read $validityEnd string
  * @property-read $pkiBrazil PkiBrazilCertificateFields
  * @property-read $pkiItaly PkiItalyCertificateFields
  * @property-read $issuer PKCertificate
- * @property-read $binaryThumbprintSHA256 binary
+ * @property-read $binaryThumbprintSHA256 string
  * @property-read $thumbprint string
  */
 class PKCertificate
@@ -54,56 +54,111 @@ class PKCertificate
         $this->_thumbprint = $model->thumbprint;
     }
 
+    /**
+     * Gets the certificate's subject name field.
+     *
+     * @return string The certificate's subject name field.
+     */
     public function getSubjectName()
     {
         return $this->_subjectName;
     }
 
+    /**
+     * Gets the certificate's email address field.
+     *
+     * @return string The certificate's email address field.
+     */
     public function getEmailAddress()
     {
         return $this->_emailAddress;
     }
 
+    /**
+     * Gets the certificate's issuer name field.
+     *
+     * @return string The certificate's issuer name field.
+     */
     public function getIssuerName()
     {
         return $this->_issuerName;
     }
 
+    /**
+     * Gets the certificate's serial number field.
+     *
+     * @return string The certificate's serial number field.
+     */
     public function getSerialNumber()
     {
         return $this->_serialNumber;
     }
 
+    /**
+     * Gets the certificate's validity start field.
+     *
+     * @return string The certificate's validity start field.
+     */
     public function getValidityStart()
     {
         return $this->_validityStart;
     }
 
+    /**
+     * Gets the certificate's validity end field.
+     *
+     * @return string The certificate's validity end field.
+     */
     public function getValidityEnd()
     {
         return $this->_validityEnd;
     }
 
+    /**
+     * Gets the certificate's PKI Brazil fields field.
+     *
+     * @return PkiBrazilCertificateFields The certificate's PKI Brazil fields field.
+     */
     public function getPkiBrazil()
     {
         return $this->_pkiBrazil;
     }
 
+    /**
+     * Gets the certificate's PKI Italy fields field.
+     *
+     * @return PkiItalyCertificateFields The certificate's PKI Italy fields field.
+     */
     public function getPkiItaly()
     {
         return $this->_pkiItaly;
     }
 
+    /**
+     * Gets the certificate's issuer field.
+     *
+     * @return PKCertificate The certificate's issuer field.
+     */
     public function getIssuer()
     {
         return $this->_issuer;
     }
 
+    /**
+     * Gets the thumbprint content field.
+     *
+     * @return string The thumbprint content field.
+     */
     public function getBinaryThumbprintSHA256()
     {
         return $this->_binaryThumbprintSHA256;
     }
 
+    /**
+     * Gets the thumbprint Base64-encoded content field.
+     *
+     * @return string The thumbprint Base64-encoded content field.
+     */
     public function getThumbprint()
     {
         return $this->_thumbprint;

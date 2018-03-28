@@ -17,6 +17,12 @@ class PadesSignatureExplorer extends SignatureExplorer
         parent::__construct($config);
     }
 
+    /**
+     * Opens the PAdES signature.
+     *
+     * @return PadesSignature The content of the signature.
+     * @throws \Exception If the signature file is not provided.
+     */
     public function open()
     {
         if (empty($this->signatureFilePath)) {

@@ -25,6 +25,13 @@ class CadesSigner extends Signer
     }
 
     //region setFileToSign
+
+    /**
+     * Sets the file to be signed from its path.
+     *
+     * @param $path string The path to the file to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setFileToSignFromPath($path)
     {
         if (!file_exists($path)) {
@@ -34,6 +41,11 @@ class CadesSigner extends Signer
         $this->fileToSignPath = $path;
     }
 
+    /**
+     * Sets the file to be signed from its binary content.
+     *
+     * @param $contentRaw string The binary content of the file to be signed.
+     */
     public function setFileToSignFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -41,6 +53,12 @@ class CadesSigner extends Signer
         $this->dataFilePath = $tempFilePath;
     }
 
+    /**
+     * Sets the file to be signed from its Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the file to be signed.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setFileToSignFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -50,11 +68,23 @@ class CadesSigner extends Signer
         $this->setDataFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the file to be signed from its path. This method is only an alias for setFileToSignFromPath() method.
+     *
+     * @param $path string The path to the file to be signed.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setFileToSign($path)
     {
         $this->setFileToSignFromPath($path);
     }
 
+    /**
+     * Sets the file to be signed from its binary content. This method is only an alias for
+     * setFileToSignFromContentRaw() method.
+     *
+     * @param $contentRaw string The binary content of the file to be signed.
+     */
     public function setFileToSignContent($contentRaw)
     {
         $this->setFileToSignFromContentRaw($contentRaw);
@@ -62,6 +92,13 @@ class CadesSigner extends Signer
     //endregion
 
     //region setDataFile
+
+    /**
+     * Sets the data file from its path.
+     *
+     * @param $path string The path to the data file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setDataFileFromPath($path)
     {
         if (!file_exists($path)) {
@@ -71,6 +108,11 @@ class CadesSigner extends Signer
         $this->dataFilePath = $path;
     }
 
+    /**
+     * Sets the data file from its binary content.
+     *
+     * @param $contentRaw string The binary content of the data file.
+     */
     public function setDataFileFromContentRaw($contentRaw)
     {
         $tempFilePath = parent::createTempFile();
@@ -78,6 +120,12 @@ class CadesSigner extends Signer
         $this->dataFilePath = $tempFilePath;
     }
 
+    /**
+     * Sets the data file from its Base64-encoded content.
+     *
+     * @param $contentBase64 string The Base64-encoded content of the data file.
+     * @throws \Exception If the provided parameter is not a Base64 string.
+     */
     public function setDataFileFromContentBase64($contentBase64)
     {
         if (!($raw = base64_decode($contentBase64))) {
@@ -87,17 +135,35 @@ class CadesSigner extends Signer
         $this->setDataFileFromContentRaw($raw);
     }
 
+    /**
+     * Sets the data file form its path. This method is only an alias for the setDataFileFromPath() method.
+     *
+     * @param $path string The path to the data file.
+     * @throws \Exception If the provided path is not found.
+     */
     public function setDataFile($path)
     {
         $this->setDataFileFromPath($path);
     }
 
+    /**
+     * Sets the data file from its binary content. This method is only an alias for the setDataFileFromContentRaw()
+     * method.
+     *
+     * @param $contentRaw string The binary content of the data file.
+     */
     public function setDataFileContent($contentRaw)
     {
         $this->setDataFileFromContentRaw($contentRaw);
     }
+
     //endregion
 
+    /**
+     * Performs the CAdES signature.
+     *
+     * @throws \Exception If the paths of the fie to be signed and the output file are not set.
+     */
     public function sign()
     {
         if (empty($this->fileToSignPath)) {
@@ -129,11 +195,21 @@ class CadesSigner extends Signer
         parent::invokePlain(parent::COMMAND_SIGN_CADES, $args);
     }
 
+    /**
+     * Gets the option to encapsulate the original file's content.
+     *
+     * @return bool The option to encapsulate the original file's content.
+     */
     public function getEncapsulateContent()
     {
         return $this->_encapsulateContent;
     }
 
+    /**
+     * Sets the option to encapsulated the original file's content.
+     *
+     * @param $value bool The option to encapsulate the original file's content.
+     */
     public function setEncapsulateContent($value)
     {
         $this->_encapsulateContent = $value;
