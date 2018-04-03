@@ -66,7 +66,7 @@ class XmlSignatureStarter extends SignatureStarter
             throw new \Exception("The provided XML to be signed is not Base64-encoded");
         }
 
-        $this->setCertificateFromContentRaw($raw);
+        $this->setXmlToSignFromContentRaw($raw);
     }
 
     /**
@@ -77,7 +77,7 @@ class XmlSignatureStarter extends SignatureStarter
      */
     public function setXmlToSign($path)
     {
-        $this->setCertificateFromPath($path);
+        $this->setXmlToSignFromPath($path);
     }
 
     /**
@@ -88,7 +88,7 @@ class XmlSignatureStarter extends SignatureStarter
      */
     public function setXmlToSignContent($contentRaw)
     {
-        $this->setCertificateFromContentRaw($contentRaw);
+        $this->setXmlToSignFromContentRaw($contentRaw);
     }
 
     //endregion

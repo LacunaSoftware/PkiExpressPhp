@@ -132,7 +132,7 @@ class SignatureFinisher extends PkiExpressOperator
             throw new \Exception("The provided transfer file is not Base64-encoded");
         }
 
-        $this->setDataFileFromContentRaw($raw);
+        $this->setTransferFileFromContentRaw($raw);
     }
 
     /**
@@ -143,7 +143,7 @@ class SignatureFinisher extends PkiExpressOperator
      */
     public function setTransferFile($path)
     {
-        $this->setFileToSignFromPath($path);
+        $this->setTransferFileFromPath($path);
     }
 
     /**
@@ -154,7 +154,7 @@ class SignatureFinisher extends PkiExpressOperator
      */
     public function setTransferFileContent($contentRaw)
     {
-        $this->setFileToSignFromContentRaw($contentRaw);
+        $this->setTransferFileFromContentRaw($contentRaw);
     }
 
     //endregion
@@ -246,7 +246,7 @@ class SignatureFinisher extends PkiExpressOperator
      */
     public function setDataFileContent($contentRaw)
     {
-        $this->setFileToSignFromContentRaw($contentRaw);
+        $this->setDataFileFromContentRaw($contentRaw);
     }
     //endregion
 

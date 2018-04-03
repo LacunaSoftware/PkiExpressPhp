@@ -50,7 +50,7 @@ class CadesSignatureStarter extends SignatureStarter
     {
         $tempFilePath = parent::createTempFile();
         file_put_contents($tempFilePath, $contentRaw);
-        $this->dataFilePath = $tempFilePath;
+        $this->fileToSignPath = $tempFilePath;
     }
 
     /**
@@ -65,7 +65,7 @@ class CadesSignatureStarter extends SignatureStarter
             throw new \Exception("The provided file to be signed is not Base64-encoded");
         }
 
-        $this->setDataFileFromContentRaw($raw);
+        $this->setFileToSignFromContentRaw($raw);
     }
 
     /**
