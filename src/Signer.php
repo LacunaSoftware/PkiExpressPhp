@@ -27,7 +27,7 @@ abstract class Signer extends PkiExpressOperator
 
     protected function verifyAndAddCommonOptions(&$args)
     {
-        if (empty($this->_certThumb) && empty($this->_pkcs12Path)) {
+        if (empty($this->_certThumb) && empty($this->pkcs12Path)) {
             throw new \RuntimeException("The certificate's thumbprint and the PKCS #12 were not set");
         }
 
@@ -37,9 +37,9 @@ abstract class Signer extends PkiExpressOperator
             $this->versionManager->requireVersion("1.3");
         }
 
-        if (!empty($this->_pkcs12Path)) {
+        if (!empty($this->pkcs12Path)) {
             array_push($args, "--pkcs12");
-            array_push($args, $this->_pkcs12Path);
+            array_push($args, $this->pkcs12Path);
             $this->versionManager->requireVersion("1.3");
         }
 
