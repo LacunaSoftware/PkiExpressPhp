@@ -99,7 +99,8 @@ class SignatureStarter extends PkiExpressOperator
 
     //endregion
 
-    protected function getResult($response, $transferFile) {
+    protected function getResult($response, $transferFile)
+    {
         return (object)array(
             "toSignHash" => $response[0],
             "digestAlgorithm" => $response[1],
