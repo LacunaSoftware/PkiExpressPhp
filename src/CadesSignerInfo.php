@@ -9,7 +9,7 @@ namespace Lacuna\PkiExpress;
  * @property-read $messageDigest DigestAlgorithmAndValue
  * @property-read $signaturePolicy SignaturePolicyIdentifier
  * @property-read $certificate PKCertificate
- * @property-read $signingTime date
+ * @property-read $signingTime string
  * @property-read $certifiedDateReference mixed
  * @property-read $timestamps CadesTimestamp[]
  * @property-read $validationResults ValidationResults
@@ -43,36 +43,71 @@ class CadesSignerInfo
         }
     }
 
+    /**
+     * Gets the message digest.
+     *
+     * @return DigestAlgorithmAndValue The message digest.
+     */
     public function getMessageDigest()
     {
         return $this->_messageDigest;
     }
 
+    /**
+     * Gets the signature policy.
+     *
+     * @return SignaturePolicyIdentifier The signature policy.
+     */
     public function getSignaturePolicy()
     {
         return $this->_signaturePolicy;
     }
 
+    /**
+     * Gets the certificate.
+     *
+     * @return PKCertificate The certificate.
+     */
     public function getCertificate()
     {
         return $this->_certificate;
     }
 
+    /**
+     * Gets the signing time.
+     *
+     * @return string The signing time.
+     */
     public function getSigningTime()
     {
         return $this->_signingTime;
     }
 
+    /**
+     * Gets the certified date reference.
+     *
+     * @return mixed The certified date reference.
+     */
     public function getCertifiedDateReference()
     {
         return $this->_certifiedDateReference;
     }
 
+    /**
+     * Gets array of CAdES timestamps.
+     *
+     * @return CadesTimestamp[] The array of CAdES timestamps.
+     */
     public function getTimestamps()
     {
         return $this->_timestamps;
     }
 
+    /**
+     * Gets the validation results.
+     *
+     * @return ValidationResults The validation results.
+     */
     public function getValidationResults()
     {
         return $this->_validationResults;

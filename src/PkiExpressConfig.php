@@ -38,16 +38,31 @@ class PkiExpressConfig
         $this->_pkiExpressHome = $pkiExpressHome;
     }
 
+    /**
+     * Gets the optional path where this library will search for the PKI Express executable.
+     *
+     * @return string The optional path where this library will search for the PKI Express executable.
+     */
     public function getPkiExpressHome()
     {
         return $this->_pkiExpressHome;
     }
 
+    /**
+     * Gets the optional path where this library will store the temporary files.
+     *
+     * @return string The optional path where this library will store the temporary files.
+     */
     public function getTempFolder()
     {
         return $this->_tempFolder;
     }
 
+    /**
+     * Gets the optional path where this library will store the transfer data files.
+     *
+     * @return string The optional path where this library will store the transfer data files.
+     */
     public function getTransferDataFolder()
     {
         return $this->_transferDataFolder;

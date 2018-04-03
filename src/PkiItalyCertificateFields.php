@@ -24,16 +24,30 @@ class PkiItalyCertificateFields
         $this->_idCarta = $model->idCarta;
     }
 
+    /**
+     * Gets the certificate's type field.
+     *
+     * @return string The certificate's type field.
+     */
     public function getCertificateType()
     {
         return $this->_certificateType;
     }
 
+    /**
+     * Gets the certificate's "codice fiscale" field.
+     * @return string The certificate's "codice fiscale" field.
+     */
     public function getCodiceFiscale()
     {
         return $this->_codiceFiscale;
     }
 
+    /**
+     * Gets the certificate's "id carta" field.
+     *
+     * @return string The certificate's "Id carta" field.
+     */
     public function getIdCarta()
     {
         return $this->_idCarta;

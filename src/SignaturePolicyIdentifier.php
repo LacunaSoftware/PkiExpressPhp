@@ -23,16 +23,31 @@ class SignaturePolicyIdentifier
         $this->_uri = $model->uri;
     }
 
+    /**
+     * Gets the digest algorithm instance referred to this signature policy.
+     *
+     * @return DigestAlgorithmAndValue The digest algorithm instance.
+     */
     public function getDigest()
     {
         return $this->_digest;
     }
 
+    /**
+     * Gets the OID of this signature policy.
+     *
+     * @return string The OID of this signature policy.
+     */
     public function getOid()
     {
         return $this->_oid;
     }
 
+    /**
+     * gets the uri of this signature policy.
+     *
+     * @return string the URI of this signature policy.
+     */
     public function getUri()
     {
         return $this->_uri;

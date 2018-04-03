@@ -6,7 +6,7 @@ namespace Lacuna\PkiExpress;
  * Class CadesTimestamp
  * @package Lacuna\PkiExpress
  *
- * @property-read $genTime date
+ * @property-read $genTime string
  * @property-read $serialNumber string
  * @property-read $messageImprint mixed
  */
@@ -24,16 +24,30 @@ class CadesTimestamp extends CadesSignature
         $this->_messageImprint = $model->messageImprint;
     }
 
+    /**
+     * Gets the gen time.
+     * @return string The gentime.
+     */
     public function getGenTime()
     {
         return $this->_genTime;
     }
 
+    /**
+     * Gets the serial number.
+     *
+     * @return string The serial number.
+     */
     public function getSerialNumber()
     {
         return $this->_serialNumber;
     }
 
+    /**
+     * Gets the message imprint.
+     *
+     * @return mixed The message imprint.
+     */
     public function getMessageImprint()
     {
         return $this->_messageImprint;
