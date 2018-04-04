@@ -160,7 +160,7 @@ class Authentication extends PkiExpressOperator
 
         // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
         // verify the nonce against replay-attacks.
-        if (!$this->useExternalStorage) {
+        if (!$this->_useExternalStorage) {
             $args[] = "--nonce-store";
             $args[] = $this->config->getTransferDataFolder();
             $this->versionManager->requireVersion("1.4");
@@ -214,7 +214,7 @@ class Authentication extends PkiExpressOperator
 
         // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
         // verify the nonce against replay-attacks.
-        if (!$this->useExternalStorage) {
+        if (!$this->_useExternalStorage) {
             $args[] = "--nonce-store";
             $args[] = $this->config->getTransferDataFolder();
             $this->versionManager->requireVersion("1.4");
