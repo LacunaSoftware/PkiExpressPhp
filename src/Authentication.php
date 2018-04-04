@@ -156,15 +156,15 @@ class Authentication extends PkiExpressOperator
      */
     public function start()
     {
-
-        if (!$this->_useExternalStorage && empty($this->nonceStorePath)) {
-            throw new \Exception("The option to use internal storage and no nonce store was provided");
-        }
-
         $args = [];
 
-        // Add nonce store path based on option chosen.
-        $this->addNonceStoreOption($args);
+        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
+        // verify the nonce against replay-attacks.
+        if (!$this->useExternalStorage) {
+            $args[] = "--nonce-store";
+            $args[] = $this->config->getTransferDataFolder();
+            $this->versionManager->requireVersion("1.4");
+        }
 
         // This operation can only be used on versions greater than 1.4 of the PKI Express.
         $this->versionManager->requireVersion("1.4");
@@ -206,18 +206,19 @@ class Authentication extends PkiExpressOperator
             throw new \Exception("The signature was not set");
         }
 
-        if (!$this->_useExternalStorage && empty($this->nonceStorePath)) {
-            throw new \Exception("The option to use internal storage and no nonce store was provided");
-        }
-
         $args = array(
             $this->nonce,
             $this->certificatePath,
             $this->signature
         );
 
-        // Add nonce store path based on option chosen.
-        $this->addNonceStoreOption($args);
+        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
+        // verify the nonce against replay-attacks.
+        if (!$this->useExternalStorage) {
+            $args[] = "--nonce-store";
+            $args[] = $this->config->getTransferDataFolder();
+            $this->versionManager->requireVersion("1.4");
+        }
 
         // This operation can only be used on versions greater than 1.4 of the PKI Express.
         $this->versionManager->requireVersion("1.4");
@@ -254,16 +255,5 @@ class Authentication extends PkiExpressOperator
                 parent::__set($prop, $value);
         }
 
-    }
-
-    private function addNonceStoreOption(&$args)
-    {
-        $args[] = "--nonce-store";
-        if ($this->_useExternalStorage) {
-            // Use transfer data folder, when the option "use external storage" is set.
-            $args[] = $this->config->getTransferDataFolder();
-        } else {
-            $args[] = $this->nonceStorePath;
-        }
     }
 }
