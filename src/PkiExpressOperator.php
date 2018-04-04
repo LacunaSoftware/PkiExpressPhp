@@ -54,6 +54,12 @@ abstract class PkiExpressOperator
     /** @protected */
     const COMMAND_EDIT_PDF = "edit-pdf";
 
+    /** @protected */
+    const COMMAND_START_AUTH = "start-auth";
+
+    /** @protected */
+    const COMMAND_COMPLETE_AUTH = "complete-auth";
+
 
     protected function __construct($config = null)
     {
