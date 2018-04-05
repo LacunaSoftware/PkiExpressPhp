@@ -30,7 +30,7 @@ class ValidationResults
      */
     public function isValid()
     {
-        return empty($this->errors);
+        return empty($this->_errors);
     }
 
     /**
