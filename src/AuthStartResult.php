@@ -15,11 +15,11 @@ class AuthStartResult
     public $digestAlgorithm;
     public $digestAlgorithmOid;
 
+
     public function __construct($model)
     {
         $this->nonce = $model->toSignData;
         $this->digestAlgorithm = $model->digestAlgorithmName;
         $this->digestAlgorithmOid = $model->digestAlgorithmOid;
     }
-
 }

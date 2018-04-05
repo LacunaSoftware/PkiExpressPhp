@@ -10,12 +10,11 @@ namespace Lacuna\PkiExpress;
  */
 class Authentication extends PkiExpressOperator
 {
-    private $nonceStorePath;
     private $nonce;
     private $certificatePath;
     private $signature;
 
-    private $_useExternalStorage = true;
+    private $_useExternalStorage = false;
 
 
     public function __construct($config = null)
@@ -27,32 +26,18 @@ class Authentication extends PkiExpressOperator
     }
 
     /**
-     * Sets the path to be used as PKI Express's local nonce store.
-     *
-     * @param $path string The path tobe used as PKI Express's local nonce store.
-     * @throws \Exception If the provided path was not found or it is not a directory.
-     */
-    public function setNonceStore($path)
-    {
-        if (!file_exists($path) || !is_dir($path)) {
-            throw new \Exception("The provided nonce store path was not found");
-        }
-        $this->nonceStorePath = $path;
-    }
-
-    /**
      * Sets the Base64-encoded nonce used on complete method.
      *
-     * @param $nonce string The Base64-encoded nonce.
+     * @param $nonceBase64 string The Base64-encoded nonce.
      * @throws \Exception If the provided string is not Base64-encoded.
      */
-    public function setNonce($nonce)
+    public function setNonce($nonceBase64)
     {
-        if (!base64_decode($nonce)) {
+        if (!base64_decode($nonceBase64)) {
             throw new \Exception("The provided nonce is not valid");
         }
 
-        $this->nonce = $nonce;
+        $this->nonce = $nonceBase64;
     }
 
     //region setCertificate
@@ -136,16 +121,16 @@ class Authentication extends PkiExpressOperator
     /**
      * Sets the computed signature value.
      *
-     * @param $signature string The Base64-encoded signature value.
+     * @param $signatureBase64 string The computed signature value.
      * @throws \Exception If the provided signature is not Base64-encoded.
      */
-    public function setSignature($signature)
+    public function setSignature($signatureBase64)
     {
-        if (!base64_decode($signature)) {
+        if (!base64_decode($signatureBase64)) {
             throw new \Exception("The provided signature was not valid");
         }
 
-        $this->signature = $signature;
+        $this->signature = $signatureBase64;
     }
 
     /**
@@ -158,11 +143,12 @@ class Authentication extends PkiExpressOperator
     {
         $args = [];
 
-        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
-        // verify the nonce against replay-attacks.
+        // The option "use external storage" is used to ignore the PKI Express's nonce verification, to make a own nonce
+        // store and nonce verification.
         if (!$this->_useExternalStorage) {
             $args[] = "--nonce-store";
             $args[] = $this->config->getTransferDataFolder();
+            // This option can only be used on versions greater than 1.4 of the PKI Express.
             $this->versionManager->requireVersion("1.4");
         }
 
@@ -172,13 +158,9 @@ class Authentication extends PkiExpressOperator
         // Invoke command.
         $response = parent::invoke(parent::COMMAND_START_AUTH, $args);
 
-        // Parse output
+        // Parse output and return result.
         $parsedOutput = $this->parseOutput($response->output[0]);
-
-        // Convert response
-        $result = new AuthStartResult($parsedOutput);
-
-        return $result;
+        return new AuthStartResult($parsedOutput);
     }
 
     /**
@@ -193,7 +175,6 @@ class Authentication extends PkiExpressOperator
      */
     public function complete()
     {
-
         if (empty($this->nonce)) {
             throw new \Exception("The nonce value was not set");
         }
@@ -212,11 +193,12 @@ class Authentication extends PkiExpressOperator
             $this->signature
         );
 
-        // If chosen to use internal nonce store, pass temp data folder to store the nonces, where PKI Express will
-        // verify the nonce against replay-attacks.
+        // The option "use external storage" is used to ignore the PKI Express's nonce verification, to make a own nonce
+        // store and nonce verification.
         if (!$this->_useExternalStorage) {
             $args[] = "--nonce-store";
             $args[] = $this->config->getTransferDataFolder();
+            // This option can only be used on versions greater than 1.4 of the PKI Express.
             $this->versionManager->requireVersion("1.4");
         }
 
@@ -226,13 +208,9 @@ class Authentication extends PkiExpressOperator
         // Invoke command.
         $response = parent::invoke(parent::COMMAND_COMPLETE_AUTH, $args);
 
-        // Parse output.
+        // Parse output and return result.
         $parsedOutput = $this->parseOutput($response->output[0]);
-
-        // Convert response.
-        $result = new AuthCompleteResult($parsedOutput);
-
-        return $result;
+        return new AuthCompleteResult($parsedOutput);
     }
 
     /**

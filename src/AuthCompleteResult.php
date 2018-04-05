@@ -14,12 +14,16 @@ class AuthCompleteResult
     public $certificate;
     public $validationResults;
 
+
     public function __construct($model)
     {
-        $this->certificate = new PKCertificate($model->certificate);
+
+        if ($model->certificate != null) {
+            $this->certificate = new PKCertificate($model->certificate);
+        }
+
         if ($model->validationResults != null) {
-            $this->validationResults = new ValidationResults($this->validationResults);
+            $this->validationResults = new ValidationResults($model->validationResults);
         }
     }
-
 }
