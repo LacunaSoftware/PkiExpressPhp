@@ -119,9 +119,9 @@ class Authentication extends PkiExpressOperator
     //endregion
 
     /**
-     * Sets the computed signature value.
+     * Sets the computed signature.
      *
-     * @param $signatureBase64 string The computed signature value.
+     * @param $signatureBase64 string The computed signature.
      * @throws \Exception If the provided signature is not Base64-encoded.
      */
     public function setSignature($signatureBase64)
@@ -171,7 +171,6 @@ class Authentication extends PkiExpressOperator
      *  - The nonce;
      *  - The certificate's path;
      *  - The signature;
-     *  - The option to use external storage is not set and no nonce store path is set.
      */
     public function complete()
     {
