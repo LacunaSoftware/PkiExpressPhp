@@ -129,11 +129,12 @@ class XmlSigner extends Signer
         if (isset($this->_signaturePolicy)) {
             $args[] = '--policy';
             $args[] = $this->_signaturePolicy;
+        }
 
-            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
-                array_push($args, "--element-id");
-                array_push($args, $this->_toSignElementId);
-            }
+        // Set element id to be signed.
+        if (!empty($this->_toSignElementId)) {
+            array_push($args, "--element-id");
+            array_push($args, $this->_toSignElementId);
         }
 
         // Add timestamp authority.
