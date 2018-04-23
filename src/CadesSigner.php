@@ -186,6 +186,40 @@ class CadesSigner extends Signer
         // Verify and add common options between signers
         parent::verifyAndAddCommonOptions($args);
 
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $cmdArgs[] = '--policy';
+            $cmdArgs[] = $this->_signaturePolicy;
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $cmdArgs[] = '--tsa-url';
+            $cmdArgs[] = $this->_timestampAuthority->url;
+
+            // User choose SSL authentication.
+            switch ($this->_timestampAuthority->type) {
+                case TimestampAuthority::BASIC_AUTH:
+                    $cmdArgs[] = '--tsa-basic-auth';
+                    $cmdArgs[] = $this->_timestampAuthority->basicAuth;
+                    break;
+                case TimestampAuthority::OAUTH_TOKEN:
+                    $cmdArgs[] = '--tsa-ssl-thumbprint';
+                    $cmdArgs[] = $this->_timestampAuthority->certThumb;
+                    break;
+                case TimestampAuthority::SSL:
+                    $cmdArgs[] = '--tsa-token';
+                    $cmdArgs[] = $this->_timestampAuthority->token;
+                    break;
+                default:
+                    throw new \Exception('Unknown authentication type of the timestamp authority');
+
+            }
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
+        }
+
         if (!empty($this->dataFilePath)) {
             array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);

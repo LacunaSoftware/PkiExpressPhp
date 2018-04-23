@@ -15,6 +15,8 @@ abstract class Signer extends PkiExpressOperator
 
     protected $_certThumb;
     protected $_certPassword;
+    protected $_signaturePolicy;
+    protected $_timestampAuthority;
 
 
     public function __construct($config = null)
@@ -148,6 +150,46 @@ abstract class Signer extends PkiExpressOperator
         $this->_certPassword = $certPassword;
     }
 
+    /**
+     * Sets the signature policy for the signature.
+     *
+     * @param $policy string The signature policy fo the signature.
+     */
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    /**
+     * Gets the timestamp authority.
+     *
+     * @return TimestampAuthority The timestamp authority.
+     */
+    public function getTimestampAuthority()
+    {
+        return $this->_timestampAuthority;
+    }
+
+    /**
+     * Sets the timestamp authority.
+     *
+     * @param $value TimestampAuthority The timestamp authority.
+     */
+    public function setTimestampAuthority($value)
+    {
+        $this->_timestampAuthority = $value;
+    }
+
+    public function __get($prop)
+    {
+        switch ($prop) {
+            case "timestampAuthority":
+                return $this->getTimestampAuthority();
+            default:
+                parent::__get($prop);
+        }
+    }
+
     public function __set($prop, $value)
     {
         switch ($prop) {
@@ -156,6 +198,12 @@ abstract class Signer extends PkiExpressOperator
                 break;
             case "certPassword":
                 $this->setCertPassword($value);
+                break;
+            case "signaturePolicy":
+                $this->setSignaturePolicy($value);
+                break;
+            case "timestampAuthority":
+                $this->setTimestampAuthority($value);
                 break;
             default:
                 parent::__set($prop, $value);
