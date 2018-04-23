@@ -14,7 +14,6 @@ class XmlSigner extends Signer
     private $xmlToSignPath;
 
     private $_toSignElementId;
-    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -114,6 +113,10 @@ class XmlSigner extends Signer
             throw new \Exception("The signature element id to be signed was not set");
         }
 
+        if (XmlSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \Exception("The provided policy requires a timestamp authority and none was provided.");
+        }
+
         $args = array(
             $this->xmlToSignPath,
             $this->outputFilePath
@@ -122,15 +125,10 @@ class XmlSigner extends Signer
         // Verify and add common options between signers
         parent::verifyAndAddCommonOptions($args);
 
-        if (!empty($this->_signaturePolicy)) {
-
-            array_push($args, "--policy");
-            array_push($args, $this->_signaturePolicy);
-
-            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
-                array_push($args, "--element-id");
-                array_push($args, $this->_toSignElementId);
-            }
+        // Set signature policy.
+        if (!empty($this->_signaturePolicy) && $this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
+            array_push($args, "--element-id");
+            array_push($args, $this->_toSignElementId);
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
@@ -143,16 +141,6 @@ class XmlSigner extends Signer
     }
 
     /**
-     * Sets the element's id to be signed.
-     *
-     * @param $elementId string The element's id to be signed.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
-    /**
      * Sets the signature policy for the signature.
      *
      * @param $policy string The signature policy fo the signature.
@@ -162,9 +150,6 @@ class XmlSigner extends Signer
         switch ($prop) {
             case "toSignElementId":
                 $this->setToSignElementId($value);
-                break;
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
                 break;
             default:
                 parent::__set($prop, $value);

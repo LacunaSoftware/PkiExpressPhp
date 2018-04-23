@@ -14,7 +14,6 @@ class XmlSignatureStarter extends SignatureStarter
     private $xmlToSignPath;
 
     private $_toSignElementId;
-    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -116,6 +115,10 @@ class XmlSignatureStarter extends SignatureStarter
             throw new \Exception("The signature element was not set");
         }
 
+        if (XmlSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \Exception("The provided policy requires a timestamp authority and none was provided.");
+        }
+
         // Generate transfer file
         $transferFile = parent::getTransferFileName();
 
@@ -125,16 +128,10 @@ class XmlSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
-        if (isset($this->_signaturePolicy)) {
+        if (isset($this->_signaturePolicy) && $this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
 
-            array_push($args, "--policy");
-            array_push($args, $this->_signaturePolicy);
-
-            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
-
-                array_push($args, "--element-id");
-                array_push($args, $this->_toSignElementId);
-            }
+            array_push($args, "--element-id");
+            array_push($args, $this->_toSignElementId);
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
@@ -154,24 +151,11 @@ class XmlSignatureStarter extends SignatureStarter
         $this->_toSignElementId = $elementId;
     }
 
-    /**
-     * Sets the signature policy for the signature.
-     *
-     * @param $policy string The signature policy fo the signature.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
     public function __set($prop, $value)
     {
         switch ($prop) {
             case "toSignElementId":
                 $this->setToSignElementId($value);
-                break;
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
                 break;
             default:
                 parent::__set($prop, $value);

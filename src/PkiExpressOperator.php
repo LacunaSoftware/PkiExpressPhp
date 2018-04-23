@@ -22,6 +22,8 @@ abstract class PkiExpressOperator
 
     protected $_offline = false;
     protected $_trustLacunaTestRoot = false;
+    protected $_timestampAuthority;
+    protected $_signaturePolicy;
 
 
     /** @protected */
@@ -123,6 +125,40 @@ abstract class PkiExpressOperator
             $this->versionManager->requireVersion("1.2");
         }
 
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $cmdArgs[] = '--policy';
+            $cmdArgs[] = $this->_signaturePolicy;
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $cmdArgs[] = '--tsa-url';
+            $cmdArgs[] = $this->_timestampAuthority->url;
+
+            // User choose SSL authentication.
+            switch ($this->_timestampAuthority->type) {
+                case TimestampAuthority::BASIC_AUTH:
+                    $cmdArgs[] = '--tsa-basic-auth';
+                    $cmdArgs[] = $this->_timestampAuthority->basicAuth;
+                    break;
+                case TimestampAuthority::OAUTH_TOKEN:
+                    $cmdArgs[] = '--tsa-ssl-thumbprint';
+                    $cmdArgs[] = $this->_timestampAuthority->certThumb;
+                    break;
+                case TimestampAuthority::SSL:
+                    $cmdArgs[] = '--tsa-token';
+                    $cmdArgs[] = $this->_timestampAuthority->token;
+                    break;
+                default:
+                    throw new \Exception('Unknown authentication type of the timestamp authority');
+
+            }
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
+        }
+
         // Add base64 output option.
         if (!$plainOutput) {
             $cmdArgs[] = '--base64';
@@ -139,6 +175,7 @@ abstract class PkiExpressOperator
         $escapedArgs = array();
         foreach ($cmdArgs as $arg) {
             array_push($escapedArgs, escapeshellarg($arg));
+
         }
 
         // Perform the "dotnet" command
@@ -262,6 +299,26 @@ abstract class PkiExpressOperator
     }
 
     /**
+     * Gets the signature policy for the signature.
+     *
+     * @return string
+     */
+    public function getSignaturePolicy()
+    {
+        return $this->_signaturePolicy;
+    }
+
+    /**
+     * Sets the signature policy for the signature.
+     *
+     * @param $policy string The signature policy fo the signature.
+     */
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    /**
      * Adds an alias for a path to a file.
      *
      * @param $alias string An alias to the $path parameter.
@@ -332,6 +389,16 @@ abstract class PkiExpressOperator
         $this->_trustLacunaTestRoot = $value;
     }
 
+    public function getTimestampAuthority()
+    {
+        return $this->_timestampAuthority;
+    }
+
+    public function setTimestampAuthority($value)
+    {
+        $this->_timestampAuthority = $value;
+    }
+
     public function __get($attr)
     {
         switch ($attr) {
@@ -339,6 +406,10 @@ abstract class PkiExpressOperator
                 return $this->getTrustLacunaTestRoot();
             case "offline":
                 return $this->getOffline();
+            case "timestampAuthority":
+                return $this->getTimestampAuthority();
+            case "signaturePolicy":
+                return $this->getSignaturePolicy();
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
@@ -353,6 +424,12 @@ abstract class PkiExpressOperator
                 break;
             case "offline":
                 $this->setOffline($value);
+                break;
+            case "timestampAuthority":
+                $this->setTimestampAuthority($value);
+                break;
+            case "signaturePolicy":
+                $this->setSignaturePolicy($value);
                 break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);

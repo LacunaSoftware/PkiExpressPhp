@@ -174,6 +174,10 @@ class CadesSigner extends Signer
             throw new \Exception("The output destination was not set");
         }
 
+        if (CadesSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \Exception("The provided policy requires a timestamp authority and none was provided.");
+        }
+
         $args = array(
             $this->fileToSignPath,
             $this->outputFilePath

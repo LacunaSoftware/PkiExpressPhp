@@ -138,6 +138,10 @@ class PadesSignatureStarter extends SignatureStarter
             throw new \Exception("The certificate was not set");
         }
 
+        if (PadesSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \Exception("The provided policy requires a timestamp authority and none was provided.");
+        }
+
         // Generate transfer file
         $transferFile = parent::getTransferFileName();
 
