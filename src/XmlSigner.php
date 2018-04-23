@@ -127,8 +127,8 @@ class XmlSigner extends Signer
 
         // Set signature policy.
         if (isset($this->_signaturePolicy)) {
-            $cmdArgs[] = '--policy';
-            $cmdArgs[] = $this->_signaturePolicy;
+            $args[] = '--policy';
+            $args[] = $this->_signaturePolicy;
 
             if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && !empty($this->_toSignElementId)) {
                 array_push($args, "--element-id");
@@ -138,22 +138,22 @@ class XmlSigner extends Signer
 
         // Add timestamp authority.
         if (isset($this->_timestampAuthority)) {
-            $cmdArgs[] = '--tsa-url';
-            $cmdArgs[] = $this->_timestampAuthority->url;
+            $args[] = '--tsa-url';
+            $args[] = $this->_timestampAuthority->url;
 
             // User choose SSL authentication.
             switch ($this->_timestampAuthority->type) {
                 case TimestampAuthority::BASIC_AUTH:
-                    $cmdArgs[] = '--tsa-basic-auth';
-                    $cmdArgs[] = $this->_timestampAuthority->basicAuth;
+                    $args[] = '--tsa-basic-auth';
+                    $args[] = $this->_timestampAuthority->basicAuth;
                     break;
                 case TimestampAuthority::SSL:
-                    $cmdArgs[] = '--tsa-ssl-thumbprint';
-                    $cmdArgs[] = $this->_timestampAuthority->sslThumbprint;
+                    $args[] = '--tsa-ssl-thumbprint';
+                    $args[] = $this->_timestampAuthority->sslThumbprint;
                     break;
                 case TimestampAuthority::OAUTH_TOKEN:
-                    $cmdArgs[] = '--tsa-token';
-                    $cmdArgs[] = $this->_timestampAuthority->token;
+                    $args[] = '--tsa-token';
+                    $args[] = $this->_timestampAuthority->token;
                     break;
                 default:
                     throw new \Exception('Unknown authentication type of the timestamp authority');
