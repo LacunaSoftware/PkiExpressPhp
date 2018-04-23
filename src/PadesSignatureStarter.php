@@ -168,11 +168,11 @@ class PadesSignatureStarter extends SignatureStarter
                     $cmdArgs[] = '--tsa-basic-auth';
                     $cmdArgs[] = $this->_timestampAuthority->basicAuth;
                     break;
-                case TimestampAuthority::OAUTH_TOKEN:
-                    $cmdArgs[] = '--tsa-ssl-thumbprint';
-                    $cmdArgs[] = $this->_timestampAuthority->certThumb;
-                    break;
                 case TimestampAuthority::SSL:
+                    $cmdArgs[] = '--tsa-ssl-thumbprint';
+                    $cmdArgs[] = $this->_timestampAuthority->sslThumbprint;
+                    break;
+                case TimestampAuthority::OAUTH_TOKEN:
                     $cmdArgs[] = '--tsa-token';
                     $cmdArgs[] = $this->_timestampAuthority->token;
                     break;
