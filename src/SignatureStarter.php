@@ -5,6 +5,9 @@ namespace Lacuna\PkiExpress;
 /**
  * Class SignatureStarter
  * @package Lacuna\PkiExpress
+ *
+ * @property-write $signaturePolicy string
+ * @property $timestampAuthority TimestampAuthority
  */
 class SignatureStarter extends PkiExpressOperator
 {

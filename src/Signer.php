@@ -7,6 +7,8 @@ namespace Lacuna\PkiExpress;
  * @package Lacuna\PkiExpress
  *
  * @property-write $certThumb string
+ * @property-write $signaturePolicy string
+ * @property $timestampAuthority TimestampAuthority
  */
 abstract class Signer extends PkiExpressOperator
 {
