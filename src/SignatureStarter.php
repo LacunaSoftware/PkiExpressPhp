@@ -9,11 +9,12 @@ namespace Lacuna\PkiExpress;
  * @property-write $signaturePolicy string
  * @property $timestampAuthority TimestampAuthority
  */
-class SignatureStarter extends PkiExpressOperator
+abstract class SignatureStarter extends PkiExpressOperator
 {
     protected $certificatePath;
 
     protected $_signaturePolicy;
+    /** @var TimestampAuthority */
     protected $_timestampAuthority;
 
 
@@ -169,5 +170,34 @@ class SignatureStarter extends PkiExpressOperator
         );
     }
 
+    protected function verifyAndAddCommonOptions(&$args) {
 
+        if (StandardSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \RuntimeException("The provided policy requires a timestamp authority and none was provided.");
+        }
+
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $args[] = '--policy';
+            $args[] = $this->_signaturePolicy;
+
+            // This operation evolved after version 1.5 to other signature policies.
+            if ($this->_signaturePolicy != StandardSignaturePolicies::XML_DSIG_BASIC &&
+                $this->_signaturePolicy != StandardSignaturePolicies::NFE_PADRAO_NACIONAL) {
+
+                // This operation can only be used on versions greater than 1.5 of the PKI Express.
+                $this->versionManager->requireVersion("1.5");
+            }
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $args += $this->_timestampAuthority->getCmdArguments();
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
+        }
+    }
+
+    public abstract function start();
 }

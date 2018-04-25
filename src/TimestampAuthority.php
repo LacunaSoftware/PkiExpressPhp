@@ -121,4 +121,33 @@ class TimestampAuthority
                 return null;
         }
     }
+
+    function getCmdArguments() {
+
+        $args = [];
+        array_push($args, '--tsa-url');
+        array_push($args, $this->url);
+
+        // User choose SSL authentication.
+        switch ($this->type) {
+            case TimestampAuthority::BASIC_AUTH:
+                array_push($args, '--tsa-basic-auth');
+                array_push($args, $this->basicAuth);
+                break;
+            case TimestampAuthority::SSL:
+                array_push($args, '--tsa-ssl-thumbprint');
+                array_push($args, $this->sslThumbprint);
+                break;
+            case TimestampAuthority::OAUTH_TOKEN:
+                array_push($args, '--tsa-token');
+                array_push($args, $this->token);
+                break;
+            default:
+                throw new \RuntimeException('Unknown authentication type of the timestamp authority');
+
+        }
+
+        return $args;
+
+    }
 }

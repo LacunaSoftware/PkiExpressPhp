@@ -174,10 +174,6 @@ class CadesSigner extends Signer
             throw new \Exception("The output destination was not set");
         }
 
-        if (CadesSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
-            throw new \Exception("The provided policy requires a timestamp authority and none was provided.");
-        }
-
         $args = array(
             $this->fileToSignPath,
             $this->outputFilePath
@@ -185,43 +181,6 @@ class CadesSigner extends Signer
 
         // Verify and add common options between signers
         parent::verifyAndAddCommonOptions($args);
-
-        // Set signature policy.
-        if (isset($this->_signaturePolicy)) {
-            $args[] = '--policy';
-            $args[] = $this->_signaturePolicy;
-
-            // This option can only be used on versions greater than 1.5 of the PKI Express.
-            $this->versionManager->requireVersion("1.5");
-        }
-
-        // Add timestamp authority.
-        if (isset($this->_timestampAuthority)) {
-            $args[] = '--tsa-url';
-            $args[] = $this->_timestampAuthority->url;
-
-            // User choose SSL authentication.
-            switch ($this->_timestampAuthority->type) {
-                case TimestampAuthority::BASIC_AUTH:
-                    $args[] = '--tsa-basic-auth';
-                    $args[] = $this->_timestampAuthority->basicAuth;
-                    break;
-                case TimestampAuthority::SSL:
-                    $args[] = '--tsa-ssl-thumbprint';
-                    $args[] = $this->_timestampAuthority->sslThumbprint;
-                    break;
-                case TimestampAuthority::OAUTH_TOKEN:
-                    $args[] = '--tsa-token';
-                    $args[] = $this->_timestampAuthority->token;
-                    break;
-                default:
-                    throw new \Exception('Unknown authentication type of the timestamp authority');
-
-            }
-
-            // This option can only be used on versions greater than 1.5 of the PKI Express.
-            $this->versionManager->requireVersion("1.5");
-        }
 
         if (!empty($this->dataFilePath)) {
             array_push($args, "--data-file");
