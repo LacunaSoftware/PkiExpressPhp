@@ -8,7 +8,7 @@ namespace Lacuna\PkiExpress;
  */
 class PadesSignaturePolicies
 {
-    const BASIC = 'pades';
+    const PADES_BASIC = 'pades';
     const PADES_T = 'pades-t';
 
     public static function requireTimestamp($policy)

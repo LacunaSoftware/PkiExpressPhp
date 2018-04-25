@@ -127,8 +127,6 @@ class XmlSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
-
-
         // Set signature policy.
         if (isset($this->_signaturePolicy)) {
             $args[] = '--policy';

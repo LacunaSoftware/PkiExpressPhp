@@ -8,11 +8,15 @@ namespace Lacuna\PkiExpress;
  */
 class XmlSignaturePolicies
 {
+    // Backward compatibility
     const BASIC = 'basic';
-    const XADES_BES = 'xades';
     const NFE = 'nfe';
-    const ICPBR_ADR_BASICA = 'ad-rb';
-    const ICPBR_ADR_TEMPO = 'ad-rt';
+
+    const XML_BASIC = 'basic';
+    const XML_XADES_BES = 'xades';
+    const XML_NFE = 'nfe';
+    const XML_ICPBR_ADR_BASICA = 'ad-rb';
+    const XML_ICPBR_ADR_TEMPO = 'ad-rt';
 
     public static function requireTimestamp($policy)
     {
@@ -20,6 +24,6 @@ class XmlSignaturePolicies
             return false;
         }
 
-        return $policy == XmlSignaturePolicies::ICPBR_ADR_TEMPO;
+        return $policy == XmlSignaturePolicies::XML_ICPBR_ADR_TEMPO;
     }
 }

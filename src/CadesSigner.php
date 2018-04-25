@@ -190,6 +190,9 @@ class CadesSigner extends Signer
         if (isset($this->_signaturePolicy)) {
             $args[] = '--policy';
             $args[] = $this->_signaturePolicy;
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
         }
 
         // Add timestamp authority.
