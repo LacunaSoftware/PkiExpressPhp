@@ -122,9 +122,8 @@ class TimestampAuthority
         }
     }
 
-    function getCmdArguments() {
+    function addCmdArguments(&$args) {
 
-        $args = [];
         array_push($args, '--tsa-url');
         array_push($args, $this->_url);
 
@@ -146,8 +145,5 @@ class TimestampAuthority
                 throw new \RuntimeException('Unknown authentication type of the timestamp authority');
 
         }
-
-        return $args;
-
     }
 }

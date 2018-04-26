@@ -74,7 +74,7 @@ abstract class Signer extends PkiExpressOperator
 
         // Add timestamp authority.
         if (isset($this->_timestampAuthority)) {
-            $args += $this->_timestampAuthority->getCmdArguments();
+            $this->_timestampAuthority->addCmdArguments($args);
 
             // This option can only be used on versions greater than 1.5 of the PKI Express.
             $this->versionManager->requireVersion("1.5");
