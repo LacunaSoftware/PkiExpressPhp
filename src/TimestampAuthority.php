@@ -126,21 +126,21 @@ class TimestampAuthority
 
         $args = [];
         array_push($args, '--tsa-url');
-        array_push($args, $this->url);
+        array_push($args, $this->_url);
 
         // User choose SSL authentication.
         switch ($this->type) {
             case TimestampAuthority::BASIC_AUTH:
                 array_push($args, '--tsa-basic-auth');
-                array_push($args, $this->basicAuth);
+                array_push($args, $this->_basicAuth);
                 break;
             case TimestampAuthority::SSL:
                 array_push($args, '--tsa-ssl-thumbprint');
-                array_push($args, $this->sslThumbprint);
+                array_push($args, $this->_sslThumbprint);
                 break;
             case TimestampAuthority::OAUTH_TOKEN:
                 array_push($args, '--tsa-token');
-                array_push($args, $this->token);
+                array_push($args, $this->_token);
                 break;
             default:
                 throw new \RuntimeException('Unknown authentication type of the timestamp authority');
