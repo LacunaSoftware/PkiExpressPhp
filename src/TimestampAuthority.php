@@ -20,19 +20,24 @@ class TimestampAuthority
     private $_basicAuth;
     private $_type;
 
-    /** @private */
-    const BASIC_AUTH = 0;
 
     /** @private */
-    const SSL = 1;
+    const NONE = 0;
 
     /** @private */
-    const OAUTH_TOKEN = 2;
+    const BASIC_AUTH = 1;
+
+    /** @private */
+    const SSL = 2;
+
+    /** @private */
+    const OAUTH_TOKEN = 3;
 
 
     public function __construct($url)
     {
         $this->_url = $url;
+        $this->_type = TimestampAuthority::NONE;
     }
 
     public function setOAuthTokenAuthentication($token)
@@ -129,6 +134,8 @@ class TimestampAuthority
 
         // User choose SSL authentication.
         switch ($this->type) {
+            case TimestampAuthority::NONE:
+                break;
             case TimestampAuthority::BASIC_AUTH:
                 array_push($args, '--tsa-basic-auth');
                 array_push($args, $this->_basicAuth);
