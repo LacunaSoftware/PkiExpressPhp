@@ -118,21 +118,15 @@ class XmlSignatureStarter extends SignatureStarter
             $this->certificatePath,
             $this->config->getTransferDataFolder() . $transferFile
         );
-
-        // Set signature policy.
-        if (isset($this->_signaturePolicy)) {
-            $args[] = '--policy';
-            $args[] = $this->_signaturePolicy;
-        }
+        
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
 
         // Set element id to be signed.
         if (isset($this->_toSignElementId)) {
             array_push($args, "--element-id");
             array_push($args, $this->_toSignElementId);
         }
-
-        // Verify and add common options between signers
-        parent::verifyAndAddCommonOptions($args);
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
         $response = parent::invokePlain(parent::COMMAND_START_XML, $args);

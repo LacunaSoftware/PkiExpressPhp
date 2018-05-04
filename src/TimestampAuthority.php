@@ -83,7 +83,7 @@ class TimestampAuthority
      *
      * @return string The client certificate's thumbprint used on SSL authentication.
      */
-    public function getSslThumbprint()
+    public function getSSLThumbprint()
     {
         return $this->_sslThumbprint;
     }
@@ -116,7 +116,7 @@ class TimestampAuthority
             case "token":
                 return $this->getToken();
             case "sslThumbprint":
-                return $this->getSslThumbprint();
+                return $this->getSSLThumbprint();
             case "basicAuth":
                 return $this->getBasicAuth();
             case "type":
