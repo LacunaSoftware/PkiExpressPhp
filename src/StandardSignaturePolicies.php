@@ -16,6 +16,7 @@ class StandardSignaturePolicies
 
     // PAdES policies
     const PADES_BASIC = 'pades';
+    const PADES_BASIC_WITH_LTV = 'pades-ltv';
     const PADES_T = 'pades-t';
 
     // XML policies
