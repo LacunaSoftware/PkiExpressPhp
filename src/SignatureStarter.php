@@ -14,8 +14,6 @@ abstract class SignatureStarter extends PkiExpressOperator
     protected $certificatePath;
 
     protected $_signaturePolicy;
-    /** @var TimestampAuthority */
-    protected $_timestampAuthority;
 
 
     public function __construct($config = null)
@@ -105,60 +103,6 @@ abstract class SignatureStarter extends PkiExpressOperator
     }
 
     //endregion
-
-    /**
-     * Sets the signature policy for the signature.
-     *
-     * @param $policy string The signature policy fo the signature.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
-    /**
-     * Gets the timestamp authority.
-     *
-     * @return TimestampAuthority The timestamp authority.
-     */
-    public function getTimestampAuthority()
-    {
-        return $this->_timestampAuthority;
-    }
-
-    /**
-     * Sets the timestamp authority.
-     *
-     * @param $value TimestampAuthority The timestamp authority.
-     */
-    public function setTimestampAuthority($value)
-    {
-        $this->_timestampAuthority = $value;
-    }
-
-    public function __get($prop)
-    {
-        switch ($prop) {
-            case "timestampAuthority":
-                return $this->getTimestampAuthority();
-            default:
-                parent::__get($prop);
-        }
-    }
-
-    public function __set($prop, $value)
-    {
-        switch ($prop) {
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
-                break;
-            case "timestampAuthority":
-                $this->setTimestampAuthority($value);
-                break;
-            default:
-                parent::__set($prop, $value);
-        }
-    }
 
     protected function getResult($response, $transferFile)
     {

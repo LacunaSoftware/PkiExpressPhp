@@ -22,6 +22,9 @@ abstract class PkiExpressOperator
 
     protected $_offline = false;
     protected $_trustLacunaTestRoot = false;
+    protected $_signaturePolicy;
+    /** @var TimestampAuthority */
+    protected $_timestampAuthority;
 
 
     /** @protected */
@@ -324,6 +327,26 @@ abstract class PkiExpressOperator
     }
 
     /**
+     * Sets the signature policy for the signature.
+     *
+     * @param $policy string The signature policy fo the signature.
+     */
+    public function setSignaturePolicy($policy)
+    {
+        $this->_signaturePolicy = $policy;
+    }
+
+    /**
+     * Gets the signature policy for the signature.
+     *
+     * @return string The signature policy fo the signature.
+     */
+    public function getSignaturePolicy()
+    {
+        return $this->_signaturePolicy;
+    }
+
+    /**
      * Sets the option to make PKI Express to trust on Lacuna's Root Test.
      *
      * @param $value bool The option to trust on Lacuna's Root Test.
@@ -333,6 +356,26 @@ abstract class PkiExpressOperator
         $this->_trustLacunaTestRoot = $value;
     }
 
+    /**
+     * Gets the timestamp authority.
+     *
+     * @return TimestampAuthority The timestamp authority.
+     */
+    public function getTimestampAuthority()
+    {
+        return $this->_timestampAuthority;
+    }
+
+    /**
+     * Sets the timestamp authority.
+     *
+     * @param $value TimestampAuthority The timestamp authority.
+     */
+    public function setTimestampAuthority($value)
+    {
+        $this->_timestampAuthority = $value;
+    }
+
     public function __get($attr)
     {
         switch ($attr) {
@@ -340,6 +383,10 @@ abstract class PkiExpressOperator
                 return $this->getTrustLacunaTestRoot();
             case "offline":
                 return $this->getOffline();
+            case "signaturePolicy":
+                return $this->getSignaturePolicy();
+            case "timestampAuthority":
+                return $this->getTimestampAuthority();
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
@@ -354,6 +401,12 @@ abstract class PkiExpressOperator
                 break;
             case "offline":
                 $this->setOffline($value);
+                break;
+            case "signaturePolicy":
+                $this->setSignaturePolicy($value);
+                break;
+            case "timestampAuthority":
+                $this->setTimestampAuthority($value);
                 break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);
