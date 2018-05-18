@@ -7,14 +7,12 @@ namespace Lacuna\PkiExpress;
  * @package Lacuna\PkiExpress
  *
  * @property-write $toSignElementId string
- * @property-write $signaturePolicy string
  */
 class XmlSignatureStarter extends SignatureStarter
 {
     private $xmlToSignPath;
 
     private $_toSignElementId;
-    private $_signaturePolicy;
 
 
     public function __construct($config = null)
@@ -112,10 +110,6 @@ class XmlSignatureStarter extends SignatureStarter
             throw new \Exception("The certificate was not set");
         }
 
-        if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && empty($this->_toSignElementId)) {
-            throw new \Exception("The signature element was not set");
-        }
-
         // Generate transfer file
         $transferFile = parent::getTransferFileName();
 
@@ -124,17 +118,14 @@ class XmlSignatureStarter extends SignatureStarter
             $this->certificatePath,
             $this->config->getTransferDataFolder() . $transferFile
         );
+        
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
 
-        if (isset($this->_signaturePolicy)) {
-
-            array_push($args, "--policy");
-            array_push($args, $this->_signaturePolicy);
-
-            if ($this->_signaturePolicy == XmlSignaturePolicies::NFE && isset($this->_toSignElementId)) {
-
-                array_push($args, "--element-id");
-                array_push($args, $this->_toSignElementId);
-            }
+        // Set element id to be signed.
+        if (isset($this->_toSignElementId)) {
+            array_push($args, "--element-id");
+            array_push($args, $this->_toSignElementId);
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
@@ -154,24 +145,11 @@ class XmlSignatureStarter extends SignatureStarter
         $this->_toSignElementId = $elementId;
     }
 
-    /**
-     * Sets the signature policy for the signature.
-     *
-     * @param $policy string The signature policy fo the signature.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
     public function __set($prop, $value)
     {
         switch ($prop) {
             case "toSignElementId":
                 $this->setToSignElementId($value);
-                break;
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
                 break;
             default:
                 parent::__set($prop, $value);

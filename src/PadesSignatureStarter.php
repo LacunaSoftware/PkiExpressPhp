@@ -147,6 +147,9 @@ class PadesSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
+
         if (!empty($this->vrJsonPath)) {
             array_push($args, "--visual-rep");
             array_push($args, $this->vrJsonPath);

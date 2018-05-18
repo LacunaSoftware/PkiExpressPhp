@@ -183,6 +183,9 @@ class CadesSignatureStarter extends SignatureStarter
             $this->config->getTransferDataFolder() . $transferFile
         );
 
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
+
         if (!empty($this->dataFilePath)) {
             array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);

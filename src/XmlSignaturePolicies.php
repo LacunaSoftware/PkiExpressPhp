@@ -5,6 +5,8 @@ namespace Lacuna\PkiExpress;
 /**
  * Class XmlSignaturePolicies
  * @package Lacuna\PkiExpress
+ *
+ * @deprecated
  */
 class XmlSignaturePolicies
 {

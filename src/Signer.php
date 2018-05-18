@@ -7,6 +7,8 @@ namespace Lacuna\PkiExpress;
  * @package Lacuna\PkiExpress
  *
  * @property-write $certThumb string
+ * @property-write $signaturePolicy string
+ * @property $timestampAuthority TimestampAuthority
  */
 abstract class Signer extends PkiExpressOperator
 {
@@ -31,6 +33,10 @@ abstract class Signer extends PkiExpressOperator
             throw new \RuntimeException("The certificate's thumbprint and the PKCS #12 were not set");
         }
 
+        if (StandardSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \RuntimeException("The provided policy requires a timestamp authority and none was provided.");
+        }
+
         if (!empty($this->_certThumb)) {
             array_push($args, "--thumbprint");
             array_push($args, $this->_certThumb);
@@ -47,6 +53,28 @@ abstract class Signer extends PkiExpressOperator
             array_push($args, "--password");
             array_push($args, $this->_certPassword);
             $this->versionManager->requireVersion("1.3");
+        }
+
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $args[] = '--policy';
+            $args[] = $this->_signaturePolicy;
+
+            // This operation evolved after version 1.5 to other signature policies.
+            if ($this->_signaturePolicy != StandardSignaturePolicies::XML_DSIG_BASIC &&
+                $this->_signaturePolicy != StandardSignaturePolicies::NFE_PADRAO_NACIONAL) {
+
+                // This operation can only be used on versions greater than 1.5 of the PKI Express.
+                $this->versionManager->requireVersion("1.5");
+            }
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $this->_timestampAuthority->addCmdArguments($args);
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
         }
     }
 
@@ -161,4 +189,6 @@ abstract class Signer extends PkiExpressOperator
                 parent::__set($prop, $value);
         }
     }
+
+    public abstract function sign();
 }

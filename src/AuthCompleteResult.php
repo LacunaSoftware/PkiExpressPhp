@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: IsmaelM
- * Date: 04/04/2018
- * Time: 12:45
- */
 
 namespace Lacuna\PkiExpress;
 
