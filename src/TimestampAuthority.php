@@ -10,7 +10,7 @@ namespace Lacuna\PkiExpress;
  * @property-read $token string
  * @property-read $sslThumbprint string
  * @property-read $basicAuth string
- * @property-read $type string
+ * @property-read $authType string
  */
 class TimestampAuthority
 {
@@ -18,39 +18,44 @@ class TimestampAuthority
     private $_token;
     private $_sslThumbprint;
     private $_basicAuth;
-    private $_type;
+    private $_authType;
+
 
     /** @private */
-    const BASIC_AUTH = 0;
+    const NONE = 0;
 
     /** @private */
-    const SSL = 1;
+    const BASIC_AUTH = 1;
 
     /** @private */
-    const OAUTH_TOKEN = 2;
+    const SSL = 2;
+
+    /** @private */
+    const OAUTH_TOKEN = 3;
 
 
     public function __construct($url)
     {
         $this->_url = $url;
+        $this->_authType = TimestampAuthority::NONE;
     }
 
     public function setOAuthTokenAuthentication($token)
     {
         $this->_token = $token;
-        $this->_type = TimestampAuthority::OAUTH_TOKEN;
+        $this->_authType = TimestampAuthority::OAUTH_TOKEN;
     }
 
     public function setBasicAuthentication($username, $password)
     {
         $this->_basicAuth = "{$username}:{$password}";
-        $this->_type = TimestampAuthority::BASIC_AUTH;
+        $this->_authType = TimestampAuthority::BASIC_AUTH;
     }
 
     public function setSSLAuthentication($sslThumbprint)
     {
         $this->_sslThumbprint = $sslThumbprint;
-        $this->_type = TimestampAuthority::SSL;
+        $this->_authType = TimestampAuthority::SSL;
     }
 
     /**
@@ -78,7 +83,7 @@ class TimestampAuthority
      *
      * @return string The client certificate's thumbprint used on SSL authentication.
      */
-    public function getSslThumbprint()
+    public function getSSLThumbprint()
     {
         return $this->_sslThumbprint;
     }
@@ -98,9 +103,9 @@ class TimestampAuthority
      *
      * @return string The authentication's type.
      */
-    public function getType()
+    public function getAuthType()
     {
-        return $this->_type;
+        return $this->_authType;
     }
 
     public function __get($prop)
@@ -111,14 +116,41 @@ class TimestampAuthority
             case "token":
                 return $this->getToken();
             case "sslThumbprint":
-                return $this->getSslThumbprint();
+                return $this->getSSLThumbprint();
             case "basicAuth":
                 return $this->getBasicAuth();
-            case "type":
-                return $this->getType();
+            case "authType":
+                return $this->getAuthType();
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . "::$" . $prop);
                 return null;
+        }
+    }
+
+    function addCmdArguments(&$args) {
+
+        array_push($args, '--tsa-url');
+        array_push($args, $this->_url);
+
+        // User choose SSL authentication.
+        switch ($this->_authType) {
+            case TimestampAuthority::NONE:
+                break;
+            case TimestampAuthority::BASIC_AUTH:
+                array_push($args, '--tsa-basic-auth');
+                array_push($args, $this->_basicAuth);
+                break;
+            case TimestampAuthority::SSL:
+                array_push($args, '--tsa-ssl-thumbprint');
+                array_push($args, $this->_sslThumbprint);
+                break;
+            case TimestampAuthority::OAUTH_TOKEN:
+                array_push($args, '--tsa-token');
+                array_push($args, $this->_token);
+                break;
+            default:
+                throw new \RuntimeException('Unknown authentication type of the timestamp authority');
+
         }
     }
 }

@@ -5,13 +5,15 @@ namespace Lacuna\PkiExpress;
 /**
  * Class SignatureStarter
  * @package Lacuna\PkiExpress
+ *
+ * @property-write $signaturePolicy string
+ * @property $timestampAuthority TimestampAuthority
  */
-class SignatureStarter extends PkiExpressOperator
+abstract class SignatureStarter extends PkiExpressOperator
 {
     protected $certificatePath;
 
     protected $_signaturePolicy;
-    protected $_timestampAuthority;
 
 
     public function __construct($config = null)
@@ -102,60 +104,6 @@ class SignatureStarter extends PkiExpressOperator
 
     //endregion
 
-    /**
-     * Sets the signature policy for the signature.
-     *
-     * @param $policy string The signature policy fo the signature.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
-    /**
-     * Gets the timestamp authority.
-     *
-     * @return TimestampAuthority The timestamp authority.
-     */
-    public function getTimestampAuthority()
-    {
-        return $this->_timestampAuthority;
-    }
-
-    /**
-     * Sets the timestamp authority.
-     *
-     * @param $value TimestampAuthority The timestamp authority.
-     */
-    public function setTimestampAuthority($value)
-    {
-        $this->_timestampAuthority = $value;
-    }
-
-    public function __get($prop)
-    {
-        switch ($prop) {
-            case "timestampAuthority":
-                return $this->getTimestampAuthority();
-            default:
-                parent::__get($prop);
-        }
-    }
-
-    public function __set($prop, $value)
-    {
-        switch ($prop) {
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
-                break;
-            case "timestampAuthority":
-                $this->setTimestampAuthority($value);
-                break;
-            default:
-                parent::__set($prop, $value);
-        }
-    }
-
     protected function getResult($response, $transferFile)
     {
         return (object)array(
@@ -166,5 +114,34 @@ class SignatureStarter extends PkiExpressOperator
         );
     }
 
+    protected function verifyAndAddCommonOptions(&$args) {
 
+        if (StandardSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \RuntimeException("The provided policy requires a timestamp authority and none was provided.");
+        }
+
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $args[] = '--policy';
+            $args[] = $this->_signaturePolicy;
+
+            // This operation evolved after version 1.5 to other signature policies.
+            if ($this->_signaturePolicy != StandardSignaturePolicies::XML_DSIG_BASIC &&
+                $this->_signaturePolicy != StandardSignaturePolicies::NFE_PADRAO_NACIONAL) {
+
+                // This operation can only be used on versions greater than 1.5 of the PKI Express.
+                $this->versionManager->requireVersion("1.5");
+            }
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $this->_timestampAuthority->addCmdArguments($args);
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
+        }
+    }
+
+    public abstract function start();
 }

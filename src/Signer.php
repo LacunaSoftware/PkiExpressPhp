@@ -7,6 +7,8 @@ namespace Lacuna\PkiExpress;
  * @package Lacuna\PkiExpress
  *
  * @property-write $certThumb string
+ * @property-write $signaturePolicy string
+ * @property $timestampAuthority TimestampAuthority
  */
 abstract class Signer extends PkiExpressOperator
 {
@@ -15,8 +17,6 @@ abstract class Signer extends PkiExpressOperator
 
     protected $_certThumb;
     protected $_certPassword;
-    protected $_signaturePolicy;
-    protected $_timestampAuthority;
 
 
     public function __construct($config = null)
@@ -31,6 +31,10 @@ abstract class Signer extends PkiExpressOperator
     {
         if (empty($this->_certThumb) && empty($this->pkcs12Path)) {
             throw new \RuntimeException("The certificate's thumbprint and the PKCS #12 were not set");
+        }
+
+        if (StandardSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
+            throw new \RuntimeException("The provided policy requires a timestamp authority and none was provided.");
         }
 
         if (!empty($this->_certThumb)) {
@@ -49,6 +53,28 @@ abstract class Signer extends PkiExpressOperator
             array_push($args, "--password");
             array_push($args, $this->_certPassword);
             $this->versionManager->requireVersion("1.3");
+        }
+
+        // Set signature policy.
+        if (isset($this->_signaturePolicy)) {
+            $args[] = '--policy';
+            $args[] = $this->_signaturePolicy;
+
+            // This operation evolved after version 1.5 to other signature policies.
+            if ($this->_signaturePolicy != StandardSignaturePolicies::XML_DSIG_BASIC &&
+                $this->_signaturePolicy != StandardSignaturePolicies::NFE_PADRAO_NACIONAL) {
+
+                // This operation can only be used on versions greater than 1.5 of the PKI Express.
+                $this->versionManager->requireVersion("1.5");
+            }
+        }
+
+        // Add timestamp authority.
+        if (isset($this->_timestampAuthority)) {
+            $this->_timestampAuthority->addCmdArguments($args);
+
+            // This option can only be used on versions greater than 1.5 of the PKI Express.
+            $this->versionManager->requireVersion("1.5");
         }
     }
 
@@ -150,46 +176,6 @@ abstract class Signer extends PkiExpressOperator
         $this->_certPassword = $certPassword;
     }
 
-    /**
-     * Sets the signature policy for the signature.
-     *
-     * @param $policy string The signature policy fo the signature.
-     */
-    public function setSignaturePolicy($policy)
-    {
-        $this->_signaturePolicy = $policy;
-    }
-
-    /**
-     * Gets the timestamp authority.
-     *
-     * @return TimestampAuthority The timestamp authority.
-     */
-    public function getTimestampAuthority()
-    {
-        return $this->_timestampAuthority;
-    }
-
-    /**
-     * Sets the timestamp authority.
-     *
-     * @param $value TimestampAuthority The timestamp authority.
-     */
-    public function setTimestampAuthority($value)
-    {
-        $this->_timestampAuthority = $value;
-    }
-
-    public function __get($prop)
-    {
-        switch ($prop) {
-            case "timestampAuthority":
-                return $this->getTimestampAuthority();
-            default:
-                parent::__get($prop);
-        }
-    }
-
     public function __set($prop, $value)
     {
         switch ($prop) {
@@ -199,14 +185,10 @@ abstract class Signer extends PkiExpressOperator
             case "certPassword":
                 $this->setCertPassword($value);
                 break;
-            case "signaturePolicy":
-                $this->setSignaturePolicy($value);
-                break;
-            case "timestampAuthority":
-                $this->setTimestampAuthority($value);
-                break;
             default:
                 parent::__set($prop, $value);
         }
     }
+
+    public abstract function sign();
 }
