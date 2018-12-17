@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: IsmaelM
- * Date: 17/12/2018
- * Time: 19:47
- */
 
 namespace Lacuna\PkiExpress;
-
-
-use Throwable;
 
 class InstallationNotFoundException extends \Exception
 {

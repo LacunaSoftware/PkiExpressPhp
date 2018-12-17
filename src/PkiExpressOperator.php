@@ -187,11 +187,11 @@ abstract class PkiExpressOperator
 
             if ($os == "linux") {
                 if (!file_exists($home . '/pkie.dll')) {
-                    throw new \InstallationNotFoundException('The file pkie.dll could not be found on directory ' . $home);
+                    throw new InstallationNotFoundException('The file pkie.dll could not be found on directory ' . $home);
                 }
             } else {
                 if (!file_exists($home . '\\pkie.exe')) {
-                    throw new \InstallationNotFoundException('The file pkie.exe could not be found on directory ' . $home);
+                    throw new InstallationNotFoundException('The file pkie.exe could not be found on directory ' . $home);
                 }
             }
 
@@ -216,7 +216,7 @@ abstract class PkiExpressOperator
                 }
 
                 if (empty($home)) {
-                    throw new \InstallationNotFoundException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
+                    throw new InstallationNotFoundException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
                 }
             }
         }
