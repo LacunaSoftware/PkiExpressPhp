@@ -147,7 +147,11 @@ abstract class PkiExpressOperator
 
         // Perform the "dotnet" command
         $cmd = implode(' ', $escapedArgs);
-        exec($cmd, $output, $return);
+        try {
+            exec($cmd, $output, $return);
+        } catch (\Exception $ex) {
+            throw new InstallationNotFoundException('Could not find PKI Express\' installation', $ex);
+        }
         if ($return != 0) {
             $implodedOutput = implode(PHP_EOL, $output);
             if ($return == 1 && version_compare($this->versionManager->minVersion, '1.0') > 0) {
@@ -183,11 +187,11 @@ abstract class PkiExpressOperator
 
             if ($os == "linux") {
                 if (!file_exists($home . '/pkie.dll')) {
-                    throw new \Exception('The file pkie.dll could not be found on directory ' . $home);
+                    throw new \InstallationNotFoundException('The file pkie.dll could not be found on directory ' . $home);
                 }
             } else {
                 if (!file_exists($home . '\\pkie.exe')) {
-                    throw new \Exception('The file pkie.exe could not be found on directory ' . $home);
+                    throw new \InstallationNotFoundException('The file pkie.exe could not be found on directory ' . $home);
                 }
             }
 
@@ -212,7 +216,7 @@ abstract class PkiExpressOperator
                 }
 
                 if (empty($home)) {
-                    throw new \Exception("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
+                    throw new \InstallationNotFoundException("Could not determine the installation folder of PKI Express. If you installed PKI Express on a custom folder, make sure you are specifying it on the PkiExpressConfig object.");
                 }
             }
         }
