@@ -80,7 +80,7 @@ class PkiBrazilCertificateFields
      * @return string The certificate's type field.
      */
     public function getCertificateType()
-    {cp
+    {
         return $this->_certificateType;
     }
 

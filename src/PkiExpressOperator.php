@@ -25,6 +25,8 @@ abstract class PkiExpressOperator
     protected $_signaturePolicy;
     /** @var TimestampAuthority */
     protected $_timestampAuthority;
+    protected $_culture;
+    protected $_timeZone;
 
 
     /** @protected */
@@ -130,6 +132,22 @@ abstract class PkiExpressOperator
         if (!$plainOutput) {
             $cmdArgs[] = '--base64';
             $this->versionManager->requireVersion("1.3");
+        }
+
+        // Add culture information.
+        if ($this->_culture) {
+            $cmdArgs[] = '--culture';
+            $cmdArgs[] = $this->_culture;
+            // This option can only be used on versions greater than 1.10 of the PKI Express.
+            $this->versionManager->requireVersion('1.10');
+        }
+
+        // Add timezone option.
+        if ($this->_timeZone) {
+            $cmdArgs[] = '--timezone';
+            $cmdArgs[] = $this->_timeZone;
+            // This opration can only be used on version greater than 1.10 of the PKI Express.
+            $this->versionManager->requireVersion('1.10');
         }
 
         // Verify the necessity of using the --min-version flag.
@@ -380,6 +398,46 @@ abstract class PkiExpressOperator
         $this->_timestampAuthority = $value;
     }
 
+    /**
+     * Gets the culture used on date formatting.
+     *
+     * @return string The culture used on date formatting.
+     */
+    public function getCulture()
+    {
+        return $this->_culture;
+    }
+
+    /**
+     * Sets the culture used on date formatting.
+     *
+     * @param $value string The culture used on date formatting.
+     */
+    public function setCulture($value)
+    {
+        $this->_culture = $value;
+    }
+
+    /**
+     * Gets the timezone used on date formatting.
+     *
+     * @return string The timezone used on date formatting.
+     */
+    public function getTimeZone()
+    {
+        return $this->_timeZone;
+    }
+
+    /**
+     * Sets the timezone used on date formatting.
+     *
+     * @param $value string The timezone used on date formatting.
+     */
+    public function setTimeZone($value)
+    {
+        $this->_timeZone = $value;
+    }
+
     public function __get($attr)
     {
         switch ($attr) {
@@ -391,6 +449,10 @@ abstract class PkiExpressOperator
                 return $this->getSignaturePolicy();
             case "timestampAuthority":
                 return $this->getTimestampAuthority();
+            case "culture":
+                return $this->getCulture();
+            case 'timeZone':
+                return $this->getTimeZone();
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
@@ -411,6 +473,12 @@ abstract class PkiExpressOperator
                 break;
             case "timestampAuthority":
                 $this->setTimestampAuthority($value);
+                break;
+            case "culture":
+                $this->setCulture($value);
+                break;
+            case "timeZone":
+                $this->setTimeZone($value);
                 break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $prop);
