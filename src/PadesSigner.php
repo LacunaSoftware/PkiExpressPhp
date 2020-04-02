@@ -15,6 +15,9 @@ class PadesSigner extends Signer
 
     private $_overwriteOriginalFile = false;
 
+    public $suppressDefaultVisualRepresentation = false;
+    public $reason;
+
 
     public function __construct($config = null)
     {
@@ -159,6 +162,21 @@ class PadesSigner extends Signer
         if (!empty($this->vrJsonPath)) {
             array_push($args, "--visual-rep");
             array_push($args, $this->vrJsonPath);
+        }
+
+        if (!empty($this->reason)) {
+            array_push($args, '--reason');
+            array_push($args, $this->reason);
+
+            // This option can only be used on versions greater than 1.13.0 of the PKI Express.
+            $this->versionManager->requireVersion('1.13');
+        }
+
+        if ($this->suppressDefaultVisualRepresentation) {
+            array_push($args, '--suppress-default-visual-rep');
+
+            // This option can only be used on versions greater than 1.13.1 of the PKI Express.
+            $this->versionManager->requireVersion('1.13.1');
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
