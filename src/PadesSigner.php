@@ -216,7 +216,7 @@ class PadesSigner extends Signer
     /**
      * Gets the customized signature fieldName.
      *
-     * @return bool The option to overwrite the original file.
+     * @return string The customized signature fieldName.
      */
     public function getCustomSignatureFieldName()
     {
@@ -226,7 +226,7 @@ class PadesSigner extends Signer
     /**
      * Sets the customized signature fieldName.
      *
-     * @param $value bool The option to overwrite the original file.
+     * @param $value string The customized signature fieldName.
      */
     public function setCustomSignatureFieldName($value)
     {
