@@ -14,6 +14,7 @@ class PadesSigner extends Signer
     private $vrJsonPath;
 
     private $_overwriteOriginalFile = false;
+    private $_customSignatureFieldName = null;
 
     public $suppressDefaultVisualRepresentation = false;
     public $reason;
@@ -164,6 +165,14 @@ class PadesSigner extends Signer
             array_push($args, $this->vrJsonPath);
         }
 
+        if (!empty($this->_customSignatureFieldName)) {
+            array_push($args, '--custom-signature-field-name');
+            array_push($args, $this->_customSignatureFieldName);
+
+             // This option can only be used on versions greater than 1.15.0 of the PKI Express.
+            $this->versionManager->requireVersion('1.15');
+        }
+
         if (!empty($this->reason)) {
             array_push($args, '--reason');
             array_push($args, $this->reason);
@@ -202,6 +211,26 @@ class PadesSigner extends Signer
     public function setOverwriteOriginalFile($value)
     {
         $this->_overwriteOriginalFile = $value;
+    }
+
+    /**
+     * Gets the customized signature fieldName.
+     *
+     * @return string The customized signature fieldName.
+     */
+    public function getCustomSignatureFieldName()
+    {
+        return $this->_customSignatureFieldName;
+    }
+
+    /**
+     * Sets the customized signature fieldName.
+     *
+     * @param $value string The customized signature fieldName.
+     */
+    public function setCustomSignatureFieldName($value)
+    {
+        $this->_customSignatureFieldName = $value;
     }
 
     public function __get($prop)
