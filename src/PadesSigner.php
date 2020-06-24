@@ -18,6 +18,7 @@ class PadesSigner extends Signer
 
     public $suppressDefaultVisualRepresentation = false;
     public $reason;
+    public $certificateLevel;
 
 
     public function __construct($config = null)
@@ -169,8 +170,16 @@ class PadesSigner extends Signer
             array_push($args, '--custom-signature-field-name');
             array_push($args, $this->_customSignatureFieldName);
 
-             // This option can only be used on versions greater than 1.15.0 of the PKI Express.
+            // This option can only be used on versions greater than 1.15.0 of the PKI Express.
             $this->versionManager->requireVersion('1.15');
+        }
+
+        if (!empty($this->certificateLevel)) {
+            array_push($args, '--certificate-level');
+            array_push($args, $this->certificateLevel);
+
+            // This option can only be used on versions greater than 1.16.0 of the PKI Express.
+//            $this->versionManager->requireVersion('1.16');
         }
 
         if (!empty($this->reason)) {
@@ -238,6 +247,8 @@ class PadesSigner extends Signer
         switch ($prop) {
             case "overwriteOriginalFile":
                 return $this->getOverwriteOriginalFile();
+            case "customSignatureFieldName":
+                return $this->getCustomSignatureFieldName();
             default:
                 return parent::__get($prop);
         }
@@ -248,6 +259,9 @@ class PadesSigner extends Signer
         switch ($prop) {
             case "overwriteOriginalFile":
                 $this->setOverwriteOriginalFile($value);
+                break;
+            case "customSignatureFieldName":
+                $this->setCustomSignatureFieldName($value);
                 break;
             default:
                 parent::__set($prop, $value);
