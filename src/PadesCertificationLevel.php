@@ -4,7 +4,7 @@
 namespace Lacuna\PkiExpress;
 
 
-class PadesCertificateLevel
+class PadesCertificationLevel
 {
     const NOT_CERTIFIED = 'not-certified';
     const CERTIFIED_FORM_FILLING = 'certified-form-filling';

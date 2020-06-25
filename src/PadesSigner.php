@@ -18,7 +18,7 @@ class PadesSigner extends Signer
 
     public $suppressDefaultVisualRepresentation = false;
     public $reason;
-    public $certificateLevel;
+    public $certificationLevel;
 
 
     public function __construct($config = null)
@@ -174,9 +174,9 @@ class PadesSigner extends Signer
             $this->versionManager->requireVersion('1.15');
         }
 
-        if (!empty($this->certificateLevel)) {
-            array_push($args, '--certificate-level');
-            array_push($args, $this->certificateLevel);
+        if (!empty($this->certificationLevel)) {
+            array_push($args, '--certification-level');
+            array_push($args, $this->certificationLevel);
 
             // This option can only be used on versions greater than 1.16.0 of the PKI Express.
 //            $this->versionManager->requireVersion('1.16');

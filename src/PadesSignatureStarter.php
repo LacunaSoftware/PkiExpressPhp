@@ -13,7 +13,7 @@ class PadesSignatureStarter extends SignatureStarter
 
     public $suppressDefaultVisualRepresentation = false;
     public $reason;
-    public $certificateLevel;
+    public $certificationLevel;
 
     private $_customSignatureFieldName = null;
 
@@ -203,9 +203,9 @@ class PadesSignatureStarter extends SignatureStarter
             $this->versionManager->requireVersion('1.13.1');
         }
 
-        if (!empty($this->certificateLevel)) {
-            array_push($args, '--certificate-level');
-            array_push($args, $this->certificateLevel);
+        if (!empty($this->certificationLevel)) {
+            array_push($args, '--certification-level');
+            array_push($args, $this->certificationLevel);
 
             // This option can only be used on versions greater than 1.16.0 of the PKI Express.
 //            $this->versionManager->requireVersion('1.16');
