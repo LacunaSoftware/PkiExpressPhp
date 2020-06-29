@@ -179,7 +179,7 @@ class PadesSigner extends Signer
             array_push($args, $this->certificationLevel);
 
             // This option can only be used on versions greater than 1.16.0 of the PKI Express.
-//            $this->versionManager->requireVersion('1.16');
+            $this->versionManager->requireVersion('1.16');
         }
 
         if (!empty($this->reason)) {
