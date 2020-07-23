@@ -12,6 +12,7 @@ class CadesSignatureStarter extends SignatureStarter
 {
     private $fileToSignPath;
     private $dataFilePath;
+    private $dataHashesPath;
 
     private $_encapsulateContent = true;
 
@@ -134,7 +135,6 @@ class CadesSignatureStarter extends SignatureStarter
 
         $this->setDataFileFromContentRaw($raw);
     }
-
     /**
      * Sets the detached data file's local path. This method is only an alias for the setDataFileFromPath() method.
      *
@@ -157,6 +157,44 @@ class CadesSignatureStarter extends SignatureStarter
     }
 
     //endregion
+
+    /**
+     * Sets the data hashes file's path. This file is a JSON representing a
+     * model that has the information to build a list of data hashes for the
+     * signature. If preferred, the pure PHP object can be provided using the
+     * method setDataHashes().
+     *
+     * @param $path string The path to the data hashes file's path.
+     * @throws \Exception if the provided file is not found.
+     */
+    public function setDataHashesFromFile($path)
+    {
+        if (!file_exists($path)) {
+            throw new \Exception("The provided data hashes file was not found");
+        }
+
+        $this->dataHashesPath = $path;
+    }
+
+    /**
+     * Sets the list of data hashes by passing a pure PHP model. If preferred,
+     * the JSON file can be provided using the method setDataHashes().
+     *
+     * @param $dataHashes DigestAlgorithmAndValue[] The list of data hashes.
+     * @throws \Exception if the model is invalid, and can't be parsed to a
+     * JSON.
+     */
+    public function setDataHashes($dataHashes)
+    {
+        if (!($json = json_encode($dataHashes))) {
+            throw new \Exception("The provided data hashes was not valid");
+        }
+
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $json);
+        $this->dataHashesPath = $tempFilePath;
+    }
+
 
     /**
      * Starts a CAdES signature.
