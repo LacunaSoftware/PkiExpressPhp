@@ -154,7 +154,7 @@ class CadesSignatureFinisher extends SignatureFinisher2
             }
         }
 
-        if (empty($this->transferFilePath)) {
+        if (empty($this->transferFileId)) {
             throw new \Exception("The transfer file was not set");
         }
 
