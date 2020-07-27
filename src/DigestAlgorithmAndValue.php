@@ -55,7 +55,8 @@ class DigestAlgorithmAndValue
         return $this->_hexValue;
     }
 
-    public function toModel() {
+    public function toModel()
+    {
         return [
             "algorithm" => $this->_algorithm->getAlgorithm(),
             "value" => base64_encode($this->_value),

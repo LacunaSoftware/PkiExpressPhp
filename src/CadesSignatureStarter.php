@@ -195,8 +195,8 @@ class CadesSignatureStarter extends SignatureStarter
         $this->dataHashesPath = $tempFilePath;
     }
 
-
     /**
+     * @deprecated
      * Starts a CAdES signature.
      *
      * @return mixed The result of the signature init. These values are used by CadesSignatureFinisher.
@@ -224,6 +224,11 @@ class CadesSignatureStarter extends SignatureStarter
         // Verify and add common options between signers
         parent::verifyAndAddCommonOptions($args);
 
+        if (!empty($this->fileToSignPath)) {
+            array_push($args, "--file");
+            array_push($args, $this->fileToSignPath);
+        }
+
         if (!empty($this->dataFilePath)) {
             array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);
@@ -238,6 +243,69 @@ class CadesSignatureStarter extends SignatureStarter
 
         // Parse output
         return parent::getResult($response, $transferFile);
+    }
+
+    /**
+     * Starts a CAdES signature. (2nd version)
+     *
+     * @return mixed The result of the signature init. These values are used by CadesSignatureFinisher.
+     * @throws \Exception If the paths to the file to be signed and the certificate are not set.
+     */
+    public function start2()
+    {
+        if ($this->_encapsulateContent) {
+            if (empty($this->fileToSignPath)) {
+                throw new \Exception("The file to be signed was not set");
+            }
+        } else {
+            if (empty($this->fileToSignPath) && empty($this->dataHashesPath)) {
+                throw new \Exception("No file or hashes to be signed were set");
+            }
+        }
+
+        if (empty($this->certificatePath)) {
+            throw new \Exception("The certificate was not set");
+        }
+
+        // Generate transfer file
+        $transferFile = parent::getTransferFileName();
+
+        $args = array(
+            $this->certificatePath,
+            $this->config->getTransferDataFolder() . $transferFile
+        );
+
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
+
+        if (!$this->_encapsulateContent) {
+            array_push($args, "--detached");
+
+            if (!empty($this->dataHashesPath)) {
+                array_push($args, "--data-hashes");
+                array_push($args, $this->dataHashesPath);
+            }
+        }
+
+        if (!empty($this->fileToSignPath)) {
+            array_push($args, "--file");
+            array_push($args, $this->fileToSignPath);
+        }
+
+        if (!empty($this->dataFilePath)) {
+            array_push($args, "--data-file");
+            array_push($args, $this->dataFilePath);
+        }
+
+        // This operation can only be used on versions greater than 1.17 of the PKI Express.
+        $this->versionManager->requireVersion('1.17.0');
+
+        // Invoke command
+        $response = parent::invoke(parent::COMMAND_START_CADES2, $args);
+
+        // Parse output and return model.
+        $parsedOutput = $this->parseOutput($response->output[0]);
+        return new SignatureStartResult($parsedOutput, $transferFile);
     }
 
     /**
