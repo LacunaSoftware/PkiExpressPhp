@@ -9,8 +9,6 @@ class CadesSignatureFinisher extends SignatureFinisher2
     private $dataHashesPath;
     private $dataFilePath;
 
-    private $_encapsulateContent = true;
-
     public function __construct($config = null)
     {
         if (!isset($config)) {
@@ -144,14 +142,8 @@ class CadesSignatureFinisher extends SignatureFinisher2
      */
     public function complete()
     {
-        if ($this->_encapsulateContent) {
-            if (empty($this->fileToSignPath)) {
-                throw new \Exception("The file to be signed was not set");
-            }
-        } else {
-            if (empty($this->fileToSignPath) && empty($this->dataHashesPath)) {
-                throw new \Exception("No file or hashes to be signed were set");
-            }
+        if (empty($this->fileToSignPath) && empty($this->dataHashesPath)) {
+            throw new \Exception("No file or hashes to be signed were set");
         }
 
         if (empty($this->transferFileId)) {
@@ -172,15 +164,6 @@ class CadesSignatureFinisher extends SignatureFinisher2
             $this->outputFilePath
         );
 
-        if (!$this->_encapsulateContent) {
-            array_push($args, "--detached");
-
-            if (!empty($this->dataHashesPath)) {
-                array_push($args, "--data-hashes");
-                array_push($args, $this->dataHashesPath);
-            }
-        }
-
         if (!empty($this->fileToSignPath)) {
             array_push($args, "--file");
             array_push($args, $this->fileToSignPath);
@@ -189,6 +172,11 @@ class CadesSignatureFinisher extends SignatureFinisher2
         if ($this->dataFilePath) {
             array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);
+        }
+
+        if (!empty($this->dataHashesPath)) {
+            array_push($args, "--data-hashes");
+            array_push($args, $this->dataHashesPath);
         }
 
         // This operation can only be used on versions greater than 1.17 of the PKI Express.
@@ -200,46 +188,5 @@ class CadesSignatureFinisher extends SignatureFinisher2
         // Parse output and return model.
         $parsedOutput = $this->parseOutput($response->output[0]);
         return new SignatureResult($parsedOutput);
-    }
-
-    /**
-     * Gets the option to encapsulate the original file's content.
-     *
-     * @return bool The option to encapsulate the original file's content.
-     */
-    public function getEncapsulateContent()
-    {
-        return $this->_encapsulateContent;
-    }
-
-    /**
-     * Sets the option to encapsulated the original file's content.
-     *
-     * @param $value bool The option to encapsulate the original file's content.
-     */
-    public function setEncapsulateContent($value)
-    {
-        $this->_encapsulateContent = $value;
-    }
-
-    public function __get($prop)
-    {
-        switch ($prop) {
-            case "encapsulateContent":
-                return $this->getEncapsulateContent();
-            default:
-                return parent::__get($prop);
-        }
-    }
-
-    public function __set($prop, $value)
-    {
-        switch ($prop) {
-            case "encapsulateContent":
-                $this->setEncapsulateContent($value);
-                break;
-            default:
-                parent::__set($prop, $value);
-        }
     }
 }
