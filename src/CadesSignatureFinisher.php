@@ -195,7 +195,7 @@ class CadesSignatureFinisher extends SignatureFinisher2
         $this->versionManager->requireVersion('1.17.0');
 
         // Invoke command
-        $response = parent::invoke(parent::COMMAND_START_CADES2, $args);
+        $response = parent::invoke(parent::COMMAND_COMPLETE_CADES, $args);
 
         // Parse output and return model.
         $parsedOutput = $this->parseOutput($response->output[0]);
