@@ -224,11 +224,6 @@ class CadesSignatureStarter extends SignatureStarter
         // Verify and add common options between signers
         parent::verifyAndAddCommonOptions($args);
 
-        if (!empty($this->fileToSignPath)) {
-            array_push($args, "--file");
-            array_push($args, $this->fileToSignPath);
-        }
-
         if (!empty($this->dataFilePath)) {
             array_push($args, "--data-file");
             array_push($args, $this->dataFilePath);
