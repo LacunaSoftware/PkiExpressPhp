@@ -65,6 +65,21 @@ abstract class PkiExpressOperator
     /** @protected */
     const COMMAND_COMPLETE_AUTH = "complete-auth";
 
+    /** @protected */
+    const COMMAND_GEN_KEY = "gen-key";
+
+    /** @protected */
+    const COMMAND_CREATE_PFX = "create-pfx";
+
+    /** @protected */
+    const COMMAND_STAMP_PDF = "stamp-pdf";
+
+    /** @protected */
+    const COMMAND_MERGE_CMS = "merge-cms";
+
+    /** @protected */
+    const COMMAND_READ_CERT = "read-cert";
+
 
     protected function __construct($config = null)
     {
