@@ -36,6 +36,16 @@ class DigestAlgorithmAndValue
     }
 
     /**
+     * Sets the digest algorithm.
+     *
+     * @param $value DigestAlgorithm The digest algorithm.
+     */
+    public function setAlgorithm($value)
+    {
+        $this->_algorithm = $value;
+    }
+
+    /**
      * Gets the digest algorithm's value.
      *
      * @return binary The digest algorithm's value.
@@ -46,6 +56,16 @@ class DigestAlgorithmAndValue
     }
 
     /**
+     * Sets the digest algorithm's value.
+     *
+     * @param $value binary The digest algorithm's value.
+     */
+    public function setValue($value)
+    {
+        $this->_value = $value;
+    }
+
+    /**
      * Gets the digest algorithm's hex value.
      *
      * @return string The digest algorithm's hex value.
@@ -53,6 +73,16 @@ class DigestAlgorithmAndValue
     public function getHexValue()
     {
         return $this->_hexValue;
+    }
+
+    /**
+     * Sets the digest algorithm's hex value.
+     *
+     * @param $value string The digest algorithm's hex value.
+     */
+    public function setHexValue($value)
+    {
+        $this->_hexValue = $value;
     }
 
     public function toModel()
@@ -73,6 +103,24 @@ class DigestAlgorithmAndValue
                 return $this->getValue();
             case 'hexValue':
                 return $this->getHexValue();
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
+    }
+
+    public function __set($prop, $value)
+    {
+        switch ($prop) {
+            case "algorithm":
+                $this->setAlgorithm($value);
+                break;
+            case "value":
+                $this->setValue($value);
+                break;
+            case "hexValue":
+                $this->setHexValue($value);
+                break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
