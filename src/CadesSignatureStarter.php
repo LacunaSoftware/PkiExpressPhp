@@ -186,7 +186,11 @@ class CadesSignatureStarter extends SignatureStarter
      */
     public function setDataHashes($dataHashes)
     {
-        if (!($json = json_encode($dataHashes))) {
+        $models = array();
+        foreach($dataHashes as $dh) {
+            array_push($models, $dh->toModel());
+        }
+        if (!($json = json_encode($models))) {
             throw new \Exception("The provided data hashes was not valid");
         }
 
