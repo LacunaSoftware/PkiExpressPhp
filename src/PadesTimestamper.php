@@ -10,6 +10,14 @@ class PadesTimestamper extends PkiExpressOperator
     
     private $_overwriteOriginalFile = false;
 
+    public function __construct($config = null)
+    {
+        if (!isset($config)) {
+            $config = new PkiExpressConfig();
+        }
+        parent::__construct($config);
+    }
+
     /**
      * @return mixed
      */
