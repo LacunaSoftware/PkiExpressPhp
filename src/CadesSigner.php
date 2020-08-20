@@ -281,8 +281,8 @@ class CadesSigner extends Signer
             array_push($args, $this->dataFilePath);
         }
 
-        // This operation can only be used on versions greater than 1.17 of the PKI Express.
-        $this->versionManager->requireVersion('1.17.0');
+        // This operation can only be used on versions greater than 1.18 of the PKI Express.
+        $this->versionManager->requireVersion('1.18.0');
 
         // Invoke command
         $response = parent::invoke(parent::COMMAND_SIGN_CADES2, $args);
