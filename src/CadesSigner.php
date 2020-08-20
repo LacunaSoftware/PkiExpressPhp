@@ -12,6 +12,7 @@ class CadesSigner extends Signer
 {
     private $fileToSignPath;
     private $dataFilePath;
+    private $dataHashesPath;
 
     private $_encapsulateContent = true;
 
@@ -160,6 +161,44 @@ class CadesSigner extends Signer
     //endregion
 
     /**
+     * Sets the data hashes file's path. This file is a JSON representing a
+     * model that has the information to build a list of data hashes for the
+     * signature. If preferred, the pure PHP object can be provided using the
+     * method setDataHashes().
+     *
+     * @param $path string The path to the data hashes file's path.
+     * @throws \Exception if the provided file is not found.
+     */
+    public function setDataHashesFromFile($path)
+    {
+        if (!file_exists($path)) {
+            throw new \Exception("The provided data hashes file was not found");
+        }
+
+        $this->dataHashesPath = $path;
+    }
+
+    /**
+     * Sets the list of data hashes by passing a pure PHP model. If preferred,
+     * the JSON file can be provided using the method setDataHashes().
+     *
+     * @param $dataHashes DigestAlgorithmAndValue[] The list of data hashes.
+     * @throws \Exception if the model is invalid, and can't be parsed to a
+     * JSON.
+     */
+    public function setDataHashes($dataHashes)
+    {
+        if (!($json = json_encode($dataHashes))) {
+            throw new \Exception("The provided data hashes was not valid");
+        }
+
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $json);
+        $this->dataHashesPath = $tempFilePath;
+    }
+
+    /**
+     * @deprecated
      * Performs the CAdES signature.
      *
      * @throws \Exception If the paths of the fie to be signed and the output file are not set.
@@ -193,6 +232,64 @@ class CadesSigner extends Signer
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
         parent::invokePlain(parent::COMMAND_SIGN_CADES, $args);
+    }
+
+    /**
+     * Performs the CAdES signature. (2nd version)
+     *
+     * @throws \Exception If the paths of the fie to be signed and the output file are not set.
+     */
+    public function sign2()
+    {
+        if ($this->_encapsulateContent) {
+            if (empty($this->fileToSignPath)) {
+                throw new \Exception("The file to be signed was not set");
+            }
+        } else {
+            if (empty($this->fileToSignPath) && empty($this->dataHashesPath)) {
+                throw new \Exception("No file or hashes to be signed were set");
+            }
+        }
+
+        if (empty($this->outputFilePath)) {
+            throw new \Exception("The output destination was not set");
+        }
+
+        $args = array(
+            $this->outputFilePath
+        );
+
+        // Verify and add common options between signers
+        parent::verifyAndAddCommonOptions($args);
+
+        if (!$this->_encapsulateContent) {
+            array_push($args, "--detached");
+
+            if (!empty($this->dataHashesPath)) {
+                array_push($args, "--data-hashes");
+                array_push($args, $this->dataHashesPath);
+            }
+        }
+
+        if (!empty($this->fileToSignPath)) {
+            array_push($args, "--file");
+            array_push($args, $this->fileToSignPath);
+        }
+
+        if (!empty($this->dataFilePath)) {
+            array_push($args, "--data-file");
+            array_push($args, $this->dataFilePath);
+        }
+
+        // This operation can only be used on versions greater than 1.17 of the PKI Express.
+        $this->versionManager->requireVersion('1.17.0');
+
+        // Invoke command
+        $response = parent::invoke(parent::COMMAND_SIGN_CADES2, $args);
+
+        // Parse output and return model.
+        $parsedOutput = $this->parseOutput($response->output[0]);
+        return new SignatureResult($parsedOutput);
     }
 
     /**
