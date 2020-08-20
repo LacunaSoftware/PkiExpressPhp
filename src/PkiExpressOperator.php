@@ -33,6 +33,9 @@ abstract class PkiExpressOperator
     const COMMAND_SIGN_CADES = "sign-cades";
 
     /** @protected */
+    const COMMAND_SIGN_CADES2 = "sign-cades2";
+
+    /** @protected */
     const COMMAND_SIGN_PADES = "sign-pades";
 
     /** @protected */
@@ -42,6 +45,9 @@ abstract class PkiExpressOperator
     const COMMAND_START_CADES = "start-cades";
 
     /** @protected */
+    const COMMAND_START_CADES2 = "start-cades2";
+
+    /** @protected */
     const COMMAND_START_PADES = "start-pades";
 
     /** @protected */
@@ -49,6 +55,9 @@ abstract class PkiExpressOperator
 
     /** @protected */
     const COMMAND_COMPLETE_SIG = "complete-sig";
+
+    /** @protected */
+    const COMMAND_COMPLETE_CADES = "complete-cades";
 
     /** @protected */
     const COMMAND_OPEN_PADES = "open-pades";

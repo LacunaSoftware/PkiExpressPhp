@@ -7,6 +7,7 @@ class PadesTimestamper extends PkiExpressOperator
 {
     private $pdfPath;
     private $outputFilePath;
+    private $vrJsonPath;
     
     private $_overwriteOriginalFile = false;
 
@@ -136,6 +137,41 @@ class PadesTimestamper extends PkiExpressOperator
     }
 
     /**
+     * Sets the visual representation file's path. This file is a JSON representing a model that has the information
+     * to build a visual representation for the signature. If preferred, the pure PHP object can be provided using
+     * the method setVisualRepresentation().
+     *
+     * @param $path string The path to the visual representation file's path.
+     * @throws \Exception If the provided file is not found.
+     */
+    public function setVisualRepresentationFromFile($path)
+    {
+        if (!file_exists($path)) {
+            throw new \Exception("The provided visual representation file was not found");
+        }
+
+        $this->vrJsonPath = $path;
+    }
+
+    /**
+     * Sets the visual representation by passing a pure PHP model. If preferred, the JSON file can be provided using
+     * the method setVisualRepresentationFromFile().
+     *
+     * @param $vr mixed The visual representation's model.
+     * @throws \Exception If the model is invalid, and can't be parsed to a JSON.
+     */
+    public function setVisualRepresentation($vr)
+    {
+        if (!($json = json_encode($vr))) {
+            throw new \Exception("The provided visual representation was not valid");
+        };
+
+        $tempFilePath = parent::createTempFile();
+        file_put_contents($tempFilePath, $json);
+        $this->vrJsonPath = $tempFilePath;
+    }
+
+    /**
      * Perform a timestamp on a PDF file.
      *
      * @throws \Exception
@@ -167,6 +203,15 @@ class PadesTimestamper extends PkiExpressOperator
             array_push($args, "--overwrite");
         } else {
             array_push($args, $this->outputFilePath);
+        }
+
+        if (!empty($this->vrJsonPath)) {
+            array_push($args, "--visual-rep");
+            array_push($args, $this->vrJsonPath);
+
+            // This option can only be used on versions greater than 1.18.0 of
+            // PKI Express.
+            $this->versionManager->requireVersion('1.18.0');
         }
 
         // This option can only be used on versions greater than 1.7.0 of

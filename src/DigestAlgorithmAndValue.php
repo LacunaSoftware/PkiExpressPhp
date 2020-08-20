@@ -6,9 +6,9 @@ namespace Lacuna\PkiExpress;
  * Class DigestAlgorithmAndValue
  * @package Lacuna\PkiExpress
  *
- * @property-read $algorithm DigestAlgorithm
- * @property-read $value binary
- * @property-read $hexValue string
+ * @property $algorithm DigestAlgorithm
+ * @property $value binary
+ * @property $hexValue string
  */
 class DigestAlgorithmAndValue
 {
@@ -16,11 +16,13 @@ class DigestAlgorithmAndValue
     private $_value;
     private $_hexValue;
 
-    public function __construct($model)
+    public function __construct($model = null)
     {
-        $this->_algorithm = DigestAlgorithm::getInstanceByCommandAlgorithm($model->algorithm);
-        $this->_value = base64_decode($model->value);
-        $this->_hexValue = bin2hex($this->_value);
+        if (isset($model)) {
+            $this->_algorithm = DigestAlgorithm::getInstanceByCommandAlgorithm($model->algorithm);
+            $this->_value = base64_decode($model->value);
+            $this->_hexValue = bin2hex($this->_value);
+        }
     }
 
     /**
@@ -34,6 +36,16 @@ class DigestAlgorithmAndValue
     }
 
     /**
+     * Sets the digest algorithm.
+     *
+     * @param $value DigestAlgorithm The digest algorithm.
+     */
+    public function setAlgorithm($value)
+    {
+        $this->_algorithm = $value;
+    }
+
+    /**
      * Gets the digest algorithm's value.
      *
      * @return binary The digest algorithm's value.
@@ -41,6 +53,16 @@ class DigestAlgorithmAndValue
     public function getValue()
     {
         return $this->_value;
+    }
+
+    /**
+     * Sets the digest algorithm's value.
+     *
+     * @param $value binary The digest algorithm's value.
+     */
+    public function setValue($value)
+    {
+        $this->_value = $value;
     }
 
     /**
@@ -53,6 +75,25 @@ class DigestAlgorithmAndValue
         return $this->_hexValue;
     }
 
+    /**
+     * Sets the digest algorithm's hex value.
+     *
+     * @param $value string The digest algorithm's hex value.
+     */
+    public function setHexValue($value)
+    {
+        $this->_hexValue = $value;
+    }
+
+    public function toModel()
+    {
+        return [
+            "algorithm" => $this->_algorithm->getAlgorithm(),
+            "value" => base64_encode($this->_value),
+            "hexValue" => $this->_hexValue,
+        ];
+    }
+
     public function __get($attr)
     {
         switch ($attr) {
@@ -62,6 +103,24 @@ class DigestAlgorithmAndValue
                 return $this->getValue();
             case 'hexValue':
                 return $this->getHexValue();
+            default:
+                trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
+                return null;
+        }
+    }
+
+    public function __set($prop, $value)
+    {
+        switch ($prop) {
+            case "algorithm":
+                $this->setAlgorithm($value);
+                break;
+            case "value":
+                $this->setValue($value);
+                break;
+            case "hexValue":
+                $this->setHexValue($value);
+                break;
             default:
                 trigger_error('Undefined property: ' . __CLASS__ . '::$' . $attr);
                 return null;
