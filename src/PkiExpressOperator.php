@@ -89,6 +89,17 @@ abstract class PkiExpressOperator
     /** @protected */
     const COMMAND_READ_CERT = "read-cert";
 
+    /** @protected */
+    const COMMAND_CHECK_SERVICE = "check-service";
+
+    /** @protected */
+    const COMMAND_DISCOVER_SERVICES = "discover-services";
+
+    /** @protected */
+    const COMMAND_PASSWORD_AUTHORIZE = "pwd-auth";
+
+    /** @protected */
+    const COMMAND_COMPLETE_SERVICE_AUTH = "complete-service-auth";
 
     protected function __construct($config = null)
     {
@@ -132,7 +143,7 @@ abstract class PkiExpressOperator
         }
 
         // Add trusted roots if added
-        if (empty($this->trustedRoots)) {
+        if (!empty($this->trustedRoots)) {
 
             foreach ($this->trustedRoots as $root) {
                 $cmdArgs[] = '--trust-root';

@@ -5,7 +5,7 @@ Package for using PKI Express on PHP
 The recommended way to install **PKI Express for PHP** is through [Composer](http://getcomposer.org):
 
     "require": {
-        "lacuna/pki-express" : "^1.11.0"
+        "lacuna/pki-express" : "^1.12.0"
     }
 
 ## Documentation
