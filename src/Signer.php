@@ -15,6 +15,8 @@ abstract class Signer extends PkiExpressOperator
     protected $outputFilePath;
     protected $pkcs12Path;
 
+    protected $_trustServiceSession;
+
     protected $_certThumb;
     protected $_certPassword;
 
@@ -29,8 +31,8 @@ abstract class Signer extends PkiExpressOperator
 
     protected function verifyAndAddCommonOptions(&$args)
     {
-        if (empty($this->_certThumb) && empty($this->pkcs12Path)) {
-            throw new \RuntimeException("The certificate's thumbprint and the PKCS #12 were not set");
+        if (empty($this->_certThumb) && empty($this->pkcs12Path) && empty($this->_trustServiceSession)) {
+            throw new \RuntimeException("The certificate's thumbprint, the PKCS #12 file and TrustServiceSession were not provided.");
         }
 
         if (StandardSignaturePolicies::requireTimestamp($this->_signaturePolicy) && empty($this->_timestampAuthority)) {
@@ -75,6 +77,15 @@ abstract class Signer extends PkiExpressOperator
 
             // This option can only be used on versions greater than 1.5 of the PKI Express.
             $this->versionManager->requireVersion("1.5");
+        }
+
+        // Add trusted service session
+        if (isset($this->_trustServiceSession)) {
+            $args[] = '--trust-service-session';
+            $args[] = $this->_trustServiceSession;
+
+            // This option can only be used on versions greater than 1.18 of the PKI Express.
+            $this->versionManager->requireVersion("1.18");
         }
     }
 
@@ -174,6 +185,16 @@ abstract class Signer extends PkiExpressOperator
     public function setCertPassword($certPassword)
     {
         $this->_certPassword = $certPassword;
+    }
+
+    /**
+     * Sets the trusted service session.
+     *
+     * @param $trustServiceSession string The trusted service session.
+     */
+    public function setTrustServiceSession($trustServiceSession)
+    {
+        $this->_trustServiceSession = $trustServiceSession;
     }
 
     public function __set($prop, $value)
