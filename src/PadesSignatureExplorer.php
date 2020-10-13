@@ -8,6 +8,7 @@ namespace Lacuna\PkiExpress;
  */
 class PadesSignatureExplorer extends SignatureExplorer
 {
+    public $validationPolicy;
 
     public function __construct($config = null)
     {
@@ -35,6 +36,14 @@ class PadesSignatureExplorer extends SignatureExplorer
 
         if ($this->_validate) {
             array_push($args, "--validate");
+        }
+
+        if ($this->validationPolicy) {
+            array_push($args, '--policy');
+            array_push($args, $this->validationPolicy);
+
+            // This policy can only be used on version greater than 1.20 of the PKI Express.
+            $this->versionManager->requireVersion("1.20");
         }
 
         // This operation can only be used on versions greater than 1.3 of the PKI Express.
