@@ -25,6 +25,8 @@ class StandardSignaturePolicies
     const XML_DSIG_BASIC = 'basic';
     const PKI_BRAZIL_XML_ADR_BASICA = 'adrb';
     const PKI_BRAZIL_XML_ADR_TEMPO = 'adrt';
+    const COD_WITH_SHA1 = 'cod-sha1';
+    const COD_WITH_SHA256 = 'cod-sha256';
 
     public static function requireTimestamp($policy)
     {
