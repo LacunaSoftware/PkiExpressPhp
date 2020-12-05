@@ -39,7 +39,7 @@ class Pkcs12Certificate
 
         $this->setContentRaw($raw);
     }
-    
+
     public function writeToFile($path)
     {
         file_put_contents($path, $this->content);
