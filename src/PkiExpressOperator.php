@@ -194,7 +194,7 @@ abstract class PkiExpressOperator
         // Escape arguments
         $escapedArgs = array();
         foreach ($cmdArgs as $arg) {
-            array_push($escapedArgs, escapeshellarg($arg));
+            array_push($escapedArgs, $this->escapeCmdArg($arg));
 
         }
 
@@ -320,6 +320,25 @@ abstract class PkiExpressOperator
                 // TODO: log
             }
         }
+    }
+
+    private function escapeCmdArg($arg) {
+        $firstLetter = $arg[0];
+        $lastLetter = $arg[strlen($arg) - 1];
+
+        // Verify the argument already has quotes. Remove temporarily these quotes.
+        $content = null;
+        if ($firstLetter == "\"" && $lastLetter == "\"") {
+            $content = substr($arg, 1, strlen($arg) - 2);
+        } else {
+            $content = $arg;
+        }
+
+        // Perform the character \" escaping on the argument's content.
+        $escaped = str_replace("\"", "\\\"", $content);
+
+        // Return quotes outside the argument's content when it was removed.
+        return "\"{$escaped}\"";
     }
 
     /**
