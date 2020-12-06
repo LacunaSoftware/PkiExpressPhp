@@ -334,8 +334,9 @@ abstract class PkiExpressOperator
             $content = $arg;
         }
 
-        // Perform the character \" escaping on the argument's content.
-        $escaped = str_replace("\"", "\\\"", $content);
+        // Perform the characters \" and \\ escaping on the argument's content.
+        $escaped = str_replace("\\", "\\\\", $content);
+        $escaped = str_replace("\"", "\\\"", $escaped);
 
         // Return quotes outside the argument's content when it was removed.
         return "\"{$escaped}\"";
