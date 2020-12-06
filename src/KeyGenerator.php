@@ -55,8 +55,6 @@ class KeyGenerator extends PkiExpressOperator
         $parsedOutput = $this->parseOutput($response->output[0]);
 
         // Convert response.
-        $result = new KeyGenerationResult($parsedOutput);
-
-        return $result;
+        return new KeyGenerationResult($parsedOutput);
     }
 }

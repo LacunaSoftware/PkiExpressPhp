@@ -120,9 +120,7 @@ class Pkcs12Generator extends PkiExpressOperator
         $parsedOutput = $this->parseOutput($response->output[0]);
 
         // Convert response.
-        $result = new Pkcs12GenerationResult($parsedOutput);
-
-        return $result;
+        return new Pkcs12GenerationResult($parsedOutput);
 
     }
 }

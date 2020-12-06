@@ -10,8 +10,8 @@ class Pkcs12GenerationResult
 
     public function __construct($model)
     {
-        if (isset($model) && isset($model['pfx'])) {
-            $this->pfx = new Pkcs12Certificate($model['pfx']);
+        if (isset($model) && isset($model->pfx)) {
+            $this->pfx = new Pkcs12Certificate($model->pfx);
         }
     }
 }

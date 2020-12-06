@@ -11,7 +11,7 @@ class KeyGenerationResult
 
     public function __construct($model)
     {
-        $this->key = $model['key'];
-        $this->csr = $model['csr'];
+        $this->key = $model->key;
+        $this->csr = $model->csr;
     }
 }
