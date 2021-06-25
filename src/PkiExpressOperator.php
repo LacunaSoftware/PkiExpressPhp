@@ -66,6 +66,9 @@ abstract class PkiExpressOperator
     const COMMAND_OPEN_CADES = "open-cades";
 
     /** @protected */
+    const COMMAND_OPEN_CERT = "open-cert";
+
+    /** @protected */
     const COMMAND_EDIT_PDF = "edit-pdf";
 
     /** @protected */
