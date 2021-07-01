@@ -177,7 +177,8 @@ class TrustServicesManager extends PkiExpressOperator
         $redirectUrl,
         $sessionType = TrustServiceSessionTypes::SIGNATURE_SESSION,
         $customState = null,
-        $throw_exceptions = False)
+        $throw_exceptions = False,
+        $lifetime = null)
     {
         if (empty($cpf)){
             throw new \Exception("The provided CPF is not valid");
@@ -212,6 +213,15 @@ class TrustServicesManager extends PkiExpressOperator
             $args[] = '--throw';
         }
 
+        if ($lifetime != null){
+            $args[] = "--session-lifetime";
+            $args[] = $lifetime;
+
+            // This operation can only be used on versions greater than
+            // 1.24 of the PKI Express.
+            $this->versionManager->requireVersion("1.24");
+        }
+
         // This operation can only be used on versions greater than 1.18 of
         // the PKI Express.
         $this->versionManager->requireVersion("1.18");
@@ -242,7 +252,8 @@ class TrustServicesManager extends PkiExpressOperator
         $redirectUrl,
         $sessionType = TrustServiceSessionTypes::SIGNATURE_SESSION,
         $customState = null,
-        $throw_exceptions = False)
+        $throw_exceptions = False,
+        $lifetime = null)
     {
         if (empty($cnpj)){
             throw new \Exception("The provided CNPJ is not valid");
@@ -277,6 +288,15 @@ class TrustServicesManager extends PkiExpressOperator
             $args[] = '--throw';
         }
 
+        if ($lifetime != null){
+            $args[] = "--session-lifetime";
+            $args[] = $lifetime;
+
+            // This operation can only be used on versions greater than
+            // 1.24 of the PKI Express.
+            $this->versionManager->requireVersion("1.24");
+        }
+
         // This operation can only be used on versions greater than 1.18 of
         // the PKI Express.
         $this->versionManager->requireVersion("1.18");
@@ -302,7 +322,7 @@ class TrustServicesManager extends PkiExpressOperator
      *  - The password;
      *  - The sessionType;
      */
-    public function passwordAuthorize($service, $username, $password, $sessionType=TrustServiceSessionTypes::SIGNATURE_SESSION)
+    public function passwordAuthorize($service, $username, $password, $sessionType=TrustServiceSessionTypes::SIGNATURE_SESSION, $lifetime=null)
     {
         if (empty($service)){
             throw new \Exception("The provided service is not valid");
@@ -331,8 +351,17 @@ class TrustServicesManager extends PkiExpressOperator
         // Add sessionType.
         $args[] = $sessionType;
 
-        // This operation can only be used on versions greater than 1.18 of
-        // the PKI Express.
+        if ($lifetime != null){
+            $args[] = "--session-lifetime";
+            $args[] = $lifetime;
+
+            // This operation can only be used on versions greater than
+            // 1.24 of the PKI Express.
+            $this->versionManager->requireVersion("1.24");
+        }
+
+        // This operation can only be used on versions greater than
+        // 1.18 of the PKI Express.
         $this->versionManager->requireVersion("1.18");
 
         // Invoke command.
