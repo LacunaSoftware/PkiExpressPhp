@@ -25,8 +25,12 @@ class StandardSignaturePolicies
     const XML_DSIG_BASIC = 'basic';
     const PKI_BRAZIL_XML_ADR_BASICA = 'adrb';
     const PKI_BRAZIL_XML_ADR_TEMPO = 'adrt';
+    const PKI_BRAZIL_XML_ADR_ARQUIVAMENTO = 'adra';
     const COD_WITH_SHA1 = 'cod-sha1';
     const COD_WITH_SHA256 = 'cod-sha256';
+    const XADES_BRAZIL = 'xades-brazil';
+    const PKI_BRAZIL = 'pki-brazil';
+    const PKI_BRAZIL_WITH_CERT_PROTECTION = 'pki-brazil-with-cert-protection';
 
     public static function requireTimestamp($policy)
     {
@@ -38,6 +42,7 @@ class StandardSignaturePolicies
             $policy == StandardSignaturePolicies::PKI_BRAZIL_CADES_ADR_COMPLETA ||
             $policy == StandardSignaturePolicies::CADES_T ||
             $policy == StandardSignaturePolicies::PADES_T ||
-            $policy == StandardSignaturePolicies::PKI_BRAZIL_XML_ADR_TEMPO;
+            $policy == StandardSignaturePolicies::PKI_BRAZIL_XML_ADR_TEMPO ||
+            $policy == StandardSignaturePolicies::PKI_BRAZIL_XML_ADR_ARQUIVAMENTO;
     }
 }
