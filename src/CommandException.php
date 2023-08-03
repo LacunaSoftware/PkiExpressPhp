@@ -11,6 +11,6 @@ class CommandException extends \Exception
     {
         $this->returnCode = $returnCode;
         $this->cmd = $cmd;
-        parent::__construct("The command failed with code $returnCode: $message.\n Executed command: $cmd", 0, $previous);
+        parent::__construct("The command failed with code $returnCode: $message", 0, $previous);
     }
 }
