@@ -216,7 +216,7 @@ abstract class PkiExpressOperator
             if ($return == 1 && version_compare($this->versionManager->minVersion, '1.0') > 0) {
                 throw new \Exception($implodedOutput . PHP_EOL . ">>>>> TIP: This operation requires PKI Express {$this->versionManager->minVersion}, please check your PKI Express version.");
             }
-            throw new \Exception($implodedOutput);
+            throw new \CommandException($return, $cmd, $implodedOutput);
         }
 
         return (object)array(
