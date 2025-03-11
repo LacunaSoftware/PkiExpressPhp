@@ -205,7 +205,8 @@ abstract class PkiExpressOperator
         }
 
         // Perform the "dotnet" command
-        $cmd = implode(' ', $escapedArgs);
+        // To capture the error output (stderr) along with the standard output (stdout), you can append 2>&1 to the $cmd variable.
+        $cmd = implode(' ', $escapedArgs) . ' 2>&1';
         try {
             exec($cmd, $output, $return);
         } catch (\Exception $ex) {
