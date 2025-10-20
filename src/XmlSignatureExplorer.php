@@ -42,6 +42,10 @@ class XmlSignatureExplorer extends SignatureExplorer
             array_push($args, $this->validationPolicy);
         }
 
+        if ($this->_trustUncertifiedSigningTime) {
+            array_push($args, '--trust-uncertified-signing-time');
+        }
+
         // This operation can only be used on versions 
         // greater than 1.25.1 of the PKI Express.
         $this->versionManager->requireVersion("1.25.1");
