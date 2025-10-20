@@ -13,6 +13,7 @@ class SignatureExplorer extends PkiExpressOperator
     protected $signatureFilePath;
 
     protected $_validate;
+    protected $_trustUncertifiedSigningTime;
 
     //region setSignatureFile
 
@@ -100,11 +101,33 @@ class SignatureExplorer extends PkiExpressOperator
         $this->_validate = $validate;
     }
 
+    /**
+     * Gets the option to trust uncertified signing time.
+     *
+     * @return string The option to trust uncertified signing time.
+     */
+    public function getTrustUncertifiedSigningTime()
+    {
+        return $this->_trustUncertifiedSigningTime;
+    }
+
+    /**
+     * Sets the option to trust uncertified signing time.
+     *
+     * @param $trustUncertifiedSigningTime string The option to trust uncertified signing time.
+     */
+    public function setTrustUncertifiedSigningTime($trustUncertifiedSigningTime)
+    {
+        $this->_trustUncertifiedSigningTime = $trustUncertifiedSigningTime;
+    }
+
     public function __get($prop)
     {
         switch ($prop) {
             case "validate":
                 return $this->getValidate();
+            case "trustUncertifiedSigningTime":
+                return $this->getTrustUncertifiedSigningTime();
             default:
                 return parent::__get($prop);
         }
@@ -115,6 +138,9 @@ class SignatureExplorer extends PkiExpressOperator
         switch ($prop) {
             case "validate":
                 $this->setValidate($value);
+                break;
+            case "trustUncertifiedSigningTime":
+                $this->setTrustUncertifiedSigningTime($value);
                 break;
             default:
                 parent::__set($prop, $value);

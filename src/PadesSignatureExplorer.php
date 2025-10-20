@@ -46,6 +46,10 @@ class PadesSignatureExplorer extends SignatureExplorer
             $this->versionManager->requireVersion("1.20");
         }
 
+        if ($this->_trustUncertifiedSigningTime) {
+            array_push($args, '--trust-uncertified-signing-time');
+        }
+
         // This operation can only be used on versions greater than 1.3 of the PKI Express.
         $this->versionManager->requireVersion("1.3");
 
