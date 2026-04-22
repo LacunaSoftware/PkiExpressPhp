@@ -341,7 +341,6 @@ class TrustServicesManager extends PkiExpressOperator
         $args = array();
 
         // Adiciona a URL de redirecionamento (Obrigatório)
-        $args[] = '--redirect-url';
         $args[] = $redirectUrl;
 
         // Adiciona o tipo de sessão
@@ -370,7 +369,7 @@ class TrustServicesManager extends PkiExpressOperator
 
         // Invoca o comando DISCOVER_SERVICES sem filtros de CPF/CNPJ
         // No PKI Express, o comando de descoberta sem filtros inicia a auth global
-        $response = parent::invoke(parent::COMMAND_START_AUTH, $args);
+        $response = parent::invoke(parent::COMMAND_START_SERVICE_AUTH, $args);
 
         // Decodifica o output (JSON)
         $parsedOutput = $this->parseOutput($response->output[0]);
