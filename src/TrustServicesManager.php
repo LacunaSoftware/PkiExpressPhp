@@ -313,6 +313,74 @@ class TrustServicesManager extends PkiExpressOperator
     }
 
     /**
+     * Inicia o processo de autenticação em todos os serviços de confiança configurados.
+     *
+     * @param string $redirectUrl URL de retorno após a autenticação.
+     * @param string $sessionType O tipo de sessão (assinatura ou autenticação).
+     * @param string|null $customState Estado personalizado para recuperar o contexto após o callback.
+     * @param bool $throwExceptions Se deve lançar exceções em caso de erro em algum serviço.
+     * @param int|null $lifetime Tempo de vida da sessão em segundos.
+     * * @return TrustServiceAuthParameters Parâmetros para redirecionamento do usuário.
+     * @throws \Exception Se o redirectUrl não for fornecido.
+     */
+    public function startAuth(
+        $redirectUrl,
+        $sessionType = TrustServiceSessionTypes::SIGNATURE_SESSION,
+        $customState = null,
+        $throw_exceptions = false,
+        $lifetime = null
+    ) {
+        if (empty($redirectUrl)) {
+            throw new \Exception("The provided redirectUrl is not valid");
+        }
+        
+        if (empty($sessionType)) {
+            throw new \Exception("No session type was provided");
+        }
+
+        $args = array();
+
+        // Adiciona a URL de redirecionamento (Obrigatório)
+        $args[] = $redirectUrl;
+
+        // Adiciona o tipo de sessão
+        $args[] = '--session-type';
+        $args[] = $sessionType;
+
+        if ($customState != null) {
+            $args[] = '--custom-state';
+            $args[] = $customState;
+        }
+
+        if ($throw_exceptions) {
+            $args[] = '--throw';
+        }
+
+        if ($lifetime != null) {
+            $args[] = "--session-lifetime";
+            $args[] = $lifetime;
+
+            // Requer versão 1.24+ para tempo de vida de sessão
+            $this->versionManager->requireVersion("1.24");
+        }
+
+        // Esta operação requer pelo menos a versão 1.18 do PKI Express
+        $this->versionManager->requireVersion("1.18");
+
+        // Invoca o comando DISCOVER_SERVICES sem filtros de CPF/CNPJ
+        // No PKI Express, o comando de descoberta sem filtros inicia a auth global
+        $response = parent::invoke(parent::COMMAND_START_SERVICE_AUTH, $args);
+
+        // Decodifica o output (JSON)
+        $parsedOutput = $this->parseOutput($response->output[0]);
+
+        // Retorna os parâmetros de autorização (que conterão a lista de serviços e URLs)
+        $result = new DiscoverServicesResult($parsedOutput);
+        return $result->authParameters;
+    }
+
+    
+    /**
      * Authorize the session on the given service using the given username and password.
      *
      * @return TrustServiceSessionResult The session informations
