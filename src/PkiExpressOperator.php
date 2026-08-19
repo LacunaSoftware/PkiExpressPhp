@@ -81,6 +81,9 @@ abstract class PkiExpressOperator
     const COMMAND_COMPLETE_AUTH = "complete-auth";
 
     /** @protected */
+    const COMMAND_START_SERVICE_AUTH = "start-service-auth";
+
+    /** @protected */
     const COMMAND_GEN_KEY = "gen-key";
 
     /** @protected */
