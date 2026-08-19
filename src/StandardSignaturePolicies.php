@@ -19,6 +19,9 @@ class StandardSignaturePolicies
     const PADES_BASIC_WITH_LTV = 'pades-ltv';
     const PADES_T = 'pades-t';
     const PADES_AD_RA = 'pades-ad-ra';
+    const PADES_AD_RB = 'adrb';
+    const PADES_AD_RB_WITH_LTV = 'adrb-ltv';
+    const PADES_AD_RT = 'adrt';
 
     // XML policies
     const NFE_PADRAO_NACIONAL = 'nfe';
