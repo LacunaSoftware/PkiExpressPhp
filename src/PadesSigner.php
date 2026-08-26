@@ -16,6 +16,8 @@ class PadesSigner extends Signer
     private $_overwriteOriginalFile = false;
     private $_customSignatureFieldName = null;
 
+    private $metadata = array();
+
     public $suppressDefaultVisualRepresentation = false;
     public $reason;
     public $certificationLevel;
@@ -133,6 +135,26 @@ class PadesSigner extends Signer
     }
 
     /**
+     * Adds a metadata entry to be written on the signed PDF's document information dictionary.
+     *
+     * @param $key string The metadata key.
+     * @param $value string The metadata value.
+     * @throws \Exception If the key is empty or the value is null.
+     */
+    public function addMetadata($key, $value)
+    {
+        // Not using empty(), which would also reject the "0" key.
+        if (!isset($key) || $key === '') {
+            throw new \Exception("The metadata key was not set");
+        }
+        if (!isset($value)) {
+            throw new \Exception("The metadata value was not set");
+        }
+
+        $this->metadata[$key] = (string)$value;
+    }
+
+    /**
      * Performs the PAdES signature.
      *
      * @throws \Exception If the paths of the file to be signed and the output file are not set.
@@ -195,6 +217,19 @@ class PadesSigner extends Signer
 
             // This option can only be used on versions greater than 1.13.1 of the PKI Express.
             $this->versionManager->requireVersion('1.13.1');
+        }
+
+        if (!empty($this->metadata)) {
+            // JSON_FORCE_OBJECT keeps numeric keys from being encoded as a JSON array.
+            if (!($json = json_encode($this->metadata, JSON_FORCE_OBJECT))) {
+                throw new \Exception("The provided metadata was not valid");
+            }
+
+            array_push($args, '--metadata');
+            array_push($args, base64_encode($json));
+
+            // This option can only be used on versions greater than 1.38.0 of the PKI Express.
+            $this->versionManager->requireVersion('1.38');
         }
 
         // Invoke command with plain text output (to support PKI Express < 1.3)
